@@ -35,7 +35,7 @@
     if (!data) {
         data = {
             techData: {},
-            shipChartData: [{ type: 'null' }, { type: 'null' }, { type: 'null' }],
+            shipChartData: [{ type: 'null', ts: {} }, { type: 'null', ts: {} }, { type: 'null', ts: {} }],
             buffChartData: [],
             config: {
                 maxDuration: 180
@@ -78,7 +78,9 @@
         }
     }
     updateShipDataDom();
+
     function updateShipData() {
+        console.log('updateShipData');
         data.shipChartData = [];
         for (var ship of $('.shipinfo')) {
             if ($(ship).find('.type').val() == 'null') {
@@ -100,7 +102,7 @@
         saveData(data);
         window.setChartOption(data);
     }
-    $('.ship-input').on('change', updateShipData)
+    $('.ship-input').on('change', updateShipData);
 
     function bindCheckbox(obj, key, target) {
         var $dom = $(target);
