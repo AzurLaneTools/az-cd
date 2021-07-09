@@ -12,36 +12,78 @@
     <h1>碧蓝航线CD计算器-Alpha</h1>
     <a href="tech.html">科研数据配置</a>
     <div id="inputs">
-        <input type="number" name="name1" id="name1">
-        <input type="number" name="cd1" id="cd1">
-        <input type="number" name="offset1" id="offset1">
-        <br>
-        <div id="buff"></div>
     </div>
+    <div id="buff"></div>
     <div id="chart" style="width: auto; height: 600px;"></div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"
     integrity="sha256-TI0rIaxop+pDlHNVI6kDCFvmpxNYUnVH/SMjknZ/W0Y=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="js/render.js"></script>
 <script>
     const STORE_KEY = 'AzurLaneCDTool-CacheData';
     var data = localStorage.getItem(STORE_KEY);
     if (!data) {
-        data = {};
+        data = {
+            techData: {},
+            shipChartData: [{ type: 'null' }, { type: 'null' }, { type: 'null' }],
+            buffChartData: [],
+            config: {
+                maxDuration: 180
+            }
+        };
+    } else {
+        data = JSON.parse(data);
     }
-    var shipChartData = [{
-        "name": "光辉",
-        "type": "CV",
-        "ts": {
-            "type": "fixed",
-            "offset": 20.08 + 2,
-            "cd": 20.08,
-            "duration": 2
+    console.log('LoadData', data);
+    for (var [id, ship] of data.shipChartData.entries()) {
+        console.log(id, ship)
+        ship.id = `ship-${id}`;
+        $('#inputs').append(`
+        <div id="ship-${id}" class="shipinfo">
+            <select class="ship-input type" name="type-${id}" id="type-${id}">
+                <option value="null">无</option>
+                <option value="CV">航母</option>
+                <option value="BB">战列</option>
+            </select>
+            <span class="num-inputs">
+                <input class="ship-input name" type="text" name="name-${id}" id="name-${id}">
+                <input class="ship-input cd" type="number" name="cd-${id}" id="cd-${id}">
+                <input class="ship-input offset" type="number" name="offset-${id}" id="offset-${id}">
+            </span>
+            <br>
+        </div>
+        `);
+        $('#ship-' + id).children('.type').val(ship.type);
+    }
+    function updateShipData() {
+        data.shipChartData = [];
+        for (var ship of $('.shipinfo')) {
+            if ($(ship).find('.type').val() == 'null') {
+                $(ship).find('.num-inputs .ship-input').prop('disabled', 'disabled');
+            } else {
+                $(ship).find('.num-inputs .ship-input').prop('disabled', null);
+            }
+            data.shipChartData.push({
+                name: $(ship).find('.name').val(),
+                type: $(ship).find('.type').val(),
+                ts: {
+                    type: 'fixed',
+                    cd: parseFloat($(ship).find('.cd').val()),
+                    offset: parseFloat($(ship).find('.offset').val()),
+                    duration: 2,
+                }
+            })
         }
-    }];
-    var buffChartData = [];
+        saveData(data);
+        window.setChartOption(data);
+    }
+    $('.ship-input').on('change', updateShipData)
 
-    var techData = data.techData || {};
+    function saveData(data) {
+        localStorage.setItem(STORE_KEY, JSON.stringify(data));
+    }
     var buffData = {};
     async function loadBuffData() {
         var resp = await fetch('data/buff.json');
@@ -49,8 +91,12 @@
         var buffDom = document.getElementById('buff');
         for (var key in buffData) {
             var item = buffData[key];
+            item.id = key;
             buffDom.innerHTML += `<label for="${key}">${item.name}</label>`;
             buffDom.innerHTML += `<input type="checkbox" name="${key}" id="${key}" onchange="updateBuffData(this)" />`;
+        }
+        for (var item of data.buffChartData) {
+            document.getElementById(item.id).checked = true;
         }
     }
     loadBuffData();
@@ -66,16 +112,16 @@
                 }
             }
         }
-        buffChartData = [];
+        data.buffChartData = [];
         for (var key in buffData) {
             if (document.getElementById(key).checked) {
-                buffChartData.push(buffData[key]);
+                data.buffChartData.push(buffData[key]);
             }
         }
-        window.setChartOption(shipChartData, buffChartData, { maxDuration: 180 });
+        saveData(data);
+        window.setChartOption(data);
     }
-
-    window.setChartOption(shipChartData, buffChartData, { maxDuration: 180 });
+    window.setChartOption(data);
 </script>
 
 </html>
