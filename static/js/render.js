@@ -119,7 +119,7 @@
         var second = '00' + Math.floor(num % 60);
         second = second.substr(second.length - 2);
         var mseconds = num % 1;
-        if(mseconds){
+        if (mseconds) {
             second += mseconds.toFixed(2).substr(1);
         }
         return minute + ':' + second;
@@ -272,6 +272,9 @@
                 encode: { x: [1, 2], y: 0 },
                 data: data
             }],
+            xAxis: {
+                max: parseInt(config.maxDuration),
+            },
             yAxis: {
                 data: categories,
                 inverse: true,
