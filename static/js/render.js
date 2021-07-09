@@ -24,6 +24,10 @@
         var res = [];
         if (tsData.type == 'fixed') {
             var dt = tsData.offset;
+            if (!tsData.cd || tsData.cd < 1) {
+                console.warn('未提供CD或CD太小!');
+                return res;
+            }
             while (dt < config.maxDuration) {
                 res.push({
                     start: dt,
@@ -168,22 +172,23 @@
         }
     }
 
-    window.setChartOption = function (shipData, extraBuffData, config) {
+    window.setChartOption = function (conf) {
+        var { shipChartData: shipData, buffChartData: extraBuffData, config } = conf;
         var events = [];
         var categories = [];
         if (!config.maxDuration) {
             config.maxDuration = 180;
         }
+        console.log(shipData);
+        shipData = shipData.filter((s) => { return s.type === 'CV' || s.type === 'BB' });
         for (var [index, ship] of shipData.entries()) {
-            if (ship.type === 'CV' || ship.type === 'BB') {
-                for (let ts of loadTimestamps(ship.ts, config)) {
-                    events.push({
-                        name: ship.name,
-                        type: ship.type,
-                        category: index,
-                        ...ts
-                    });
-                }
+            for (let ts of loadTimestamps(ship.ts, config)) {
+                events.push({
+                    name: ship.name,
+                    type: ship.type,
+                    category: index,
+                    ...ts
+                });
             }
             categories.push(ship.name);
         }
