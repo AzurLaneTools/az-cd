@@ -71,12 +71,14 @@
             style: api.style()
         };
     }
-
-
+    function trimmedNum(num, maxDigits = 3) {
+        var text = num.toFixed(maxDigits);
+        return text.replace(/0+$/, '').replace(/\.$/, '');
+    }
     option = {
         tooltip: {
             formatter: function (params) {
-                return params.marker + params.name + `: ${params.value[1]}s~${params.value[2]}s`;
+                return params.marker + params.name + `: ${trimmedNum(params.value[1])}s~${trimmedNum(params.value[2])}s`;
             }
         },
         title: {
@@ -101,7 +103,7 @@
             scale: true,
             axisLabel: {
                 formatter: function (val) {
-                    return parseInt(val).toFixed(2) + ' s';
+                    return trimmedNum(val) + 's';
                 }
             }
         },
@@ -110,7 +112,7 @@
         },
     };
 
-    option && myChart.setOption(option);
+    myChart.setOption(option);
 
     function delayEvent(event, dt) {
         event.start += dt;
@@ -166,15 +168,22 @@
         }
     }
 
-    myChart.setOption(option);
     window.setChartOption = function (shipData, extraBuffData, config) {
         var events = [];
         var categories = [];
+        if (!config.maxDuration) {
+            config.maxDuration = 180;
+        }
         for (var [index, ship] of shipData.entries()) {
-            if (ship.type === 'CV') {
-                events.push({
-                    category: index,
-                })
+            if (ship.type === 'CV' || ship.type === 'BB') {
+                for (let ts of loadTimestamps(ship.ts, config)) {
+                    events.push({
+                        name: ship.name,
+                        type: ship.type,
+                        category: index,
+                        ...ts
+                    });
+                }
             }
             categories.push(ship.name);
         }
@@ -193,7 +202,7 @@
             }
         }
         updateEvents(events, config);
-        console.log('set data', data);
+        console.log('set data', categories, data);
         myChart.setOption({
             series: [{
                 type: 'custom',
@@ -203,7 +212,8 @@
                 data: data
             }],
             yAxis: {
-                data: categories
+                data: categories,
+                inverse: true,
             },
         });
     }
