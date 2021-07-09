@@ -7,7 +7,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>碧蓝航线CD计算器-Alpha</title>
 </head>
+
 <body>
     <h1>碧蓝航线CD计算器-Alpha</h1>
+    <a href="tech.html">科研数据配置</a>
+    <div id="inputs">
+        <input type="number" name="cd" id="cd">
+    </div>
+    <div id="chart" style="width: auto; height: 600px;"></div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"
+    integrity="sha256-TI0rIaxop+pDlHNVI6kDCFvmpxNYUnVH/SMjknZ/W0Y=" crossorigin="anonymous"></script>
+<script src="js/render.js"></script>
+<script>
+    const STORE_KEY = 'AzurLaneCDTool-CacheData';
+    var data = localStorage.getItem(STORE_KEY);
+    if (!data) {
+        data = {};
+    }
+    var techData = data.techData || {};
+    window.setChartOption([
+
+    ], [{
+        "name": "海伦娜旧轴",
+        "type": "damageBuff",
+        "ts": {
+            "type": "fixed",
+            "offset": 20,
+            "cd": 20,
+            "duration": 10
+        }
+    }], { maxDuration: 180 });
+</script>
 </html>
