@@ -11,8 +11,17 @@
 <body>
     <h1>碧蓝航线CD计算器-Alpha</h1>
     <a href="tech.html">科研数据配置</a>
+    <button onclick="saveRecord()">保存配置</button>
+    <select name="records" id="records" onchange="loadRecord()"></select>
     <div id="inputs"></div>
     <div id="buff"></div>
+    <div id="time">
+        <label for="max-duration">战斗时间</label>
+        <input type="number" name="max-duration" id="max-duration">s
+        &nbsp;
+        <label for="time-inv">按剩余时间显示</label>
+        <input type="checkbox" name="time-inv" id="time-inv">
+    </div>
     <div id="chart" style="width: auto; height: 600px;"></div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"
@@ -30,16 +39,19 @@
             buffChartData: [],
             config: {
                 maxDuration: 180
-            }
+            },
+            records: [],
         };
     } else {
         data = JSON.parse(data);
     }
     console.log('LoadData', data);
-    for (var [id, ship] of data.shipChartData.entries()) {
-        console.log(id, ship)
-        ship.id = `ship-${id}`;
-        $('#inputs').append(`
+    function updateShipDataDom() {
+        $('#inputs').html('');
+        for (var [id, ship] of data.shipChartData.entries()) {
+            console.log(id, ship)
+            ship.id = `ship-${id}`;
+            $('#inputs').append(`
         <div id="ship-${id}" class="shipinfo">
             <select class="ship-input type" name="type-${id}" id="type-${id}">
                 <option value="null">无</option>
@@ -54,16 +66,18 @@
             <br>
         </div>
         `);
-        var $ship = $('#ship-' + id);
-        $ship.find('.type').val(ship.type);
-        $ship.find('.name').val(ship.name);
-        $ship.find('.cd').val(ship.ts.cd);
-        $ship.find('.offset').val(ship.ts.offset);
+            var $ship = $('#ship-' + id);
+            $ship.find('.type').val(ship.type);
+            $ship.find('.name').val(ship.name);
+            $ship.find('.cd').val(ship.ts.cd);
+            $ship.find('.offset').val(ship.ts.offset);
 
-        if (ship.type == 'null') {
-            $ship.find('.num-inputs .ship-input').prop('disabled', 'disabled');
+            if (ship.type == 'null') {
+                $ship.find('.num-inputs .ship-input').prop('disabled', 'disabled');
+            }
         }
     }
+    updateShipDataDom();
     function updateShipData() {
         data.shipChartData = [];
         for (var ship of $('.shipinfo')) {
@@ -76,9 +90,9 @@
                 name: $(ship).find('.name').val(),
                 type: $(ship).find('.type').val(),
                 ts: {
-                    type: 'fixed',
-                    cd: parseFloat($(ship).find('.cd').val()),
-                    offset: parseFloat($(ship).find('.offset').val()),
+                    type: $(ship).find('select.type').val(),
+                    cd: parseFloat($(ship).find('input.cd').val()),
+                    offset: parseFloat($(ship).find('input.offset').val()),
                     duration: 2,
                 }
             })
@@ -87,6 +101,69 @@
         window.setChartOption(data);
     }
     $('.ship-input').on('change', updateShipData)
+
+    function bindCheckbox(obj, key, target) {
+        var $dom = $(target);
+        if (obj[key]) {
+            $dom.prop('checked', 'checked');
+        } else {
+            $dom.prop('checked', null);
+        }
+        $dom.on('change', (evt) => {
+            obj[key] = evt.target.checked;
+            saveData(data);
+            setChartOption(data);
+        });
+    }
+    function bindInput(obj, key, target) {
+        var $dom = $(target);
+        $dom.val(obj[key]);
+        $dom.on('change', (evt) => {
+            console.log('on change', $dom, $dom.val())
+            obj[key] = $dom.val();
+            saveData(data);
+            setChartOption(data);
+        });
+    }
+    bindCheckbox(data.config, 'showTimeAsLeft', '#time-inv');
+    bindInput(data.config, 'maxDuration', '#max-duration')
+    function updateRecordOptions() {
+        var dom = $('#records');
+        dom.html('');
+        var selected;
+        for (var allkey in data.records) {
+            dom.append(`<option value="${allkey}">${allkey}</option>`)
+        }
+    }
+    updateRecordOptions();
+    function saveRecord(save = true) {
+        var key = [];
+        for (let ship of data.shipChartData) {
+            if (ship.type != 'null') {
+                key.push(ship.name);
+            }
+        }
+        key = key.join(',');
+        console.log('saved', key);
+        if (save) {
+            data.records[key] = data.shipChartData;
+            saveData(data);
+        }
+        updateRecordOptions();
+        $('#records option').prop('selected', null);
+        $(`#records option[value="${key}"]`).prop('selected', 'selected');
+    }
+    saveRecord(false);
+    function loadRecord() {
+        var key = $('#records').val();
+        if (!data.records[key]) {
+            return;
+        }
+        data.shipChartData = data.records[key];
+        saveData(data);
+        setChartOption(data);
+        updateShipDataDom();
+    }
 
     function saveData(data) {
         localStorage.setItem(STORE_KEY, JSON.stringify(data));

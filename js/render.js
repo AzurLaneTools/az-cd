@@ -3,6 +3,10 @@
     var chartDom = document.getElementById('chart');
     var myChart = echarts.init(chartDom);
     var option;
+    var config = {
+        showTimeAsLeft: false,
+        maxDuration: 180,
+    };
 
     var data = [];
 
@@ -20,10 +24,10 @@
             color: '#e0bc78',
         }
     }
-    function loadTimestamps(tsData, config) {
-        var res = [];
+    function loadTimestamps(tsData) {
+        var res = [], dt;
         if (tsData.type == 'fixed') {
-            var dt = tsData.offset;
+            dt = tsData.offset;
             if (!tsData.cd || tsData.cd < 1) {
                 console.warn('未提供CD或CD太小!');
                 return res;
@@ -33,6 +37,36 @@
                     start: dt,
                     end: dt + tsData.duration,
                     duration: tsData.duration,
+                })
+                dt += tsData.cd;
+            }
+        } else if (tsData.type == 'BB') {
+            if (!tsData.cd || tsData.cd < 1) {
+                console.warn('未提供CD或CD太小!');
+                return res;
+            }
+            dt = tsData.cd * (1 - (tsData.offset || 0)) + 3.2;
+            while (dt < config.maxDuration) {
+                res.push({
+                    start: dt,
+                    // 炮击持续时间配置为4s
+                    end: dt + 4,
+                    duration: 4,
+                })
+                dt += tsData.cd;
+            }
+        } else if (tsData.type == 'CV') {
+            if (!tsData.cd || tsData.cd < 1) {
+                console.warn('未提供CD或CD太小!');
+                return res;
+            }
+            dt = tsData.cd * (1 - (tsData.offset || 0)) + 2;
+            while (dt < config.maxDuration) {
+                res.push({
+                    start: dt,
+                    // 空袭持续时间配置为3s
+                    end: dt + 3,
+                    duration: 3,
                 })
                 dt += tsData.cd;
             }
@@ -79,10 +113,27 @@
         var text = num.toFixed(maxDigits);
         return text.replace(/0+$/, '').replace(/\.$/, '');
     }
+    function timeFormat(num) {
+        var minute = '00' + Math.floor(num / 60);
+        minute = minute.substr(minute.length - 2);
+        var second = '00' + Math.floor(num % 60);
+        second = second.substr(second.length - 2);
+        var mseconds = num % 1;
+        if(mseconds){
+            second += mseconds.toFixed(2).substr(1);
+        }
+        return minute + ':' + second;
+    }
     option = {
         tooltip: {
             formatter: function (params) {
-                return params.marker + params.name + `: ${trimmedNum(params.value[1])}s~${trimmedNum(params.value[2])}s`;
+                var range;
+                if (config.showTimeAsLeft) {
+                    range = `: ${timeFormat(config.maxDuration - params.value[1])} ~ ${timeFormat(config.maxDuration - params.value[2])}`;
+                } else {
+                    range = `: ${trimmedNum(params.value[1])}s~${trimmedNum(params.value[2])}s`
+                }
+                return params.marker + params.name + range;
             }
         },
         title: {
@@ -107,7 +158,10 @@
             scale: true,
             axisLabel: {
                 formatter: function (val) {
-                    return trimmedNum(val) + 's';
+                    if (config.showTimeAsLeft) {
+                        val = config.maxDuration - val;
+                    }
+                    return timeFormat(val);
                 }
             }
         },
@@ -129,7 +183,7 @@
             }
         }
     }
-    function updateEvents(events, config) {
+    function updateEvents(events) {
         events.sort((a, b) => {
             return a.start - b.start;
         });
@@ -145,6 +199,7 @@
             } else if (event.type === 'BB') {
                 delta = event.start - lastAnim;
                 if (delta < 0.6) {
+                    console.log('事件推迟:', lastAnim, event.name, event.start, event.start + 0.6 - delta);
                     delayEvent(event, 0.6 - delta);
                     // 后续主炮发射时间将相应推迟
                     delayFutureEvents(events.slice(i + 1), event, 0.6 - delta)
@@ -173,7 +228,8 @@
     }
 
     window.setChartOption = function (conf) {
-        var { shipChartData: shipData, buffChartData: extraBuffData, config } = conf;
+        var { shipChartData: shipData, buffChartData: extraBuffData } = conf;
+        config = conf.config;
         var events = [];
         var categories = [];
         if (!config.maxDuration) {
@@ -182,7 +238,7 @@
         console.log(shipData);
         shipData = shipData.filter((s) => { return s.type === 'CV' || s.type === 'BB' });
         for (var [index, ship] of shipData.entries()) {
-            for (let ts of loadTimestamps(ship.ts, config)) {
+            for (let ts of loadTimestamps(ship.ts)) {
                 events.push({
                     name: ship.name,
                     type: ship.type,
@@ -196,7 +252,7 @@
             var buffCategory = categories.length;
             categories.push('Buff');
             for (var buff of extraBuffData) {
-                for (let ts of loadTimestamps(buff.ts, config)) {
+                for (let ts of loadTimestamps(buff.ts)) {
                     events.push({
                         name: buff.name,
                         type: buff.type,
@@ -206,7 +262,7 @@
                 }
             }
         }
-        updateEvents(events, config);
+        updateEvents(events);
         console.log('set data', categories, data);
         myChart.setOption({
             series: [{
