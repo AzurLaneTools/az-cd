@@ -11,8 +11,7 @@
 <body>
     <h1>碧蓝航线CD计算器-Alpha</h1>
     <a href="tech.html">科研数据配置</a>
-    <div id="inputs">
-    </div>
+    <div id="inputs"></div>
     <div id="buff"></div>
     <div id="chart" style="width: auto; height: 600px;"></div>
 </body>
@@ -55,7 +54,15 @@
             <br>
         </div>
         `);
-        $('#ship-' + id).children('.type').val(ship.type);
+        var $ship = $('#ship-' + id);
+        $ship.find('.type').val(ship.type);
+        $ship.find('.name').val(ship.name);
+        $ship.find('.cd').val(ship.ts.cd);
+        $ship.find('.offset').val(ship.ts.offset);
+
+        if (ship.type == 'null') {
+            $ship.find('.num-inputs .ship-input').prop('disabled', 'disabled');
+        }
     }
     function updateShipData() {
         data.shipChartData = [];
