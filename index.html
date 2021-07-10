@@ -6,6 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>碧蓝航线CD计算器-Alpha</title>
+    <style>
+        input {
+            width: 80px;
+        }
+
+        input.name {
+            width: 100px;
+        }
+    </style>
 </head>
 
 <body>
@@ -13,6 +22,19 @@
     <button onclick="saveRecord()">保存配置</button>
     <select name="records" id="records" onchange="loadRecord()"></select>
     <button onclick="deleteRecord()">删除配置</button>
+
+    <div id="extra-reload-inc">
+        <label for="tech-inc-bb">舰队科技-战列装填加成</label>
+        <input type="number" name="tech-inc-bb" id="tech-inc-bb" value="0" min="0">
+        <label for="tech-inc-cv">舰队科技-航母装填加成</label>
+        <input type="number" name="tech-inc-cv" id="tech-inc-cv" value="0" min="0">
+        <br>
+        <label for="cat-inc-bb">指挥猫-战列装填加成</label>
+        <input type="number" name="cat-inc-bb" id="cat-inc-bb" value="0" min="0">
+        <label for="cat-inc-cv">指挥猫-航母装填加成</label>
+        <input type="number" name="cat-inc-cv" id="cat-inc-cv" value="0" min="0">
+    </div>
+
     <div id="inputs"></div>
     <div id="buff"></div>
     <div id="time">
@@ -34,7 +56,7 @@
     var data = localStorage.getItem(STORE_KEY);
     if (!data) {
         data = {
-            techData: {},
+            extraReload: {},
             shipChartData: [{ type: 'null', ts: {} }, { type: 'null', ts: {} }, { type: 'null', ts: {} }],
             buffChartData: [],
             config: {
@@ -59,9 +81,18 @@
                 <option value="BB">战列</option>
             </select>
             <span class="num-inputs">
+                <label for="name-${id}">名称</label>
                 <input class="ship-input name" type="text" name="name-${id}" id="name-${id}">
-                <input class="ship-input cd" type="number" name="cd-${id}" id="cd-${id}">
-                <input class="ship-input offset" type="number" name="offset-${id}" id="offset-${id}">
+                <label for="cd-${id}">面标CD</label>
+                <input class="ship-input cd" type="number" name="cd-${id}" id="cd-${id}" min="0" step="any">
+                <label for="reload-${id}">面标装填</label>
+                <input class="ship-input reload" type="number" name="reload-${id}" id="reload-${id}" min="0">
+                <label for="reloadbuff-${id}">额外装填(%)</label>
+                <input class="ship-input reloadbuff" type="number" name="reloadbuff-${id}" id="reloadbuff-${id}" min="0">
+                <label for="firstbuff-${id}">首轮射速加成(%)</label>
+                <input class="ship-input firstbuff" type="number" name="firstbuff-${id}" id="firstbuff-${id}" min="0" max="100">
+                <label for="buff-${id}">射速加成(%)</label>
+                <input class="ship-input buff" type="number" name="buff-${id}" id="buff-${id}" max="100">
             </span>
             <br>
         </div>
@@ -69,8 +100,11 @@
             var $ship = $('#ship-' + id);
             $ship.find('.type').val(ship.type);
             $ship.find('.name').val(ship.name);
+            $ship.find('.reload').val(ship.reload);
             $ship.find('.cd').val(ship.ts.cd);
-            $ship.find('.offset').val(ship.ts.offset);
+            $ship.find('.reloadbuff').val(ship.reloadBuff || 0);
+            $ship.find('.firstbuff').val(ship.ts.firstBuff || 0);
+            $ship.find('.buff').val(ship.ts.buff || 0);
 
             if (ship.type == 'null') {
                 $ship.find('.num-inputs .ship-input').prop('disabled', 'disabled');
@@ -92,11 +126,12 @@
             data.shipChartData.push({
                 name: $(ship).find('.name').val(),
                 type: $(ship).find('.type').val(),
+                reload: $(ship).find('.reload').val(),
+                reloadBuff: $(ship).find('.reloadbuff').val(),
                 ts: {
-                    type: $(ship).find('select.type').val(),
                     cd: parseFloat($(ship).find('input.cd').val()),
-                    offset: parseFloat($(ship).find('input.offset').val()),
-                    duration: 2,
+                    buff: parseInt($(ship).find('input.buff').val()),
+                    firstBuff: parseInt($(ship).find('input.firstbuff').val()),
                 }
             })
         }
@@ -129,6 +164,13 @@
     }
     bindCheckbox(data.config, 'showTimeAsLeft', '#time-inv');
     bindInput(data.config, 'maxDuration', '#max-duration')
+
+    bindInput(data.extraReload, 'tech-BB', '#tech-inc-bb')
+    bindInput(data.extraReload, 'tech-CV', '#tech-inc-cv')
+
+    bindInput(data.extraReload, 'cat-BB', '#cat-inc-bb')
+    bindInput(data.extraReload, 'cat-CV', '#cat-inc-cv')
+
     function updateRecordOptions() {
         var dom = $('#records');
         dom.html('');
