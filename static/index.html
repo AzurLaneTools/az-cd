@@ -6,6 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>碧蓝航线CD计算器-Alpha</title>
+    <style>
+        input {
+            width: 80px;
+        }
+
+        input.name {
+            width: 100px;
+        }
+    </style>
 </head>
 
 <body>
@@ -59,9 +68,14 @@
                 <option value="BB">战列</option>
             </select>
             <span class="num-inputs">
+                <label for="name-${id}">名称</label>
                 <input class="ship-input name" type="text" name="name-${id}" id="name-${id}">
-                <input class="ship-input cd" type="number" name="cd-${id}" id="cd-${id}">
-                <input class="ship-input offset" type="number" name="offset-${id}" id="offset-${id}">
+                <label for="cd-${id}">面标CD</label>
+                <input class="ship-input cd" type="number" name="cd-${id}" id="cd-${id}" min="0" step="any">
+                <label for="firstbuff-${id}">首轮加载Buff(%)</label>
+                <input class="ship-input firstbuff" type="number" name="firstbuff-${id}" id="firstbuff-${id}" min="0" max="100">
+                <label for="buff-${id}">额外Buff(%)</label>
+                <input class="ship-input buff" type="number" name="buff-${id}" id="buff-${id}" max="100">
             </span>
             <br>
         </div>
@@ -70,7 +84,8 @@
             $ship.find('.type').val(ship.type);
             $ship.find('.name').val(ship.name);
             $ship.find('.cd').val(ship.ts.cd);
-            $ship.find('.offset').val(ship.ts.offset);
+            $ship.find('.firstbuff').val(ship.ts.firstBuff || 0);
+            $ship.find('.buff').val(ship.ts.buff || 0);
 
             if (ship.type == 'null') {
                 $ship.find('.num-inputs .ship-input').prop('disabled', 'disabled');
@@ -95,7 +110,8 @@
                 ts: {
                     type: $(ship).find('select.type').val(),
                     cd: parseFloat($(ship).find('input.cd').val()),
-                    offset: parseFloat($(ship).find('input.offset').val()),
+                    buff: parseInt($(ship).find('input.buff').val()),
+                    firstBuff: parseInt($(ship).find('input.firstbuff').val()),
                     duration: 2,
                 }
             })
@@ -129,6 +145,7 @@
     }
     bindCheckbox(data.config, 'showTimeAsLeft', '#time-inv');
     bindInput(data.config, 'maxDuration', '#max-duration')
+
     function updateRecordOptions() {
         var dom = $('#records');
         dom.html('');
