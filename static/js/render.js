@@ -24,10 +24,68 @@
             color: '#e0bc78',
         }
     }
+
+    function getCDMultiplier(reload) {
+        return Math.sqrt(200 / (100 + reload));
+    }
+
+    /**
+     * 
+     * @param {*} ship 
+                name: '',
+                type: '',
+                reload: 100,
+                reloadbuff: 5,
+                ts: {
+                    cd: 20.00,
+                    buff: 10,
+                    firstBuff: 20,
+                }
+     * @param {*} extraReload 
+                {
+                    'tech-BB': 0,
+                    'tech-CV': 0,
+                    'cat-BB': 0,
+                    'cat-CV': 0,
+                }
+     * @returns 
+     */
+    function loadShipTimestamps(ship, extraReload) {
+        let cd = ship.ts.cd, offset, duration;
+        if (!cd || cd < 1) {
+            console.warn('未提供CD或CD太小!');
+            return [];
+        }
+        if (ship.reload && extraReload['cat-' + ship.type]) {
+            // 定义了猫的装填增幅和舰娘装填, 可以重新计算实际CD
+            let reloadBuff = 1 + parseFloat(ship.reloadBuff || 0) / 100;
+            let dispReload = parseFloat(ship.reload) + parseFloat(extraReload['tech-' + ship.type] || 0);
+            let realReload = (dispReload + parseFloat(extraReload['cat-' + ship.type] || 0)) * reloadBuff;
+            console.log(`重新计算CD: ${ship.name} 装填修正 ${dispReload} -> ${realReload}`);
+            cd = cd * getCDMultiplier(realReload) / getCDMultiplier(dispReload);
+        }
+        if (ship.type === 'BB') {
+            offset = 3.2;
+            // 炮击持续时间配置为4s
+            duration = 4;
+        } else if (ship.type === 'CV') {
+            offset = 2;
+            // 空袭持续时间配置为3s
+            duration = 3;
+        } else {
+            offset = 1.5;
+            duration = 2;
+        }
+        cd = cd * (1 - ((ship.ts.buff || 0) / 100));
+        offset += cd * (1 - ((ship.ts.firstBuff || 0) / 100));
+        console.log(`${ship.name} 实际CD: ${cd}`);
+        return loadTimestamps({ type: 'fixed', offset, cd, duration })
+    }
+
     function loadTimestamps(tsData) {
-        var res = [], dt, cd;
+        var res = [];
         if (tsData.type == 'fixed') {
-            dt = tsData.offset;
+            let dt = tsData.offset;
             if (!tsData.cd || tsData.cd < 1) {
                 console.warn('未提供CD或CD太小!');
                 return res;
@@ -39,38 +97,6 @@
                     duration: tsData.duration,
                 })
                 dt += tsData.cd;
-            }
-        } else if (tsData.type == 'BB') {
-            if (!tsData.cd || tsData.cd < 1) {
-                console.warn('未提供CD或CD太小!');
-                return res;
-            }
-            cd = tsData.cd * (1 - ((tsData.buff || 0) / 100));
-            dt = cd * (1 - ((tsData.firstBuff || 0) / 100)) + 3.2;
-            while (dt < config.maxDuration) {
-                res.push({
-                    start: dt,
-                    // 炮击持续时间配置为4s
-                    end: dt + 4,
-                    duration: 4,
-                })
-                dt += cd;
-            }
-        } else if (tsData.type == 'CV') {
-            if (!tsData.cd || tsData.cd < 1) {
-                console.warn('未提供CD或CD太小!');
-                return res;
-            }
-            cd = tsData.cd * (1 - ((tsData.buff || 0) / 100));
-            dt = cd * (1 - ((tsData.firstBuff || 0) / 100)) + 2;
-            while (dt < config.maxDuration) {
-                res.push({
-                    start: dt,
-                    // 空袭持续时间配置为3s
-                    end: dt + 3,
-                    duration: 3,
-                })
-                dt += cd;
             }
         } else if (tsData.type == 'predefined') {
             for (var item of tsData.data) {
@@ -230,7 +256,7 @@
     }
 
     window.setChartOption = function (conf) {
-        var { shipChartData: shipData, buffChartData: extraBuffData } = conf;
+        var { shipChartData: shipData, buffChartData: extraBuffData, extraReload } = conf;
         config = conf.config;
         var events = [];
         var categories = [];
@@ -240,7 +266,7 @@
         console.log(shipData);
         shipData = shipData.filter((s) => { return s.type === 'CV' || s.type === 'BB' });
         for (var [index, ship] of shipData.entries()) {
-            for (let ts of loadTimestamps(ship.ts)) {
+            for (let ts of loadShipTimestamps(ship, extraReload)) {
                 events.push({
                     name: ship.name,
                     type: ship.type,
