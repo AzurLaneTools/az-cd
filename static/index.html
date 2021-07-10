@@ -22,6 +22,7 @@
     <button onclick="saveRecord()">保存配置</button>
     <button onclick="deleteRecord()">删除配置</button>
     <select name="records" id="records" onchange="loadRecord()"></select>
+    <button onclick="resetData()">重置本地缓存</button>
 
     <div id="extra-reload-inc">
         <label for="tech-inc-bb">舰队科技-战列装填加成</label>
@@ -249,9 +250,7 @@
         bindInput(data.extraReload, 'cat-BB', '#cat-inc-bb');
         bindInput(data.extraReload, 'cat-CV', '#cat-inc-cv');
     }
-    try {
-        initAll();
-    } catch (e) {
+    function resetData() {
         console.log("RESET Data");
         data = {
             extraReload: {},
@@ -263,6 +262,11 @@
             records: {},
         };
         saveData(data);
+    }
+    try {
+        initAll();
+    } catch (e) {
+        resetData();
         initAll();
     }
 </script>
