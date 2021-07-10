@@ -20,8 +20,8 @@
 <body>
     <h1>碧蓝航线CD计算器-Alpha</h1>
     <button onclick="saveRecord()">保存配置</button>
-    <select name="records" id="records" onchange="loadRecord()"></select>
     <button onclick="deleteRecord()">删除配置</button>
+    <select name="records" id="records" onchange="loadRecord()"></select>
 
     <div id="extra-reload-inc">
         <label for="tech-inc-bb">舰队科技-战列装填加成</label>
@@ -260,7 +260,7 @@
             config: {
                 maxDuration: 180
             },
-            records: [],
+            records: {},
         };
         saveData(data);
         initAll();
