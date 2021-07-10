@@ -25,7 +25,7 @@
         }
     }
     function loadTimestamps(tsData) {
-        var res = [], dt;
+        var res = [], dt, cd;
         if (tsData.type == 'fixed') {
             dt = tsData.offset;
             if (!tsData.cd || tsData.cd < 1) {
@@ -45,7 +45,8 @@
                 console.warn('未提供CD或CD太小!');
                 return res;
             }
-            dt = tsData.cd * (1 - (tsData.offset || 0)) + 3.2;
+            cd = tsData.cd * (1 - ((tsData.buff || 0) / 100));
+            dt = cd * (1 - ((tsData.firstBuff || 0) / 100)) + 3.2;
             while (dt < config.maxDuration) {
                 res.push({
                     start: dt,
@@ -53,14 +54,15 @@
                     end: dt + 4,
                     duration: 4,
                 })
-                dt += tsData.cd;
+                dt += cd;
             }
         } else if (tsData.type == 'CV') {
             if (!tsData.cd || tsData.cd < 1) {
                 console.warn('未提供CD或CD太小!');
                 return res;
             }
-            dt = tsData.cd * (1 - (tsData.offset || 0)) + 2;
+            cd = tsData.cd * (1 - ((tsData.buff || 0) / 100));
+            dt = cd * (1 - ((tsData.firstBuff || 0) / 100)) + 2;
             while (dt < config.maxDuration) {
                 res.push({
                     start: dt,
@@ -68,7 +70,7 @@
                     end: dt + 3,
                     duration: 3,
                 })
-                dt += tsData.cd;
+                dt += cd;
             }
         } else if (tsData.type == 'predefined') {
             for (var item of tsData.data) {
