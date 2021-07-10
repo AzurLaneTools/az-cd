@@ -10,9 +10,9 @@
 
 <body>
     <h1>碧蓝航线CD计算器-Alpha</h1>
-    <a href="tech.html">科研数据配置</a>
     <button onclick="saveRecord()">保存配置</button>
     <select name="records" id="records" onchange="loadRecord()"></select>
+    <button onclick="deleteRecord()">删除配置</button>
     <div id="inputs"></div>
     <div id="buff"></div>
     <div id="time">
@@ -76,6 +76,7 @@
                 $ship.find('.num-inputs .ship-input').prop('disabled', 'disabled');
             }
         }
+        $('#inputs .ship-input').on('change', updateShipData);
     }
     updateShipDataDom();
 
@@ -102,7 +103,6 @@
         saveData(data);
         window.setChartOption(data);
     }
-    $('.ship-input').on('change', updateShipData);
 
     function bindCheckbox(obj, key, target) {
         var $dom = $(target);
@@ -156,6 +156,15 @@
         $(`#records option[value="${key}"]`).prop('selected', 'selected');
     }
     saveRecord(false);
+    function deleteRecord() {
+        var key = $('#records').val();
+        if (!data.records[key]) {
+            return;
+        }
+        delete data.records[key];
+        saveData(data);
+        updateRecordOptions();
+    }
     function loadRecord() {
         var key = $('#records').val();
         if (!data.records[key]) {
