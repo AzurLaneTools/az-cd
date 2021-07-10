@@ -53,21 +53,7 @@
 <script src="js/render.js"></script>
 <script>
     const STORE_KEY = 'AzurLaneCDTool-CacheData';
-    var data = localStorage.getItem(STORE_KEY);
-    if (!data) {
-        data = {
-            extraReload: {},
-            shipChartData: [{ type: 'null', ts: {} }, { type: 'null', ts: {} }, { type: 'null', ts: {} }],
-            buffChartData: [],
-            config: {
-                maxDuration: 180
-            },
-            records: [],
-        };
-    } else {
-        data = JSON.parse(data);
-    }
-    console.log('LoadData', data);
+    var data;
     function updateShipDataDom() {
         $('#inputs').html('');
         for (var [id, ship] of data.shipChartData.entries()) {
@@ -112,7 +98,6 @@
         }
         $('#inputs .ship-input').on('change', updateShipData);
     }
-    updateShipDataDom();
 
     function updateShipData() {
         console.log('updateShipData');
@@ -162,15 +147,6 @@
             setChartOption(data);
         });
     }
-    bindCheckbox(data.config, 'showTimeAsLeft', '#time-inv');
-    bindInput(data.config, 'maxDuration', '#max-duration')
-
-    bindInput(data.extraReload, 'tech-BB', '#tech-inc-bb')
-    bindInput(data.extraReload, 'tech-CV', '#tech-inc-cv')
-
-    bindInput(data.extraReload, 'cat-BB', '#cat-inc-bb')
-    bindInput(data.extraReload, 'cat-CV', '#cat-inc-cv')
-
     function updateRecordOptions() {
         var dom = $('#records');
         dom.html('');
@@ -179,7 +155,6 @@
             dom.append(`<option value="${allkey}">${allkey}</option>`)
         }
     }
-    updateRecordOptions();
     function saveRecord(save = true) {
         var key = [];
         for (let ship of data.shipChartData) {
@@ -197,7 +172,6 @@
         $('#records option').prop('selected', null);
         $(`#records option[value="${key}"]`).prop('selected', 'selected');
     }
-    saveRecord(false);
     function deleteRecord() {
         var key = $('#records').val();
         if (!data.records[key]) {
@@ -236,7 +210,6 @@
             document.getElementById(item.id).checked = true;
         }
     }
-    loadBuffData();
 
     function updateBuffData(obj) {
         if (obj.checked) {
@@ -258,7 +231,40 @@
         saveData(data);
         window.setChartOption(data);
     }
-    window.setChartOption(data);
+    function initAll() {
+        data = JSON.parse(localStorage.getItem(STORE_KEY));
+        console.log('LoadData', data);
+        updateShipDataDom();
+        updateRecordOptions();
+        saveRecord(false);
+        loadBuffData();
+        window.setChartOption(data);
+
+        bindCheckbox(data.config, 'showTimeAsLeft', '#time-inv');
+        bindInput(data.config, 'maxDuration', '#max-duration');
+
+        bindInput(data.extraReload, 'tech-BB', '#tech-inc-bb');
+        bindInput(data.extraReload, 'tech-CV', '#tech-inc-cv');
+
+        bindInput(data.extraReload, 'cat-BB', '#cat-inc-bb');
+        bindInput(data.extraReload, 'cat-CV', '#cat-inc-cv');
+    }
+    try {
+        initAll();
+    } catch (e) {
+        console.log("RESET Data");
+        data = {
+            extraReload: {},
+            shipChartData: [{ type: 'null', ts: {} }, { type: 'null', ts: {} }, { type: 'null', ts: {} }],
+            buffChartData: [],
+            config: {
+                maxDuration: 180
+            },
+            records: [],
+        };
+        saveData(data);
+        initAll();
+    }
 </script>
 
 </html>
