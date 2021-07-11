@@ -70,6 +70,16 @@
             z-index: 11;
             cursor: default;
         }
+
+        .slot-options label {
+            margin: 10px 10px 10px 10px;
+            display: inline-flex;
+        }
+
+        label.disabled {
+            color: gray;
+
+        }
     </style>
 </head>
 
@@ -170,26 +180,31 @@
         </div>
 
         <div id="cover" class="modal" onclick="finishSelect()">
+            <div style="text-align: center; color: white; font-size: 3em; margin-top: 5%;">点击遮罩层退出</div>
         </div>
         <div id="modal" class="modal">
-            <button class="end-selection" onclick="finishSelect()">确认</button>
-            <button class="slot-option" data-q="input.slot-option.fast" data-set="1">选中调速舰载机</button>
-            <button class="slot-option" data-q="input.slot-option.fast" data-set="0">取消选择调速舰载机</button>
-            <button class="slot-option" data-q="input.slot-option.damage" data-set="1">选中高伤害舰载机</button>
-            <button class="slot-option" data-q="input.slot-option.damage" data-set="0">选中高伤害舰载机</button>
-            <br>
-            <button class="slot-option z" data-q="input.slot-option.z" data-set="1">选中战斗机</button>
-            <button class="slot-option z" data-q="input.slot-option.z" data-set="0">取消选择战斗机</button>
-            <button class="slot-option h" data-q="input.slot-option.h" data-set="1">选中轰炸机</button>
-            <button class="slot-option h" data-q="input.slot-option.h" data-set="0">取消选择轰炸机</button>
-            <button class="slot-option y" data-q="input.slot-option.y.js" data-set="1">选中集束雷</button>
-            <button class="slot-option y" data-q="input.slot-option.y.js" data-set="0">取消选择集束雷</button>
-            <button class="slot-option y" data-q="input.slot-option.y.px" data-set="1">选中平行雷</button>
-            <button class="slot-option y" data-q="input.slot-option.y.px" data-set="0">取消选择平行雷</button>
+            选中:
+            <button class="slot-option" data-q="input.slot-option" data-set="1">全部</button>
+            <button class="slot-option" data-q="input.slot-option.fast" data-set="1">调速舰载机</button>
+            <button class="slot-option" data-q="input.slot-option.damage" data-set="1">高伤害舰载机</button>
+            <button class="slot-option z" data-q="input.slot-option.z" data-set="1">战斗机</button>
+            <button class="slot-option h" data-q="input.slot-option.h" data-set="1">轰炸机</button>
+            <button class="slot-option y" data-q="input.slot-option.y.js" data-set="1">集束雷</button>
+            <button class="slot-option y" data-q="input.slot-option.y.px" data-set="1">平行雷</button>
+            <br><br>
+            取消:
+            <button class="slot-option" data-q="input.slot-option" data-set="0">全部</button>
+            <button class="slot-option" data-q="input.slot-option.fast" data-set="0">调速舰载机</button>
+            <button class="slot-option" data-q="input.slot-option.damage" data-set="0">高伤害舰载机</button>
+            <button class="slot-option z" data-q="input.slot-option.z" data-set="0">战斗机</button>
+            <button class="slot-option h" data-q="input.slot-option.h" data-set="0">轰炸机</button>
+            <button class="slot-option y" data-q="input.slot-option.y.js" data-set="0">集束雷</button>
+            <button class="slot-option y" data-q="input.slot-option.y.px" data-set="0">平行雷</button>
+            <br><br>
             <div class="slot-options">
-                <div class="slot-option z"></div>
-                <div class="slot-option h"></div>
-                <div class="slot-option y"></div>
+                <div class="slot-option z"></div><br>
+                <div class="slot-option h"></div><br>
+                <div class="slot-option y"></div><br>
             </div>
         </div>
     </div>
@@ -241,8 +256,10 @@
         for (let key of ['z', 'h', 'y']) {
             if (!slot[key]) {
                 $('.slot-option.' + key).prop('disabled', true);
+                $('.slot-option.' + key).addClass('disabled');
             } else {
                 $('.slot-option.' + key).prop('disabled', null);
+                $('.slot-option.' + key).removeClass('disabled');
             }
         }
         $('#modal button').on('click', (evt) => {
@@ -341,15 +358,18 @@
                 comCnt = comCnt * slot.options.length;
             }
         }
-        console.log('总选项数量', comCnt);
+        $res.append(`总选项数量${comCnt}`);
         if (comCnt < 500) {
             // 不限制CD
             minCD = 0;
             maxCD = 100;
-            $res.append(`总选项数量较少(${comCnt}), 将忽略CD限制.<br>`);
-        } else if (!minCD || !maxCD || maxCD <= minCD || maxCD - minCD > 10) {
-            $res.append('请给出合理的目标CD范围!');
-            return;
+            $res.append(', 将忽略CD限制.<br>');
+        } else {
+            $res.append('.<br>');
+            if (!minCD || !maxCD || maxCD <= minCD || maxCD - minCD > 10) {
+                $res.append('请给出合理的目标CD范围!');
+                return;
+            }
         }
         // 计算目标CD对应的舰载机原始CD
         // 实际CD = (装填加成 * 原始CD * 2.2) * 射速加成 + 前后摇
@@ -503,7 +523,7 @@
                 if (aircraft.cd < 10) {
                     cls.push('fast')
                 }
-                target.append(`<label>${aircraft.name}<input data-cd="${aircraft.cd}" data-type="${key}" class="${cls.join(' ')}" name="${aircraft.name}" type="checkbox"></label>`)
+                target.append(`<label class="${cls.join(' ')}">${aircraft.name}<input data-cd="${aircraft.cd}" data-type="${key}" class="${cls.join(' ')}" name="${aircraft.name}" type="checkbox"></label>`)
             }
         }
         let $dom = $('#ship-name');
