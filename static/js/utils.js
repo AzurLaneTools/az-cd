@@ -199,14 +199,23 @@ function buildOption(record) {
     for (let buff of record.buffs) {
         let ts;
         if (buff.type === 'fixed') {
+            if (!buff.cd || !buff.duration) {
+                continue;
+            }
             ts = { ...buff };
             if (isNaN(parseFloat(ts.offset))) {
                 ts.offset = ts.cd;
             }
         } else {
-            ts = {
-                type: 'predefined'
+            if (!buff.data) {
+                continue;
             }
+            let items = buff.data.split(',').map(parseFloat);
+            let data = [];
+            for (let i = 0; i < items.length; i += 2) {
+                data.push([items[i], items[i + 1]]);
+            }
+            ts = { type: 'predefined', data }
         }
         eventBuilders.push({
             name: buff.name,
