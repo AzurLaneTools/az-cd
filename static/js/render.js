@@ -14,7 +14,7 @@
         var categoryIndex = api.value(0);
         var start = api.coord([api.value(1), categoryIndex]);
         var end = api.coord([api.value(2), categoryIndex]);
-        var height = api.size([0, 1])[1] * 0.5;
+        var height = api.size([0, 1])[1] * 0.8;
 
         var rectShape = echarts.graphic.clipRectByRect({
             x: start[0],
