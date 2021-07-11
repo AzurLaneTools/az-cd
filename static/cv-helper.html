@@ -46,7 +46,7 @@
         }
 
         #cover {
-            position: absolute;
+            position: fixed;
             left: 0px;
             top: 0px;
             background: rgba(0, 0, 0, 0.4);
@@ -58,13 +58,15 @@
         }
 
         #modal {
-            position: relative;
-            width: 90%;
+            position: fixed;
+            left: 10%;
+            width: 80%;
             top: 20%;
             height: 50%;
-            margin: auto;
+            margin: 20px 20px 20px 20px;
+            padding: 20px 20px 20px 20px;
             background-color: #fff;
-            /* display: none; */
+            display: none;
             z-index: 11;
             cursor: default;
         }
@@ -167,27 +169,27 @@
             <br>
         </div>
 
-        <div id="cover">
-            <div id="modal">
-                <button class="end-selection" onclick="finishSelect()">确认</button>
-                <button class="slot-option" data-q="input.slot-option.fast" data-set="1">选中调速舰载机</button>
-                <button class="slot-option" data-q="input.slot-option.fast" data-set="0">取消选择调速舰载机</button>
-                <button class="slot-option" data-q="input.slot-option.damage" data-set="1">选中高伤害舰载机</button>
-                <button class="slot-option" data-q="input.slot-option.damage" data-set="0">选中高伤害舰载机</button>
-                <br>
-                <button class="slot-option z" data-q="input.slot-option.z" data-set="1">选中战斗机</button>
-                <button class="slot-option z" data-q="input.slot-option.z" data-set="0">取消选择战斗机</button>
-                <button class="slot-option h" data-q="input.slot-option.h" data-set="1">选中轰炸机</button>
-                <button class="slot-option h" data-q="input.slot-option.h" data-set="0">取消选择轰炸机</button>
-                <button class="slot-option y" data-q="input.slot-option.y.js" data-set="1">选中集束雷</button>
-                <button class="slot-option y" data-q="input.slot-option.y.js" data-set="0">取消选择集束雷</button>
-                <button class="slot-option y" data-q="input.slot-option.y.px" data-set="1">选中平行雷</button>
-                <button class="slot-option y" data-q="input.slot-option.y.px" data-set="0">取消选择平行雷</button>
-                <div class="slot-options">
-                    <div class="slot-option z"></div>
-                    <div class="slot-option h"></div>
-                    <div class="slot-option y"></div>
-                </div>
+        <div id="cover" class="modal" onclick="finishSelect()">
+        </div>
+        <div id="modal" class="modal">
+            <button class="end-selection" onclick="finishSelect()">确认</button>
+            <button class="slot-option" data-q="input.slot-option.fast" data-set="1">选中调速舰载机</button>
+            <button class="slot-option" data-q="input.slot-option.fast" data-set="0">取消选择调速舰载机</button>
+            <button class="slot-option" data-q="input.slot-option.damage" data-set="1">选中高伤害舰载机</button>
+            <button class="slot-option" data-q="input.slot-option.damage" data-set="0">选中高伤害舰载机</button>
+            <br>
+            <button class="slot-option z" data-q="input.slot-option.z" data-set="1">选中战斗机</button>
+            <button class="slot-option z" data-q="input.slot-option.z" data-set="0">取消选择战斗机</button>
+            <button class="slot-option h" data-q="input.slot-option.h" data-set="1">选中轰炸机</button>
+            <button class="slot-option h" data-q="input.slot-option.h" data-set="0">取消选择轰炸机</button>
+            <button class="slot-option y" data-q="input.slot-option.y.js" data-set="1">选中集束雷</button>
+            <button class="slot-option y" data-q="input.slot-option.y.js" data-set="0">取消选择集束雷</button>
+            <button class="slot-option y" data-q="input.slot-option.y.px" data-set="1">选中平行雷</button>
+            <button class="slot-option y" data-q="input.slot-option.y.px" data-set="0">取消选择平行雷</button>
+            <div class="slot-options">
+                <div class="slot-option z"></div>
+                <div class="slot-option h"></div>
+                <div class="slot-option y"></div>
             </div>
         </div>
     </div>
@@ -228,7 +230,7 @@
         let slot = data.ship.slots[idx];
         targetSlot = idx;
         if (slot.options) {
-            $('#cover input').each((idx, val) => {
+            $('#modal input').each((idx, val) => {
                 let $val = $(val);
                 val.checked = false;
             });
@@ -250,13 +252,13 @@
                 val.checked = set;
             });
         })
-        $('#cover').show();
+        $('.modal').show();
     }
     function finishSelect() {
-        $('#cover').hide();
+        $('.modal').hide();
         let slot = data.ship.slots[targetSlot];
         slot.options = [];
-        $('#cover input[type=checkbox]').not('[disabled]').each((idx, val) => {
+        $('#modal input[type=checkbox]').not('[disabled]').each((idx, val) => {
             if (!val.checked) {
                 return
             }
