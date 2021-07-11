@@ -200,7 +200,7 @@ function buildOption(record) {
         let ts;
         if (buff.type === 'fixed') {
             ts = { ...buff };
-            if (!ts.offset) {
+            if (isNaN(parseFloat(ts.offset))) {
                 ts.offset = ts.cd;
             }
         } else {
