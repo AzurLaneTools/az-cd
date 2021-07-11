@@ -37,7 +37,7 @@
     <button onclick="copyRecord()">复制配置</button>
     <button id="delete-record" onclick="deleteCurrentRecord()">删除当前配置</button>
     <select name="records" id="records" onchange="loadRecord()"></select>
-    <button onclick="resetData()">重置本地缓存</button>
+    <button onclick="resetData(); initAll();">重置本地缓存</button>
 
     <hr>
     <div id="extra-reload-inc">
@@ -248,7 +248,6 @@
         };
         data.records.push(data.current);
         saveData();
-        initAll();
     }
     window.addEventListener('beforeunload', saveData);
 
@@ -483,6 +482,9 @@
     }
     function initAll() {
         let storeData = JSON.parse(localStorage.getItem(STORE_KEY));
+        if (!storeData) {
+            resetData();
+        }
         data = { records: storeData.records, current: storeData.records[storeData.current] }
         if (!data.current) {
             data.current = data.records[0];
@@ -526,7 +528,6 @@
 
         updateChartOption();
     }
-
     initAll();
 </script>
 
