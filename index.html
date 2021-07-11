@@ -14,187 +14,426 @@
         input.name {
             width: 100px;
         }
+
+        div.layer {
+            display: inline-block;
+        }
     </style>
 </head>
 
 <body>
     <h1>碧蓝航线CD计算器-Alpha</h1>
-    <button onclick="saveRecord()">保存配置</button>
-    <button onclick="deleteRecord()">删除配置</button>
+    <label>
+        配置名称
+        <input type="text" id="record-name">
+    </label>
+    <button onclick="addRecord()">新增配置</button>
+    <button onclick="copyRecord()">复制配置</button>
+    <button id="delete-record" onclick="deleteCurrentRecord()">删除当前配置</button>
     <select name="records" id="records" onchange="loadRecord()"></select>
     <button onclick="resetData()">重置本地缓存</button>
 
+    <hr>
     <div id="extra-reload-inc">
-        <label for="tech-inc-bb">舰队科技-战列装填加成</label>
-        <input type="number" name="tech-inc-bb" id="tech-inc-bb" value="0" min="0">
-        <label for="tech-inc-cv">舰队科技-航母装填加成</label>
-        <input type="number" name="tech-inc-cv" id="tech-inc-cv" value="0" min="0">
+        战列
+        <label>
+            命中延迟
+            <input type="number" name="offset-bb" id="offset-bb" value="0" min="0">
+        </label>
+        <label>
+            攻击持续时间
+            <input type="number" name="duration-bb" id="duration-bb" value="1" min="1">
+        </label>
+        装填加成:
+        <label>
+            舰队科技
+            <input type="number" class="affect-cd" name="tech-inc-bb" id="tech-inc-bb" value="0" min="0">
+        </label>
+        <label>
+            指挥猫
+            <input type="number" class="affect-cd" name="cat-inc-bb" id="cat-inc-bb" value="0" min="0">
+        </label>
         <br>
-        <label for="cat-inc-bb">指挥猫-战列装填加成</label>
-        <input type="number" name="cat-inc-bb" id="cat-inc-bb" value="0" min="0">
-        <label for="cat-inc-cv">指挥猫-航母装填加成</label>
-        <input type="number" name="cat-inc-cv" id="cat-inc-cv" value="0" min="0">
+        航母
+        <label>
+            命中延迟
+            <input type="number" name="offset-cv" id="offset-cv" value="0" min="0">
+        </label>
+        <label>
+            攻击持续时间
+            <input type="number" name="duration-cv" id="duration-cv" value="1" min="1">
+        </label>
+        装填加成:
+        <label>
+            舰队科技
+            <input type="number" class="affect-cd" name="tech-inc-cv" id="tech-inc-cv" value="0" min="0">
+        </label>
+        <label>
+            指挥猫
+            <input type="number" class="affect-cd" name="cat-inc-cv" id="cat-inc-cv" value="0" min="0">
+        </label>
+        <br>
+        <label>
+            公共进图延迟
+            <input type="number" name="offset-all" id="offset-all" value="0" min="0">
+        </label>
+    </div>
+    <hr>
+    <div id="ships"></div>
+    <button onclick="addShip()">添加舰娘</button>
+    <hr>
+    Buff列表:<br>
+    <div id="buff-list"></div>
+    <br>
+    <button onclick="addBuff()">添加对轴项</button>
+    (常用选项:
+    <button onclick="addBuff({name: '海伦娜新轴', type: 'fixed', duration: 10, cd: 20, offset: 16})">海伦娜新轴</button>
+    <button onclick="addBuff({name: '海伦娜旧轴', type: 'fixed', duration: 10, cd: 20})">海伦娜旧轴</button>
+    )
+    <hr>
+    <div id="time">
+        <label>
+            战斗时间
+            <input type="number" name="max-duration" id="max-duration">
+            s
+        </label>
+        &nbsp;
+        <label>
+            按剩余时间显示
+            <input type="checkbox" name="time-inv" id="time-inv">
+        </label>
     </div>
 
-    <div id="inputs"></div>
-    <div id="buff"></div>
-    <div id="time">
-        <label for="max-duration">战斗时间</label>
-        <input type="number" name="max-duration" id="max-duration">s
-        &nbsp;
-        <label for="time-inv">按剩余时间显示</label>
-        <input type="checkbox" name="time-inv" id="time-inv">
-    </div>
-    <div id="chart" style="width: auto; height: 600px;"></div>
+    <div id="chart" style="width: 100%; height: 600px;"></div>
+    <!-- 模板开始 -->
+    <template id="ship-input-form-template">
+        <div class="shipinfo">
+            <select class="ship-input type" name="type">
+                <option value="BB" select>战列</option>
+                <option value="CV">航母</option>
+            </select>
+            <label>
+                名称
+                <input class="ship-input name" type="text" name="name">
+            </label>
+            <label>
+                面标CD
+                <input class="ship-input cd affect-cd" type="number" name="cd" min="0" step="any">
+            </label>
+            实际CD: <span class="real-cd"></span>
+            <br>
+            <label>
+                首轮射速加成
+                <input class="ship-input firstbuff" type="number" name="firstCDBuff" min="0" max="100">%
+            </label>
+            <label>
+                射速加成
+                <input class="ship-input buff affect-cd" type="number" name="CDBuff" max="100">%
+            </label>
+            <label>
+                额外装填
+                <input class="ship-input reloadbuff affect-cd" type="number" name="reloadBuff" min="0">%
+            </label>
+            <label>
+                面标装填(含装备)
+                <input class="ship-input reload affect-cd" type="number" name="reload" min="0">
+            </label>
+            <br>
+            <button class="up">上移</button>
+            <button class="remove-ship">删除舰娘</button>
+            <button class="add-bind-skill">添加绑定技能</button>
+            <div class="layer bind-skills"></div>
+            <br>
+            <br>
+        </div>
+    </template>
+    <template id="bind-skill-template">
+        <div class="layer">
+            <input type="text" name="skillName" required placeholder="名称" />:
+            <input type="number" name="offset" required placeholder="延迟" />,
+            <input type="number" name="duration" required placeholder="持续" />
+            <button class="remove-skill">删除</button>
+            &nbsp;&nbsp;
+        </div>
+    </template>
+    <template id="buff-item-template">
+        <div class="buff-item">
+            <label>
+                名称
+                <input type="text" name="name">
+            </label>
+            <label>
+                类型
+                <select name="type">
+                    <option value="fixed">周期性</option>
+                    <option value="defined">预定义</option>
+                </select>
+            </label>
+            <div class="layer buff fixed">
+                <label>
+                    CD
+                    <input type="number" min="0" step="any" name="cd">
+                </label>
+                <label>
+                    持续时间
+                    <input type="number" min="0" step="any" name="duration">
+                </label>
+                <label>
+                    首轮CD
+                    <input type="number" min="0" step="any" name="offset">
+                </label>
+            </div>
+            <div class="layer buff defined">
+                <input name="data" style="min-width: 200px" placeholder="请输入 start,end,start,end 格式的时间记录"></textarea>
+            </div>
+            <button class="remove">删除</button>
+        </div>
+    </template>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"
     integrity="sha256-TI0rIaxop+pDlHNVI6kDCFvmpxNYUnVH/SMjknZ/W0Y=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="js/render.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/cd.js"></script>
 <script>
     const STORE_KEY = 'AzurLaneCDTool-CacheData';
     var data;
-    function updateShipDataDom() {
-        $('#inputs').html('');
-        for (var [id, ship] of data.shipChartData.entries()) {
-            console.log(id, ship)
-            ship.id = `ship-${id}`;
-            $('#inputs').append(`
-        <div id="ship-${id}" class="shipinfo">
-            <select class="ship-input type" name="type-${id}" id="type-${id}">
-                <option value="null">无</option>
-                <option value="CV">航母</option>
-                <option value="BB">战列</option>
-            </select>
-            <span class="num-inputs">
-                <label for="name-${id}">名称</label>
-                <input class="ship-input name" type="text" name="name-${id}" id="name-${id}">
-                <label for="cd-${id}">面标CD</label>
-                <input class="ship-input cd" type="number" name="cd-${id}" id="cd-${id}" min="0" step="any">
-                <label for="reload-${id}">面标装填</label>
-                <input class="ship-input reload" type="number" name="reload-${id}" id="reload-${id}" min="0">
-                <label for="reloadbuff-${id}">额外装填(%)</label>
-                <input class="ship-input reloadbuff" type="number" name="reloadbuff-${id}" id="reloadbuff-${id}" min="0">
-                <label for="firstbuff-${id}">首轮射速加成(%)</label>
-                <input class="ship-input firstbuff" type="number" name="firstbuff-${id}" id="firstbuff-${id}" min="0" max="100">
-                <label for="buff-${id}">射速加成(%)</label>
-                <input class="ship-input buff" type="number" name="buff-${id}" id="buff-${id}" max="100">
-            </span>
-            <br>
-        </div>
-        `);
-            var $ship = $('#ship-' + id);
-            $ship.find('.type').val(ship.type);
-            $ship.find('.name').val(ship.name);
-            $ship.find('.reload').val(ship.reload);
-            $ship.find('.cd').val(ship.ts.cd);
-            $ship.find('.reloadbuff').val(ship.reloadBuff || 0);
-            $ship.find('.firstbuff').val(ship.ts.firstBuff || 0);
-            $ship.find('.buff').val(ship.ts.buff || 0);
-
-            if (ship.type == 'null') {
-                $ship.find('.num-inputs .ship-input').prop('disabled', 'disabled');
-            }
+    function saveData() {
+        let storeData = {
+            current: data.records.indexOf(data.current),
+            records: data.records,
         }
-        $('#inputs .ship-input').on('change', updateShipData);
+        localStorage.setItem(STORE_KEY, JSON.stringify(storeData));
     }
-
-    function updateShipData() {
-        console.log('updateShipData');
-        data.shipChartData = [];
-        for (var ship of $('.shipinfo')) {
-            if ($(ship).find('.type').val() == 'null') {
-                $(ship).find('.num-inputs .ship-input').prop('disabled', 'disabled');
-            } else {
-                $(ship).find('.num-inputs .ship-input').prop('disabled', null);
-            }
-            data.shipChartData.push({
-                name: $(ship).find('.name').val(),
-                type: $(ship).find('.type').val(),
-                reload: $(ship).find('.reload').val(),
-                reloadBuff: $(ship).find('.reloadbuff').val(),
-                ts: {
-                    cd: parseFloat($(ship).find('input.cd').val()),
-                    buff: parseInt($(ship).find('input.buff').val()),
-                    firstBuff: parseInt($(ship).find('input.firstbuff').val()),
+    function initRecord() {
+        return {
+            name: '未命名配置',
+            reload: {
+                tech: {
+                    BB: 0,
+                    CV: 0,
+                },
+                cat: {
+                    BB: 0,
+                    CV: 0,
                 }
-            })
+            },
+            ships: [],
+            buffs: [],
+            config: {
+                maxDuration: 180,
+                offset: {
+                    ALL: 1.5,
+                    CV: 1,
+                    BB: 1.6,
+                },
+                duration: {
+                    CV: 3,
+                    BB: 4,
+                },
+            },
+        };
+    }
+    function resetData() {
+        console.log("RESET Data");
+        data = {
+            current: initRecord(),
+            records: [],
+        };
+        data.records.push(data.current);
+        saveData();
+    }
+    window.addEventListener('beforeunload', saveData);
+
+    function addBindSkillDom(parentDom, skillList, ref) {
+        let info = ref.info;
+        var node = getTemplate('bind-skill-template');
+        let $node = $(node);
+        for (let name of ['skillName', 'duration', 'offset']) {
+            bindInput(info, name, $node.find(`[name=${name}]`));
         }
-        saveData(data);
-        window.setChartOption(data);
+        $node.find('.remove-skill').click(() => {
+            $node.remove();
+            let idx = skillList.indexOf(info);
+            skillList.splice(idx, 1);
+            updateChartOption();
+        });
+        parentDom.appendChild(node);
+    }
+    function addBindSkill(parentDom, skillList) {
+        let info = { skillName: '', duration: null, offset: null };
+        skillList.push(info);
+        addBindSkillDom(parentDom, skillList, { info });
+        updateChartOption();
     }
 
-    function bindCheckbox(obj, key, target) {
-        var $dom = $(target);
-        if (obj[key]) {
-            $dom.prop('checked', 'checked');
-        } else {
-            $dom.prop('checked', null);
+    function addShipDom(ref) {
+        let info = ref.info;
+        let arr = data.current.ships;
+        var node = getTemplate('ship-input-form-template');
+        let $node = $(node);
+        if (arr.indexOf(info) === 0) {
+            $node.find('button.up').prop('disabled', true);
         }
-        $dom.on('change', (evt) => {
-            obj[key] = evt.target.checked;
-            saveData(data);
-            setChartOption(data);
+        $node.find('button.up').on('click', () => {
+            let idx = arr.indexOf(info);
+            let tmp = arr[idx - 1];
+            arr[idx - 1] = info;
+            arr[idx] = tmp;
+            $node.prev().insertAfter($node);
+            if (idx === 1) {
+                // 将第二个舰船移动为第一个, 需要更新上移按钮状态.
+                console.log('更新 disabled')
+                $('button.up').prop('disabled', null);
+                $('button.up').eq(0).prop('disabled', true);
+            }
+            updateChartOption();
         });
-    }
-    function bindInput(obj, key, target) {
-        var $dom = $(target);
-        $dom.val(obj[key]);
-        $dom.on('change', (evt) => {
-            console.log('on change', $dom, $dom.val())
-            obj[key] = $dom.val();
-            saveData(data);
-            setChartOption(data);
+        $node.find('button.remove-ship').on('click', () => {
+            console.log('Remove', node);
+            $(node).remove();
+            let idx = arr.indexOf(info);
+            arr.splice(idx, 1);
+            updateChartOption();
         });
+        $node.find('button.add-bind-skill').on('click', () => {
+            console.log('添加绑定技能');
+            addBindSkill(node.querySelector('div.bind-skills'), info.bindSkills);
+        });
+        for (let skill of info.bindSkills) {
+            addBindSkillDom(node.querySelector('div.bind-skills'), info.bindSkills, { info: skill });
+        }
+        function updateRealCD() {
+            info.realCD = getRealCD(data.current.reload, info);
+            console.log('updateRealCD', info.name, info.realCD)
+            $node.find('.real-cd').text(trimmedNum(info.realCD));
+            updateChartOption();
+        }
+        for (let name of ['type', 'name', 'cd', 'reload', 'reloadBuff', 'CDBuff', 'firstCDBuff']) {
+            bindInput(info, name, $node.find(`[name=${name}]`));
+        }
+        updateRealCD();
+        console.log('bind updateRealCD', $('#extra-reload-inc .affect-cd'));
+        $('#extra-reload-inc .affect-cd').on('change', updateRealCD);
+        $node.find('.affect-cd').on('change', updateRealCD);
+        info.node = node;
+        $('#ships')[0].appendChild(node);
     }
-    function updateRecordOptions() {
+    function addShip(info) {
+        if (!info) {
+            info = {
+                name: '',
+                type: 'BB',
+                reload: null,
+                cd: null,
+                firstCDBuff: 0,
+                CDBuff: 0,
+                reloadBuff: 0,
+                bindSkills: [],
+            };
+        }
+        data.current.ships.push(info);
+        addShipDom({ info });
+        updateChartOption();
+    }
+    function addBuffDom(info) {
+        let node = getTemplate('buff-item-template');
+        $('#buff-list')[0].appendChild(node);
+        let $node = $(node);
+        $node.find('button.remove').on('click', () => {
+            let arr = data.current.buffs;
+            console.log('Remove', node);
+            $node.remove();
+            let idx = arr.indexOf(info);
+            arr.splice(idx, 1);
+            updateChartOption();
+        });
+        for (let name of ['type', 'name', 'cd', 'duration', 'offset', 'data']) {
+            bindInput(info, name, $node.find(`[name=${name}]`));
+        }
+        let $type = $node.find('[name=type]');
+        function updateDisplay() {
+            console.log('updateDisplay', $type)
+            console.log($node.find('div.buff'));
+            $node.find('div.buff').hide();
+            $node.find('div.buff.' + $type.val()).show();
+        }
+        $type.on('change', updateDisplay);
+        updateDisplay();
+        updateChartOption();
+    }
+    function addBuff(info) {
+        if (!info) {
+            info = {
+                name: '',
+                type: 'fixed',
+                duration: null,
+                cd: null,
+                offset: null,
+            }
+        }
+        data.current.buffs.push(info);
+        addBuffDom(info);
+    }
+    function moveShip(ref) {
+        let info = ref.info;
+        let arr = data.current.ships;
+        let idx = arr.indexOf(info);
+        let tmp = arr[idx - 1];
+        arr[idx - 1] = info;
+        arr[idx] = tmp;
+        let $node = $(info.node);
+        $node.prev().insertAfter($node);
+    }
+    function initRecordOptions() {
         var dom = $('#records');
         dom.html('');
-        var selected;
-        for (var allkey in data.records) {
-            dom.append(`<option value="${allkey}">${allkey}</option>`)
+        for (let [idx, rec] of data.records.entries()) {
+            dom.append(`<option value="${idx}">${rec.name}</option>`)
         }
+        dom.val(data.records.indexOf(data.current));
     }
-    function saveRecord(save = true) {
-        var key = [];
-        for (let ship of data.shipChartData) {
-            if (ship.type != 'null') {
-                key.push(ship.name);
-            }
+    function addRecord(info) {
+        if (!info) {
+            info = initRecord();
         }
-        key = key.join(',');
-        console.log('saved', key);
-        if (save) {
-            data.records[key] = data.shipChartData;
-            saveData(data);
-        }
-        updateRecordOptions();
-        $('#records option').prop('selected', null);
-        $(`#records option[value="${key}"]`).prop('selected', 'selected');
+        data.current = info;
+        data.records.push(info);
+        // 保存并重新加载
+        saveData();
+        initAll();
     }
-    function deleteRecord() {
-        var key = $('#records').val();
-        if (!data.records[key]) {
-            return;
-        }
-        delete data.records[key];
-        saveData(data);
-        updateRecordOptions();
+    function copyRecord() {
+        let info = JSON.parse(JSON.stringify(data.current));
+        info.name += ' copy';
+        addRecord(info);
+    }
+    function deleteCurrentRecord() {
+        let idx = data.records.indexOf(data.current);
+        data.records.splice(idx, 1);
+        data.current = data.records[0];
+        // 保存并重新加载
+        saveData();
+        initAll()
     }
     function loadRecord() {
         var key = $('#records').val();
         if (!data.records[key]) {
             return;
         }
-        data.shipChartData = data.records[key];
-        saveData(data);
-        setChartOption(data);
-        updateShipDataDom();
+        data.current = data.records[key];
+        saveData();
+        initAll();
     }
 
-    function saveData(data) {
-        localStorage.setItem(STORE_KEY, JSON.stringify(data));
+    function updateChartOption() {
+        let option = {
+            config: {}
+        };
+        console.log('updateChartOption');
+        buildOption(data.current);
     }
     var buffData = {};
     async function loadBuffData() {
@@ -202,10 +441,14 @@
         buffData = await resp.json();
         var buffDom = document.getElementById('buff');
         for (var key in buffData) {
+            addBuffLabel(buffData[key]);
             var item = buffData[key];
             item.id = key;
-            buffDom.innerHTML += `<label for="${key}">${item.name}</label>`;
-            buffDom.innerHTML += `<input type="checkbox" name="${key}" id="${key}" onchange="updateBuffData(this)" />`;
+            buffDom.innerHTML += `
+            <label>
+                ${item.name}
+                <input type="checkbox" name="${key}" id="${key}" onchange="updateBuffData(this)" />
+            </label>`;
         }
         for (var item of data.buffChartData) {
             document.getElementById(item.id).checked = true;
@@ -229,46 +472,56 @@
                 data.buffChartData.push(buffData[key]);
             }
         }
-        saveData(data);
-        window.setChartOption(data);
+        saveData();
+        updateChartOption();
     }
     function initAll() {
-        data = JSON.parse(localStorage.getItem(STORE_KEY));
+        let storeData = JSON.parse(localStorage.getItem(STORE_KEY));
+        data = { records: storeData.records, current: storeData.records[storeData.current] }
+        if (!data.current) {
+            data.current = data.records[0];
+        }
+        if (!data.current) {
+            resetData();
+        }
         console.log('LoadData', data);
-        updateShipDataDom();
-        updateRecordOptions();
-        saveRecord(false);
-        loadBuffData();
-        window.setChartOption(data);
+        // 删除当前绑定的事件
+        $('input, select, button').off();
+        bindInput(data.current, 'name', '#record-name', initRecordOptions);
+        initRecordOptions();
 
-        bindCheckbox(data.config, 'showTimeAsLeft', '#time-inv');
-        bindInput(data.config, 'maxDuration', '#max-duration');
+        bindCheckbox(data.current.config, 'showTimeAsLeft', '#time-inv');
+        bindInput(data.current.config, 'maxDuration', '#max-duration');
 
-        bindInput(data.extraReload, 'tech-BB', '#tech-inc-bb');
-        bindInput(data.extraReload, 'tech-CV', '#tech-inc-cv');
+        bindInput(data.current.reload.tech, 'BB', '#tech-inc-bb');
+        bindInput(data.current.reload.tech, 'CV', '#tech-inc-cv');
+        bindInput(data.current.reload.cat, 'BB', '#cat-inc-bb');
+        bindInput(data.current.reload.cat, 'CV', '#cat-inc-cv');
 
-        bindInput(data.extraReload, 'cat-BB', '#cat-inc-bb');
-        bindInput(data.extraReload, 'cat-CV', '#cat-inc-cv');
+        bindInput(data.current.config.offset, 'ALL', '#offset-all');
+        bindInput(data.current.config.offset, 'BB', '#offset-bb');
+        bindInput(data.current.config.offset, 'CV', '#offset-cv');
+        bindInput(data.current.config.duration, 'BB', '#duration-bb');
+        bindInput(data.current.config.duration, 'CV', '#duration-cv');
+        $('#ships').html('');
+        for (let ship of data.current.ships) {
+            addShipDom({ info: ship });
+        }
+        $('#buff-list').html('');
+        for (let buff of data.current.buffs) {
+            addBuffDom(buff);
+        }
+
+        if (data.records.length === 1) {
+            $('#delete-record').attr('disabled', true);
+        } else {
+            $('#delete-record').attr('disabled', null);
+        }
+
+        updateChartOption();
     }
-    function resetData() {
-        console.log("RESET Data");
-        data = {
-            extraReload: {},
-            shipChartData: [{ type: 'null', ts: {} }, { type: 'null', ts: {} }, { type: 'null', ts: {} }],
-            buffChartData: [],
-            config: {
-                maxDuration: 180
-            },
-            records: {},
-        };
-        saveData(data);
-    }
-    try {
-        initAll();
-    } catch (e) {
-        resetData();
-        initAll();
-    }
+
+    initAll();
 </script>
 
 </html>
