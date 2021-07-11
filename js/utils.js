@@ -3,7 +3,7 @@ function getTemplate(name) {
     return template.content.cloneNode(true).firstElementChild;
 }
 
-function bindCheckbox(obj, key, target) {
+function bindCheckbox(obj, key, target, cb) {
     var $dom = $(target);
     if (obj[key]) {
         $dom.prop('checked', true);
@@ -14,7 +14,7 @@ function bindCheckbox(obj, key, target) {
     $dom.off('change');
     $dom.on('change', (evt) => {
         obj[key] = evt.target.checked;
-        updateChartOption();
+        if (cb) { cb(evt) };
     });
 }
 function makeNumberFormatter(dom) {
@@ -35,28 +35,31 @@ function makeNumberFormatter(dom) {
     }
 }
 function bindInput(info, key, dom, cb) {
-    dom = $(dom);
-    console.log('bindInput', info, key, dom, cb);
-    dom.val(info[key]);
+    let $dom = $(dom);
+    if(!$dom[0]){
+        console.warn('未找到待绑定元素', dom);
+    }
+    console.log('bindInput', info, key, dom, $dom, cb);
+    $dom.val(info[key]);
     let conf = {
         parse: null,
         formatter: null,
     }
-    if (dom.attr('data-formatter')) {
-        conf.formatter = window[dom.attr('data-formatter')];
+    if ($dom.attr('data-formatter')) {
+        conf.formatter = window[$dom.attr('data-formatter')];
     }
-    if (dom.attr('type') === 'number') {
+    if ($dom.attr('type') === 'number') {
         conf.parse = parseFloat;
         if (!conf.formatter) {
-            conf.formatter = makeNumberFormatter(dom);
+            conf.formatter = makeNumberFormatter($dom);
         };
     }
-    dom.on('change', (evt) => {
-        console.log('on change', dom, dom.val())
-        let val = dom.val();
+    $dom.on('change', (evt) => {
+        console.log('on change', $dom, $dom.val())
+        let val = $dom.val();
         if (conf.formatter) {
             val = conf.formatter(val);
-            dom.val(val);
+            $dom.val(val);
         }
         if (conf.parse) {
             val = conf.parse(val);
@@ -65,7 +68,6 @@ function bindInput(info, key, dom, cb) {
         if (cb) {
             cb(evt);
         }
-        updateChartOption();
     });
 }
 
@@ -200,14 +202,23 @@ function buildOption(record) {
     for (let buff of record.buffs) {
         let ts;
         if (buff.type === 'fixed') {
+            if (!buff.cd || !buff.duration) {
+                continue;
+            }
             ts = { ...buff };
-            if (!ts.offset) {
+            if (isNaN(parseFloat(ts.offset))) {
                 ts.offset = ts.cd;
             }
         } else {
-            ts = {
-                type: 'predefined'
+            if (!buff.data) {
+                continue;
             }
+            let items = buff.data.split(',').map(parseFloat);
+            let data = [];
+            for (let i = 0; i < items.length; i += 2) {
+                data.push([items[i], items[i + 1]]);
+            }
+            ts = { type: 'predefined', data }
         }
         eventBuilders.push({
             name: buff.name,

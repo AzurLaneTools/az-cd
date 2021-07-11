@@ -169,7 +169,7 @@
                 类型
                 <select name="type">
                     <option value="fixed">周期性</option>
-                    <option value="defined">预定义</option>
+                    <option value="predefined">预定义</option>
                 </select>
             </label>
             <div class="layer buff fixed">
@@ -186,7 +186,7 @@
                     <input type="number" min="0" step="any" name="offset">
                 </label>
             </div>
-            <div class="layer buff defined">
+            <div class="layer buff predefined">
                 <input name="data" style="min-width: 200px" placeholder="请输入 start,end,start,end 格式的时间记录"></textarea>
             </div>
             <button class="remove">删除</button>
@@ -255,7 +255,7 @@
         var node = getTemplate('bind-skill-template');
         let $node = $(node);
         for (let name of ['skillName', 'duration', 'offset']) {
-            bindInput(info, name, $node.find(`[name=${name}]`));
+            bindInput(info, name, $node.find(`[name=${name}]`), updateChartOption);
         }
         $node.find('.remove-skill').click(() => {
             $node.remove();
@@ -315,7 +315,7 @@
             updateChartOption();
         }
         for (let name of ['type', 'name', 'cd', 'reload', 'reloadBuff', 'CDBuff', 'firstCDBuff']) {
-            bindInput(info, name, $node.find(`[name=${name}]`));
+            bindInput(info, name, $node.find(`[name=${name}]`), updateChartOption);
         }
         updateRealCD();
         console.log('bind updateRealCD', $('#extra-reload-inc .affect-cd'));
@@ -357,7 +357,7 @@
             updateChartOption();
         });
         for (let name of ['type', 'name', 'cd', 'duration', 'offset', 'data']) {
-            bindInput(info, name, $node.find(`[name=${name}]`));
+            bindInput(info, name, $node.find(`[name=${name}]`), updateChartOption);
         }
         let $type = $node.find('[name=type]');
         function updateDisplay() {
@@ -495,19 +495,19 @@
         bindInput(data.current, 'name', '#record-name', initRecordOptions);
         initRecordOptions();
 
-        bindCheckbox(data.current.config, 'showTimeAsLeft', '#time-inv');
-        bindInput(data.current.config, 'maxDuration', '#max-duration');
+        bindCheckbox(data.current.config, 'showTimeAsLeft', '#time-inv', updateChartOption);
+        bindInput(data.current.config, 'maxDuration', '#max-duration', updateChartOption);
 
-        bindInput(data.current.reload.tech, 'BB', '#tech-inc-bb');
-        bindInput(data.current.reload.tech, 'CV', '#tech-inc-cv');
-        bindInput(data.current.reload.cat, 'BB', '#cat-inc-bb');
-        bindInput(data.current.reload.cat, 'CV', '#cat-inc-cv');
+        bindInput(data.current.reload.tech, 'BB', '#tech-inc-bb', updateChartOption);
+        bindInput(data.current.reload.tech, 'CV', '#tech-inc-cv', updateChartOption);
+        bindInput(data.current.reload.cat, 'BB', '#cat-inc-bb', updateChartOption);
+        bindInput(data.current.reload.cat, 'CV', '#cat-inc-cv', updateChartOption);
 
-        bindInput(data.current.config.offset, 'ALL', '#offset-all');
-        bindInput(data.current.config.offset, 'BB', '#offset-bb');
-        bindInput(data.current.config.offset, 'CV', '#offset-cv');
-        bindInput(data.current.config.duration, 'BB', '#duration-bb');
-        bindInput(data.current.config.duration, 'CV', '#duration-cv');
+        bindInput(data.current.config.offset, 'ALL', '#offset-all', updateChartOption);
+        bindInput(data.current.config.offset, 'BB', '#offset-bb', updateChartOption);
+        bindInput(data.current.config.offset, 'CV', '#offset-cv', updateChartOption);
+        bindInput(data.current.config.duration, 'BB', '#duration-bb', updateChartOption);
+        bindInput(data.current.config.duration, 'CV', '#duration-cv', updateChartOption);
         $('#ships').html('');
         for (let ship of data.current.ships) {
             addShipDom(ship);
