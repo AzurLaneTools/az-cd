@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>碧蓝航线CD计算器-航母装备选择</title>
+    <style>
+        input[type=number] {
+            width: 80px;
+        }
+
+        input.name {
+            width: 100px;
+        }
+
+        div.layer {
+            display: inline-block;
+        }
+
+        div.shipinfo {
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .slot input[type=number] {
+            width: 30px;
+        }
+
+        #ship-name {
+            min-width: 100px;
+            display: inline-block;
+        }
+
+        table {
+            text-align: center;
+        }
+
+        td.disp-equip {
+            min-width: 100px;
+        }
+
+        td.disp-cd {
+            width: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>碧蓝航线CD计算器-航母装备选择</h1>
+    <!-- 
+    流程:
+    1. 配置基础数据
+    2. 选择目标CD
+    3. 
+ -->
+    <div id="extra-reload-inc">
+        <label>
+            命中延迟
+            <input type="number" name="offset-cv" id="offset-cv" value="0" min="0">
+        </label>
+        <label>
+            攻击持续时间
+            <input type="number" name="duration-cv" id="duration-cv" value="1" min="1">
+        </label>
+        装填加成:
+        <label>
+            舰队科技
+            <input type="number" class="affect-cd" name="tech-inc-cv" id="tech-inc-cv" value="0" min="0">
+        </label>
+        <label>
+            指挥猫
+            <input type="number" class="affect-cd" name="cat-inc-cv" id="cat-inc-cv" value="0" min="0">
+        </label>
+        <br>
+        <label>
+            公共进图延迟
+            <input type="number" name="offset-all" id="offset-all" value="0" min="0">
+        </label>
+    </div>
+    <hr>
+    <div class="shipinfo ship-cv">
+        <label>
+            舰娘
+            <select name="name" id="ship-name">
+                <option value="custom">自定义</option>
+            </select>
+        </label>
+        <label>
+            目标CD:
+            <input type="number" name="target-cd-min" min="5" max="100"> - <input type="number" name="target-cd-max"
+                min="5" max="100">
+        </label>
+        <br>
+        <div class="slot">
+            舰载机1:
+            <label><input type="number" name="slot1-cnt" value="1" min="1" max="9"></label>
+            <label>战斗机<input type="checkbox" name="slot1-z"></label>
+            <label>轰炸机<input type="checkbox" name="slot1-h"></label>
+            <label>鱼雷机<input type="checkbox" name="slot1-y"></label>
+        </div>
+
+        <div class="slot">
+            舰载机2:
+            <label><input type="number" name="slot2-cnt" value="1" min="0" max="9"></label>
+            <label>战斗机<input type="checkbox" name="slot2-z"></label>
+            <label>轰炸机<input type="checkbox" name="slot2-h"></label>
+            <label>鱼雷机<input type="checkbox" name="slot2-y"></label>
+        </div>
+
+        <div class="slot">
+            舰载机3:
+            <label><input type="number" name="slot3-cnt" value="1" min="0" max="9"></label>
+            <label>战斗机<input type="checkbox" name="slot3-z"></label>
+            <label>轰炸机<input type="checkbox" name="slot3-h"></label>
+            <label>鱼雷机<input type="checkbox" name="slot3-y"></label>
+        </div>
+        <div class="cd">
+            <label>
+                首轮射速加成
+                <input class="ship-input firstbuff" type="number" name="firstCDBuff" min="0" max="100">%
+            </label>
+            <label>
+                射速加成
+                <input class="ship-input buff affect-cd" type="number" name="CDBuff" max="100">%
+            </label>
+            <label>
+                额外装填
+                <input class="ship-input reloadbuff affect-cd" type="number" name="reloadBuff" min="0">%
+            </label>
+            <label>
+                面标装填(含设备)
+                <input class="ship-input reload affect-cd" type="number" name="reload" min="0">
+            </label>
+            <br>
+        </div>
+    </div>
+    <hr>
+    <div id="results"></div>
+
+    <!-- 模板开始 -->
+    <template id="result-table-template">
+        <table>
+            <thead>
+                <tr>
+                    <th>舰载机1</th>
+                    <th>舰载机2</th>
+                    <th>舰载机3</th>
+                    <th>面板CD</th>
+                    <th>首轮CD</th>
+                    <th>实际CD</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </template>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="js/utils.js"></script>
+<script src="js/cd.js"></script>
+<script>
+    const STORE_KEY = 'AzurLaneCDTool-CacheData-CVHelper';
+    let data;
+    let shipData, aircraftData;
+    function saveData() {
+        localStorage.setItem(STORE_KEY, JSON.stringify(data));
+    }
+    window.addEventListener('beforeunload', saveData);
+    function resetData() {
+        data = {
+            ship: {
+                name: 'custom',
+                type: 'CV',
+                slots: [
+                    { cnt: 1, z: 1, h: 0, y: 0 },
+                    { cnt: 1, z: 1, h: 0, y: 0 },
+                    { cnt: 0, z: 0, h: 0, y: 0 },
+                ],
+                reload: null,
+                cd: null,
+                firstCDBuff: 0,
+                CDBuff: 0,
+                reloadBuff: 0,
+            },
+            reload: { tech: 0, cat: 0 },
+            offset: { CV: 2, ALL: 1.5 },
+            duration: { CV: 3 }
+        };
+        saveData();
+    }
+    function product(a, b, c) {
+        let res = [];
+        return res;
+    }
+    function getAllChoices(slots, minCD, maxCD) {
+        let groups = [];
+        for (let slot of slots) {
+            let group = {
+                cnt: slot.cnt,
+                choices: []
+            };
+            for (let key of ['z', 'h', 'y']) {
+                if (slot[key]) {
+                    group.choices.push(...aircraftData[key]);
+                }
+            }
+            if (group.choices.length === 0) {
+                group.choices.push({ name: '-', cd: 0 });
+                group.cnt = 0;
+            }
+            groups.push(group);
+        }
+        let a = groups[0], b = groups[1], c = groups[2];
+        console.log('总选项数量', a.choices.length, b.choices.length, c.choices.length, a.choices.length * b.choices.length * c.choices.length);
+        let res = [];
+        for (let sa of a.choices) {
+            for (let sb of b.choices) {
+                for (let sc of c.choices) {
+                    let cd = (sa.cd * a.cnt + sb.cd * b.cnt + sc.cd * c.cnt) / (a.cnt + b.cnt + c.cnt);
+                    if (cd < minCD || cd > maxCD) {
+                        continue;
+                    }
+                    let choice = [sa, sb, sc];
+                    res.push({ cd, choice });
+                }
+            }
+        }
+        res.sort((a, b) => {
+            return a.cd - b.cd;
+        });
+        return res;
+    }
+    function updateResult() {
+        console.log('updateResult', data.ship);
+        let minCD = data.ship.minCD, maxCD = data.ship.maxCD;
+        let $res = $('#results');
+        if (!minCD || !maxCD || maxCD <= minCD || maxCD - minCD > 10) {
+            $res.html('请给出合理的目标CD范围!');
+            return;
+        }
+        // 计算目标CD对应的舰载机原始CD
+        // 实际CD = (装填加成 * 原始CD * 2.2) * 射速加成 + 前后摇
+        // 原始CD = (实际CD - 前后摇) / (装填加成 * 射速加成 * 2.2)
+        let realReload = (data.ship.reload + data.reload.tech + data.reload.cat) * (1 + (data.ship.reloadBuff || 0) / 100);
+        let realRatio = getCDMultiplier(realReload) * (1 - (data.ship.CDBuff || 0) / 100) * 2.2;
+        if (!data.ship.reload || !realRatio) {
+            $res.html('请补全舰娘数据!');
+            return;
+        }
+        console.log(realRatio);
+        let minRawCD = (minCD - extraCD.CV) / realRatio;
+        let maxRawCD = (maxCD - extraCD.CV) / realRatio;
+        console.log('原始CD过滤条件:', minRawCD, maxRawCD);
+        let res = getAllChoices(data.ship.slots, minRawCD, maxRawCD);
+        console.log('计算完毕. 可选数量: ', res.length);
+        // 计算面板CD
+        // 面板CD = 原始CD * 面板装填加成 * 2.2
+        $res.html('');
+        $res.append(`共得到${res.length}种可选方案`);
+        if (res.length === 0) {
+            return;
+        }
+        let dispLimit = 50;
+        if (res.length > dispLimit) {
+            $res.append(', 将显示前' + dispLimit + '种');
+            res = res.splice(dispLimit, res.length - dispLimit);
+        }
+        $res.append('.<br>');
+        let $tbl = $(getTemplate('result-table-template'));
+        $res.append($tbl);
+
+        let dispRatio = getCDMultiplier(data.ship.reload + data.reload.tech) * 2.2;
+        let firstRatio = realRatio * (1 - (data.ship.firstCDBuff || 0) / 100);
+        let $tbody = $tbl.find('tbody');
+        for (let item of res) {
+            let dispCD = (item.cd * dispRatio).toFixed(2);
+            let realCD = (item.cd * realRatio + extraCD.CV).toFixed(4);
+            let firstCD = (item.cd * firstRatio).toFixed(4);
+            let tr = ['<tr>']
+            item.choice.forEach((c) => {
+                tr.push('<td class="disp-equip">' + c.name + '</td>')
+            });
+            tr.push(`<td class="disp-cd">${dispCD}</td><td class="disp-cd">${firstCD}</td><td class="disp-cd">${realCD}</td>`)
+            tr.push('</tr>');
+            $tbody.append(tr.join(''));
+        }
+        return;
+    }
+    function onShipSelect() {
+        let shipId = $('#ship-name').val();
+        if (shipId !== 'custom') {
+            let shipInfo = shipData[shipId];
+            console.log('更新', shipId, shipInfo.name);
+            for (let i of [0, 1, 2]) {
+                let src = shipInfo.slots[i] || {};
+                for (let key of ['cnt', 'z', 'h', 'y']) {
+                    data.ship.slots[i][key] = src[key] || 0;
+                }
+            }
+            for (let key of ['firstCDBuff', 'CDBuff', 'reload']) {
+                if (shipInfo.hasOwnProperty(key)) {
+                    data.ship[key] = shipInfo[key];
+                }
+            }
+        }
+        $(`.slot input`).off();
+        $(`.cd input`).off();
+        updateDomData();
+        updateResult();
+    }
+    function updateDomData() {
+        for (let i of [0, 1, 2]) {
+            bindInput(data.ship.slots[i], 'cnt', `.slot input[name=slot${i + 1}-cnt]`, updateResult);
+            for (let key of ['z', 'h', 'y']) {
+                bindCheckbox(data.ship.slots[i], key, `.slot input[name=slot${i + 1}-${key}]`, updateResult);
+            }
+        }
+        if ($('#ship-name').val() === 'custom') {
+            $('.slot input').prop('disabled', null);
+        } else {
+            $('.slot input').prop('disabled', true);
+        }
+        for (let name of ['reload', 'reloadBuff', 'CDBuff', 'firstCDBuff']) {
+            bindInput(data.ship, name, `.cd input[name=${name}]`, updateResult);
+        }
+    }
+    function loadDataAndDom() {
+        try {
+            data = JSON.parse(localStorage.getItem(STORE_KEY));
+        } catch (e) { }
+        if (!data) {
+            resetData();
+        }
+        console.log('LoadData', data);
+        // 删除当前绑定的事件
+        $('input, select, button').off();
+        bindInput(data.ship, 'name', '#ship-name', onShipSelect);
+
+        bindInput(data.ship, 'minCD', 'input[name=target-cd-min]', updateResult);
+        bindInput(data.ship, 'maxCD', 'input[name=target-cd-max]', updateResult);
+
+        updateDomData();
+
+        bindInput(data.reload, 'tech', '#tech-inc-cv', updateResult);
+        bindInput(data.reload, 'cat', '#cat-inc-cv', updateResult);
+
+        bindInput(data.offset, 'ALL', '#offset-all', updateResult);
+        bindInput(data.offset, 'CV', '#offset-cv', updateResult);
+        bindInput(data.duration, 'CV', '#duration-cv', updateResult);
+    }
+    async function initAll() {
+        let resp = await fetch('data/ships.json');
+        shipData = await resp.json();
+        let resp2 = await fetch('data/aricrafts.json');
+        aircraftData = await resp2.json();
+        let $dom = $('#ship-name');
+        for (let key in shipData) {
+            $dom.append(`<option value="${key}">${shipData[key].name}</option>`);
+        }
+        loadDataAndDom();
+        updateResult();
+    }
+    initAll();
+</script>
+
+</html>
