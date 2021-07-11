@@ -261,8 +261,9 @@
                 return
             }
             slot.options.push({
-                'name': val.name,
-                'cd': $(val).data('cd'),
+                name: val.name,
+                cd: $(val).data('cd'),
+                type: $(val).data('type'),
             });
         });
         $(`div.slot.slot${targetSlot} span.option-desc`).text(`${slot.options.length}种舰载机`);
@@ -383,20 +384,46 @@
         }
         return;
     }
+    function getAllOptions(slot) {
+        let res = [];
+        for (let key of ['z', 'h', 'y']) {
+            if (slot[key]) {
+                res.push(...aircraftData[key]);
+            }
+        }
+        return res;
+    }
     function onShipSelect() {
         let shipId = $('#ship-name').val();
         if (shipId !== 'custom') {
             let shipInfo = shipData[shipId];
             console.log('更新', shipId, shipInfo.name);
             for (let i of [0, 1, 2]) {
+                let slot = data.ship.slots[i];
                 let src = shipInfo.slots[i] || {};
                 for (let key of ['cnt', 'z', 'h', 'y']) {
-                    data.ship.slots[i][key] = src[key] || 0;
+                    slot[key] = src[key] || 0;
+                }
+                if (slot.options) {
+                    for (let i = 0; i < slot.options.length;) {
+                        if (slot[slot.options[i].type]) {
+                            i++;
+                        } else {
+                            slot.options.splice(i, 1);
+                        }
+                    }
+                    if (slot.options.length === 0) {
+                        slot.options = null;
+                    }
+                }
+                if (!slot.options) {
+                    slot.options = getAllOptions(slot);
                 }
             }
             for (let key of ['firstCDBuff', 'CDBuff', 'reload']) {
                 data.ship[key] = shipInfo[key] || 0;
             }
+
         }
         $(`.slot input`).off();
         $(`.cd input`).off();
