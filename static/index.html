@@ -438,7 +438,8 @@
             config: {}
         };
         console.log('updateChartOption');
-        buildOption(data.current);
+        let { categories, chartData } = buildOption(data.current);
+        window.setChartOption(categories, chartData, data.current.config);
     }
     var buffData = {};
     async function loadBuffData() {
