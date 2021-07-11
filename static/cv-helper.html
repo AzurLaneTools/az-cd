@@ -332,8 +332,21 @@
         console.log('updateResult', data.ship);
         let minCD = data.ship.minCD, maxCD = data.ship.maxCD;
         let $res = $('#results');
-        if (!minCD || !maxCD || maxCD <= minCD || maxCD - minCD > 10) {
-            $res.html('请给出合理的目标CD范围!');
+        $res.html('');
+        let comCnt = 1;
+        for (let slot of data.ship.slots) {
+            if (slot.options.length > 1) {
+                comCnt = comCnt * slot.options.length;
+            }
+        }
+        console.log('总选项数量', comCnt);
+        if (comCnt < 500) {
+            // 不限制CD
+            minCD = 0;
+            maxCD = 100;
+            $res.append(`总选项数量较少(${comCnt}), 将忽略CD限制.<br>`);
+        } else if (!minCD || !maxCD || maxCD <= minCD || maxCD - minCD > 10) {
+            $res.append('请给出合理的目标CD范围!');
             return;
         }
         // 计算目标CD对应的舰载机原始CD
@@ -342,7 +355,7 @@
         let realReload = (data.ship.reload + data.reload.tech + data.reload.cat) * (1 + (data.ship.reloadBuff || 0) / 100);
         let realRatio = getCDMultiplier(realReload) * (1 - (data.ship.CDBuff || 0) / 100) * 2.2;
         if (!data.ship.reload || !realRatio) {
-            $res.html('请补全舰娘数据!');
+            $res.append('请补全舰娘数据!');
             return;
         }
         console.log(realRatio);
@@ -353,7 +366,6 @@
         console.log('计算完毕. 可选数量: ', res.length);
         // 计算面板CD
         // 面板CD = 原始CD * 面板装填加成 * 2.2
-        $res.html('');
         $res.append(`共得到${res.length}种可选方案`);
         if (res.length === 0) {
             return;
