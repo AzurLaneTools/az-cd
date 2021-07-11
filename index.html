@@ -250,8 +250,7 @@
     }
     window.addEventListener('beforeunload', saveData);
 
-    function addBindSkillDom(parentDom, skillList, ref) {
-        let info = ref.info;
+    function addBindSkillDom(parentDom, skillList, info) {
         var node = getTemplate('bind-skill-template');
         let $node = $(node);
         for (let name of ['skillName', 'duration', 'offset']) {
@@ -268,12 +267,11 @@
     function addBindSkill(parentDom, skillList) {
         let info = { skillName: '', duration: null, offset: null };
         skillList.push(info);
-        addBindSkillDom(parentDom, skillList, { info });
+        addBindSkillDom(parentDom, skillList, info);
         updateChartOption();
     }
 
-    function addShipDom(ref) {
-        let info = ref.info;
+    function addShipDom(info) {
         let arr = data.current.ships;
         var node = getTemplate('ship-input-form-template');
         let $node = $(node);
@@ -307,7 +305,7 @@
             addBindSkill(node.querySelector('div.bind-skills'), info.bindSkills);
         });
         for (let skill of info.bindSkills) {
-            addBindSkillDom(node.querySelector('div.bind-skills'), info.bindSkills, { info: skill });
+            addBindSkillDom(node.querySelector('div.bind-skills'), info.bindSkills, skill);
         }
         function updateRealCD() {
             info.realCD = getRealCD(data.current.reload, info);
@@ -342,7 +340,7 @@
             };
         }
         data.current.ships.push(info);
-        addShipDom({ info });
+        addShipDom(info);
         updateChartOption();
     }
     function addBuffDom(info) {
@@ -384,8 +382,7 @@
         data.current.buffs.push(info);
         addBuffDom(info);
     }
-    function moveShip(ref) {
-        let info = ref.info;
+    function moveShip(info) {
         let arr = data.current.ships;
         let idx = arr.indexOf(info);
         let tmp = arr[idx - 1];
@@ -512,7 +509,7 @@
         bindInput(data.current.config.duration, 'CV', '#duration-cv');
         $('#ships').html('');
         for (let ship of data.current.ships) {
-            addShipDom({ info: ship });
+            addShipDom(ship);
         }
         $('#buff-list').html('');
         for (let buff of data.current.buffs) {

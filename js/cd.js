@@ -1,7 +1,7 @@
 // TODO: 确认攻击前摇、后摇的实际数值. 
 // 目前的数据来源为: https://wiki.biligame.com/blhx/“这不科学”的射速分析方法#不科学之蓄力射
 const extraCD = {
-    BB: 1.16,
+    BB: 0.17,
     CV: 0.05,
 }
 function getCDMultiplier(reload) {

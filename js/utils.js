@@ -69,20 +69,20 @@ function bindInput(info, key, dom, cb) {
     });
 }
 
-const styles = {
-    buffs: {
+const styleList = [
+    {
         color: '#7b9ce1',
     },
-    skill: {
+    {
         color: '#bd6d6c',
     },
-    CV: {
+    {
         color: '#75d874',
     },
-    BB: {
+    {
         color: '#e0bc78',
     }
-}
+]
 
 function delayEvent(event, dt) {
     event.start += dt;
@@ -141,7 +141,7 @@ function updateEvents(events, maxDuration) {
                 event.duration,
             ],
             itemStyle: {
-                normal: styles[event.type]
+                normal: styleList[event.style % styleList.length]
             }
         });
     }
@@ -157,17 +157,19 @@ function buildOption(record) {
     let maxDuration = record.config.maxDuration;
 
     var eventBuilders = [];
+    let styleIdx = 0;
     for (let [shipIdx, ship] of record.ships.entries()) {
         // 添加舰娘开炮/起飞事件
-        let event = loadShipEventInfo(ship, record.config);
-        if (!event) {
+        let eventInfo = loadShipEventInfo(ship, record.config);
+        if (!eventInfo) {
             continue;
         }
         eventBuilders.push({
             name: ship.name,
             type: ship.type,
+            style: styleIdx,
             ship: shipIdx,
-            conf: event
+            conf: eventInfo
         });
         for (let skill of ship.bindSkills) {
             if (!skill.duration) {
@@ -176,21 +178,23 @@ function buildOption(record) {
             }
             console.log('添加技能', skill)
             // 使用fireOffset进行计算
-            let offset = event.fireOffset + (parseFloat(skill.offset) || 0);
+            let offset = eventInfo.fireOffset + (parseFloat(skill.offset) || 0);
             let skillName = skill.skillName || ('技能' + (ship.bindSkills.indexOf(skill) + 1));
             eventBuilders.push({
                 name: ship.name + '-' + skillName,
                 type: 'skill',
                 ship: shipIdx,
+                style: styleIdx,
                 conf: {
                     type: 'fixed',
                     ship: shipIdx,
-                    cd: event.cd,
+                    cd: eventInfo.cd,
                     offset: offset,
                     duration: skill.duration,
                 }
             });
         }
+        styleIdx++;
     }
     console.log('eventBuilder:', eventBuilders);
     for (let buff of record.buffs) {
@@ -208,9 +212,11 @@ function buildOption(record) {
         eventBuilders.push({
             name: buff.name,
             type: 'buff',
+            style: styleIdx,
             ship: null,
             conf: ts,
         });
+        styleIdx++;
     }
     console.log('eventBuilder:', eventBuilders);
     var events = [];
@@ -221,6 +227,7 @@ function buildOption(record) {
                 type: builder.type,
                 ship: builder.ship,
                 category: index,
+                style: builder.style,
                 ...ts
             });
         }
