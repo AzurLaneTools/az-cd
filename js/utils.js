@@ -36,7 +36,7 @@ function makeNumberFormatter(dom) {
 }
 function bindInput(info, key, dom, cb) {
     let $dom = $(dom);
-    if(!$dom[0]){
+    if (!$dom[0]) {
         console.warn('未找到待绑定元素', dom);
     }
     console.log('bindInput', info, key, dom, $dom, cb);
@@ -244,7 +244,6 @@ function buildOption(record) {
         }
         categories.push(builder.name);
     }
-    let data = updateEvents(events, maxDuration);
-    console.log('set data', categories, data);
-    window.setChartOption(categories, data, record.config);
+    let chartData = updateEvents(events, maxDuration);
+    return { categories, events, chartData };
 }
