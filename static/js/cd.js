@@ -1,4 +1,9 @@
-
+// TODO: 确认攻击前摇、后摇的实际数值. 
+// 目前的数据来源为: https://wiki.biligame.com/blhx/“这不科学”的射速分析方法#不科学之蓄力射
+const extraCD = {
+    BB: 1.16,
+    CV: 0.05,
+}
 function getCDMultiplier(reload) {
     return Math.sqrt(200 / (100 + reload));
 }
@@ -76,7 +81,7 @@ function loadShipEventInfo(ship, config) {
     let fireOffset = ship.realCD * (1 - ((ship.firstCDBuff || 0) / 100)) + config.offset.ALL;
     // 命中时间
     let offset = fireOffset + config.offset[ship.type];
-    return { type: 'fixed', fireOffset, offset, cd: ship.realCD, duration };
+    return { type: 'fixed', fireOffset, offset, cd: ship.realCD + extraCD[ship.type], duration };
 }
 
 function loadTimestamps(ts, maxDuration) {
