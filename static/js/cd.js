@@ -31,10 +31,10 @@ function getRealCD(globalReload, ship) {
     if (!cd) {
         return '';
     }
-    let techReload = parseFloat(globalReload.tech[ship.type]) || 0;
-    let catReload = parseFloat(globalReload.cat[ship.type]);
-    if (ship.reload && catReload) {
-        // 定义了猫的装填增幅和舰娘装填, 可以重新计算实际CD
+    if (ship.reload) {
+        // 根据装填信息重新计算实际CD
+        let techReload = parseFloat(globalReload.tech[ship.type]) || 0;
+        let catReload = parseFloat(globalReload.cat[ship.type]) || 0;
         let reloadBuff = 1 + parseFloat(ship.reloadBuff || 0) / 100;
         let dispReload = parseFloat(ship.reload) + techReload;
         let realReload = (dispReload + catReload) * reloadBuff;
