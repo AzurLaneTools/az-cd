@@ -18,6 +18,11 @@
         div.layer {
             display: inline-block;
         }
+
+        div.shipinfo {
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 
@@ -80,7 +85,7 @@
     </div>
     <hr>
     <div id="ships"></div>
-    <button onclick="addShip()">添加舰娘</button>
+    <button id="add-ship" onclick="addShip()">添加舰娘</button>
     <hr>
     Buff列表:<br>
     <div id="buff-list"></div>
@@ -143,8 +148,6 @@
             <button class="remove-ship">删除舰娘</button>
             <button class="add-bind-skill">添加绑定技能</button>
             <div class="layer bind-skills"></div>
-            <br>
-            <br>
         </div>
     </template>
     <template id="bind-skill-template">
@@ -297,6 +300,7 @@
             let idx = arr.indexOf(info);
             arr.splice(idx, 1);
             updateChartOption();
+            $('#add-ship').show();
         });
         $node.find('button.add-bind-skill').on('click', () => {
             console.log('添加绑定技能');
@@ -320,6 +324,9 @@
         $node.find('.affect-cd').on('change', updateRealCD);
         info.node = node;
         $('#ships')[0].appendChild(node);
+        if (data.current.ships.length > 2) {
+            $('#add-ship').hide();
+        }
     }
     function addShip(info) {
         if (!info) {
