@@ -268,7 +268,7 @@
         let dispLimit = 50;
         if (res.length > dispLimit) {
             $res.append(', 将显示前' + dispLimit + '种');
-            res = res.splice(dispLimit, res.length - dispLimit);
+            res.splice(dispLimit, res.length - dispLimit);
         }
         $res.append('.<br>');
         let $tbl = $(getTemplate('result-table-template'));
