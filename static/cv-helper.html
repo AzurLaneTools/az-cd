@@ -44,6 +44,30 @@
         td.disp-cd {
             width: 80px;
         }
+
+        #cover {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            background: rgba(0, 0, 0, 0.4);
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        #modal {
+            position: relative;
+            width: 90%;
+            top: 20%;
+            height: 50%;
+            margin: auto;
+            background-color: #fff;
+            /* display: none; */
+            z-index: 11;
+            cursor: default;
+        }
     </style>
 </head>
 
@@ -94,28 +118,34 @@
                 min="5" max="100">
         </label>
         <br>
-        <div class="slot">
+        <div class="slot slot0">
             舰载机1:
-            <label><input type="number" name="slot1-cnt" value="1" min="1" max="9"></label>
+            <label><input type="number" name="slot0-cnt" value="1" min="1" max="9"></label>
+            <label>战斗机<input type="checkbox" name="slot0-z"></label>
+            <label>轰炸机<input type="checkbox" name="slot0-h"></label>
+            <label>鱼雷机<input type="checkbox" name="slot0-y"></label>
+            <button onclick="selectSlotOption(0)">设置选项</button>
+            <span class="option-desc"></span>
+        </div>
+
+        <div class="slot slot1">
+            舰载机2:
+            <label><input type="number" name="slot1-cnt" value="1" min="0" max="9"></label>
             <label>战斗机<input type="checkbox" name="slot1-z"></label>
             <label>轰炸机<input type="checkbox" name="slot1-h"></label>
             <label>鱼雷机<input type="checkbox" name="slot1-y"></label>
+            <button onclick="selectSlotOption(1)">设置选项</button>
+            <span class="option-desc"></span>
         </div>
 
-        <div class="slot">
-            舰载机2:
+        <div class="slot slot2">
+            舰载机3:
             <label><input type="number" name="slot2-cnt" value="1" min="0" max="9"></label>
             <label>战斗机<input type="checkbox" name="slot2-z"></label>
             <label>轰炸机<input type="checkbox" name="slot2-h"></label>
             <label>鱼雷机<input type="checkbox" name="slot2-y"></label>
-        </div>
-
-        <div class="slot">
-            舰载机3:
-            <label><input type="number" name="slot3-cnt" value="1" min="0" max="9"></label>
-            <label>战斗机<input type="checkbox" name="slot3-z"></label>
-            <label>轰炸机<input type="checkbox" name="slot3-h"></label>
-            <label>鱼雷机<input type="checkbox" name="slot3-y"></label>
+            <button onclick="selectSlotOption(2)">设置选项</button>
+            <span class="option-desc"></span>
         </div>
         <div class="cd">
             <label>
@@ -136,6 +166,30 @@
             </label>
             <br>
         </div>
+
+        <div id="cover">
+            <div id="modal">
+                <button class="end-selection" onclick="finishSelect()">确认</button>
+                <button class="slot-option" data-q="input.slot-option.fast" data-set="1">选中调速舰载机</button>
+                <button class="slot-option" data-q="input.slot-option.fast" data-set="0">取消选择调速舰载机</button>
+                <button class="slot-option" data-q="input.slot-option.damage" data-set="1">选中高伤害舰载机</button>
+                <button class="slot-option" data-q="input.slot-option.damage" data-set="0">选中高伤害舰载机</button>
+                <br>
+                <button class="slot-option z" data-q="input.slot-option.z" data-set="1">选中战斗机</button>
+                <button class="slot-option z" data-q="input.slot-option.z" data-set="0">取消选择战斗机</button>
+                <button class="slot-option h" data-q="input.slot-option.h" data-set="1">选中轰炸机</button>
+                <button class="slot-option h" data-q="input.slot-option.h" data-set="0">取消选择轰炸机</button>
+                <button class="slot-option y" data-q="input.slot-option.y.js" data-set="1">选中集束雷</button>
+                <button class="slot-option y" data-q="input.slot-option.y.js" data-set="0">取消选择集束雷</button>
+                <button class="slot-option y" data-q="input.slot-option.y.px" data-set="1">选中平行雷</button>
+                <button class="slot-option y" data-q="input.slot-option.y.px" data-set="0">取消选择平行雷</button>
+                <div class="slot-options">
+                    <div class="slot-option z"></div>
+                    <div class="slot-option h"></div>
+                    <div class="slot-option y"></div>
+                </div>
+            </div>
+        </div>
     </div>
     <hr>
     <div id="results"></div>
@@ -153,9 +207,7 @@
                     <th>实际CD</th>
                 </tr>
             </thead>
-            <tbody>
-
-            </tbody>
+            <tbody></tbody>
         </table>
     </template>
 </body>
@@ -167,10 +219,55 @@
     const STORE_KEY = 'AzurLaneCDTool-CacheData-CVHelper';
     let data;
     let shipData, aircraftData;
+    let targetSlot;
     function saveData() {
         localStorage.setItem(STORE_KEY, JSON.stringify(data));
     }
     window.addEventListener('beforeunload', saveData);
+    function selectSlotOption(idx) {
+        let slot = data.ship.slots[idx];
+        targetSlot = idx;
+        if (slot.options) {
+            $('#cover input').each((idx, val) => {
+                let $val = $(val);
+                val.checked = false;
+            });
+            for (let item of slot.options) {
+                $(`#modal .slot-option[name="${item.name}"]`)[0].checked = true;
+            }
+        }
+        for (let key of ['z', 'h', 'y']) {
+            if (!slot[key]) {
+                $('.slot-option.' + key).prop('disabled', true);
+            } else {
+                $('.slot-option.' + key).prop('disabled', null);
+            }
+        }
+        $('#modal button').on('click', (evt) => {
+            let $btn = $(evt.target);
+            let set = Boolean(parseFloat($btn.data('set')));
+            $($btn.data('q')).not('[disabled]').each((idx, val) => {
+                val.checked = set;
+            });
+        })
+        $('#cover').show();
+    }
+    function finishSelect() {
+        $('#cover').hide();
+        let slot = data.ship.slots[targetSlot];
+        slot.options = [];
+        $('#cover input[type=checkbox]').not('[disabled]').each((idx, val) => {
+            if (!val.checked) {
+                return
+            }
+            slot.options.push({
+                'name': val.name,
+                'cd': $(val).data('cd'),
+            });
+        });
+        $(`div.slot.slot${targetSlot} span.option-desc`).text(`${slot.options.length}种舰载机`);
+        updateResult();
+    }
     function resetData() {
         data = {
             ship: {
@@ -202,15 +299,10 @@
         for (let slot of slots) {
             let group = {
                 cnt: slot.cnt,
-                choices: []
+                choices: slot.options
             };
-            for (let key of ['z', 'h', 'y']) {
-                if (slot[key]) {
-                    group.choices.push(...aircraftData[key]);
-                }
-            }
             if (group.choices.length === 0) {
-                group.choices.push({ name: '-', cd: 0 });
+                group.choices = [{ name: '-', cd: 0 }];
                 group.cnt = 0;
             }
             groups.push(group);
@@ -313,9 +405,13 @@
     }
     function updateDomData() {
         for (let i of [0, 1, 2]) {
-            bindInput(data.ship.slots[i], 'cnt', `.slot input[name=slot${i + 1}-cnt]`, updateResult);
+            let slot = data.ship.slots[i];
+            bindInput(slot, 'cnt', `.slot input[name=slot${i}-cnt]`, updateResult);
             for (let key of ['z', 'h', 'y']) {
-                bindCheckbox(data.ship.slots[i], key, `.slot input[name=slot${i + 1}-${key}]`, updateResult);
+                bindCheckbox(slot, key, `.slot input[name=slot${i}-${key}]`, updateResult);
+            }
+            if (slot.options) {
+                $(`div.slot.slot${i} span.option-desc`).text(`${slot.options.length}种舰载机`);
             }
         }
         if ($('#ship-name').val() === 'custom') {
@@ -356,6 +452,19 @@
         shipData = await resp.json();
         let resp2 = await fetch('data/aricrafts.json');
         aircraftData = await resp2.json();
+        for (let key in aircraftData) {
+            let target = $('#modal div.slot-options div.slot-option.' + key);
+            for (let aircraft of aircraftData[key]) {
+                let cls = ['slot-option', key];
+                if (aircraft.tags) {
+                    cls.push(...aircraft.tags);
+                }
+                if (aircraft.cd < 10) {
+                    cls.push('fast')
+                }
+                target.append(`<label>${aircraft.name}<input data-cd="${aircraft.cd}" data-type="${key}" class="${cls.join(' ')}" name="${aircraft.name}" type="checkbox"></label>`)
+            }
+        }
         let $dom = $('#ship-name');
         for (let key in shipData) {
             $dom.append(`<option value="${key}">${shipData[key].name}</option>`);
