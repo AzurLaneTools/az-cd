@@ -302,9 +302,7 @@
                 }
             }
             for (let key of ['firstCDBuff', 'CDBuff', 'reload']) {
-                if (shipInfo.hasOwnProperty(key)) {
-                    data.ship[key] = shipInfo[key];
-                }
+                data.ship[key] = shipInfo[key] || 0;
             }
         }
         $(`.slot input`).off();
