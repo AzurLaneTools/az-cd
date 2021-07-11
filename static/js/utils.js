@@ -3,7 +3,7 @@ function getTemplate(name) {
     return template.content.cloneNode(true).firstElementChild;
 }
 
-function bindCheckbox(obj, key, target) {
+function bindCheckbox(obj, key, target, cb) {
     var $dom = $(target);
     if (obj[key]) {
         $dom.prop('checked', true);
@@ -14,7 +14,7 @@ function bindCheckbox(obj, key, target) {
     $dom.off('change');
     $dom.on('change', (evt) => {
         obj[key] = evt.target.checked;
-        updateChartOption();
+        if (cb) { cb(evt) };
     });
 }
 function makeNumberFormatter(dom) {
@@ -65,7 +65,6 @@ function bindInput(info, key, dom, cb) {
         if (cb) {
             cb(evt);
         }
-        updateChartOption();
     });
 }
 
