@@ -38,7 +38,7 @@
         }
 
         td.disp-equip {
-            min-width: 100px;
+            width: 200px;
         }
 
         td.disp-cd {
@@ -59,11 +59,10 @@
 
         #modal {
             position: fixed;
-            left: 10%;
-            width: 80%;
+            left: 0;
+            width: 100%;
             top: 20%;
-            height: 50%;
-            margin: 20px 20px 20px 20px;
+            height: 80%;
             padding: 20px 20px 20px 20px;
             background-color: #fff;
             display: none;
@@ -79,6 +78,15 @@
         label.disabled {
             color: gray;
 
+        }
+
+        div.slot-buttons {
+            height: 100px;
+        }
+
+        div.slot-options {
+            overflow-y: scroll;
+            height: 400px;
         }
     </style>
 </head>
@@ -183,24 +191,26 @@
             <div style="text-align: center; color: white; font-size: 3em; margin-top: 5%;">点击遮罩层退出</div>
         </div>
         <div id="modal" class="modal">
-            选中:
-            <button class="slot-option" data-q="input.slot-option" data-set="1">全部</button>
-            <button class="slot-option" data-q="input.slot-option.fast" data-set="1">调速舰载机</button>
-            <button class="slot-option" data-q="input.slot-option.damage" data-set="1">高伤害舰载机</button>
-            <button class="slot-option z" data-q="input.slot-option.z" data-set="1">战斗机</button>
-            <button class="slot-option h" data-q="input.slot-option.h" data-set="1">轰炸机</button>
-            <button class="slot-option y" data-q="input.slot-option.y.js" data-set="1">集束雷</button>
-            <button class="slot-option y" data-q="input.slot-option.y.px" data-set="1">平行雷</button>
-            <br><br>
-            取消:
-            <button class="slot-option" data-q="input.slot-option" data-set="0">全部</button>
-            <button class="slot-option" data-q="input.slot-option.fast" data-set="0">调速舰载机</button>
-            <button class="slot-option" data-q="input.slot-option.damage" data-set="0">高伤害舰载机</button>
-            <button class="slot-option z" data-q="input.slot-option.z" data-set="0">战斗机</button>
-            <button class="slot-option h" data-q="input.slot-option.h" data-set="0">轰炸机</button>
-            <button class="slot-option y" data-q="input.slot-option.y.js" data-set="0">集束雷</button>
-            <button class="slot-option y" data-q="input.slot-option.y.px" data-set="0">平行雷</button>
-            <br><br>
+            <div class="slot-buttons">
+                选中:
+                <button class="slot-option" data-q="input.slot-option" data-set="1">全部</button> |
+                <button class="slot-option" data-q="input.slot-option.fast" data-set="1">调速</button>
+                <button class="slot-option" data-q="input.slot-option.damage" data-set="1">伤害</button> |
+                <button class="slot-option z" data-q="input.slot-option.z" data-set="1">战斗机</button>
+                <button class="slot-option h" data-q="input.slot-option.h" data-set="1">轰炸机</button>
+                <button class="slot-option y" data-q="input.slot-option.y.js" data-set="1">集束雷</button>
+                <button class="slot-option y" data-q="input.slot-option.y.px" data-set="1">平行雷</button>
+                <br>
+                取消:
+                <button class="slot-option" data-q="input.slot-option" data-set="0">全部</button> |
+                <button class="slot-option" data-q="input.slot-option.fast" data-set="0">调速</button>
+                <button class="slot-option" data-q="input.slot-option.damage" data-set="0">伤害</button> |
+                <button class="slot-option z" data-q="input.slot-option.z" data-set="0">战斗机</button>
+                <button class="slot-option h" data-q="input.slot-option.h" data-set="0">轰炸机</button>
+                <button class="slot-option y" data-q="input.slot-option.y.js" data-set="0">集束雷</button>
+                <button class="slot-option y" data-q="input.slot-option.y.px" data-set="0">平行雷</button>
+                <br>
+            </div>
             <div class="slot-options">
                 <div class="slot-option z"></div><br>
                 <div class="slot-option h"></div><br>
