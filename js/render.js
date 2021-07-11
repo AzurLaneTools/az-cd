@@ -7,9 +7,6 @@
         showTimeAsLeft: false,
         maxDuration: 180,
     };
-
-    var data = [];
-
     function renderItem(params, api) {
         var categoryIndex = api.value(0);
         var start = api.coord([api.value(1), categoryIndex]);
