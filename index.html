@@ -439,7 +439,16 @@
         };
         console.log('updateChartOption');
         let { categories, chartData } = buildOption(data.current);
-        window.setChartOption(categories, chartData, data.current.config);
+        window.setChartOption(
+            categories, chartData, data.current.config,
+            {
+                title: {
+                    text: '碧蓝航线CD计算器',
+                    left: 'center',
+                    show: true,
+                },
+            }
+        );
     }
     var buffData = {};
     async function loadBuffData() {
