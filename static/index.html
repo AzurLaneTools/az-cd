@@ -311,7 +311,7 @@
         function updateRealCD() {
             info.realCD = getRealCD(data.current.reload, info);
             console.log('updateRealCD', info.name, info.realCD)
-            $node.find('.real-cd').text(trimmedNum(info.realCD));
+            $node.find('.real-cd').text(trimmedNum(parseFloat(info.realCD) + extraCD.BB));
             updateChartOption();
         }
         for (let name of ['type', 'name', 'cd', 'reload', 'reloadBuff', 'CDBuff', 'firstCDBuff']) {
