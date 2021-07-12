@@ -215,9 +215,14 @@
     <hr>
     <div id="target" class="container">
         <label>
-            目标CD:
-            <input type="number" name="target-cd-min" min="5" max="100"> - <input type="number" name="target-cd-max"
-                min="5" max="100">
+            战斗时间
+            <input type="number" name="max-duration" id="max-duration">
+            s
+        </label>
+        &nbsp;
+        <label>
+            按剩余时间显示
+            <input type="checkbox" name="time-inv" id="time-inv">
         </label>
         <br>
         对轴目标
@@ -311,6 +316,7 @@
     let data;
     let shipData, aircraftData;
     let targetSlot;
+    let cdResults = [];
     function saveData() {
         localStorage.setItem(STORE_KEY, JSON.stringify(data));
     }
@@ -360,6 +366,7 @@
             });
         });
         $(`div.slot.slot${targetSlot} span.option-desc`).text(`${slot.options.length}种舰载机`);
+        data.chartIdx = 0;
         updateResult();
     }
     function resetData() {
@@ -392,8 +399,10 @@
                     CV: 0,
                 }
             },
+            chartIdx: 0,
             config: {
                 maxDuration: 180,
+                showTimeAsLeft: false,
                 offset: {
                     ALL: 1.5,
                     CV: 1,
@@ -409,7 +418,7 @@
         let res = [];
         return res;
     }
-    function getAllChoices(slots, minCD, maxCD) {
+    function getAllChoices(slots) {
         let groups = [];
         for (let slot of slots) {
             let group = {
@@ -429,9 +438,6 @@
             for (let sb of b.choices) {
                 for (let sc of c.choices) {
                     let cd = (sa.cd * a.cnt + sb.cd * b.cnt + sc.cd * c.cnt) / (a.cnt + b.cnt + c.cnt);
-                    if (cd < minCD || cd > maxCD) {
-                        continue;
-                    }
                     let choice = [sa, sb, sc];
                     res.push({ cd, choice });
                 }
@@ -442,16 +448,30 @@
         });
         return res;
     }
-    function updateChartOption(choice) {
-        let $tr = $(choice);
-        let offset = $tr.data('offset');
-        let cd = $tr.data('cd');
-        let name = $(`#ship-name option[value=${data.ship.name}]`).text();
+    function updateChartOption(idx) {
+        if (!isNaN(parseFloat(idx))) {
+            data.chartIdx = idx;
+        }
+        console.log('chartIdx', data.chartIdx, cdResults)
+        let item = cdResults[data.chartIdx];
+        if (!item) {
+            if (cdResults.length === 0) {
+                return
+            }
+            data.chartIdx = 0;
+        }
+        let name = [];
+        item.choice.forEach((c) => {
+            if (c.name !== '-') {
+                name.push(c.name)
+            }
+
+        })
         let record = {
             ships: [{
-                name: name,
+                name: name.join('\n'),
                 type: 'CV',
-                realCD: cd - extraCD.CV,
+                realCD: item.realCD - extraCD.CV,
                 firstCDBuff: data.ship.firstCDBuff,
                 CDBuff: data.ship.CDBuff,
                 reloadBuff: data.ship.reloadBuff,
@@ -468,13 +488,11 @@
         window.setChartOption(categories, chartData, record.config, {
             title: { show: false }, grid: {
                 top: '2%',
-                left: '100px',
             }
         });
     }
     function updateResult() {
         console.log('updateResult', data.ship, data.target);
-        let minCD = data.target.minCD, maxCD = data.target.maxCD;
         let $res = $('#results');
         $res.html('');
         let comCnt = 1;
@@ -488,17 +506,11 @@
         }
         updateChartOption();
         $res.append(`总选项数量${comCnt}`);
-        if (comCnt < 500) {
-            // 不限制CD
-            minCD = 0;
-            maxCD = 100;
-            $res.append(', 将忽略CD限制.<br>');
+        if (comCnt > 1000) {
+            $res.append(', 请减少舰载机选项数量!');
+            return;
         } else {
             $res.append('.<br>');
-            if (!minCD || !maxCD || maxCD <= minCD || maxCD - minCD > 10) {
-                $res.append('请减少舰载机选项数量, 或给出合理的目标CD范围!');
-                return;
-            }
         }
         // 计算目标CD对应的舰载机原始CD
         // 实际CD = (装填加成 * 原始CD * 2.2) * 射速加成 + 前后摇
@@ -510,21 +522,21 @@
             return;
         }
         console.log(realRatio);
-        let minRawCD = (minCD - extraCD.CV) / realRatio;
-        let maxRawCD = (maxCD - extraCD.CV) / realRatio;
-        console.log('原始CD过滤条件:', minRawCD, maxRawCD);
-        let res = getAllChoices(data.ship.slots, minRawCD, maxRawCD);
-        console.log('计算完毕. 可选数量: ', res.length);
+        cdResults = getAllChoices(data.ship.slots);
+        console.log('计算完毕. 可选数量: ', cdResults.length);
         // 计算面板CD
         // 面板CD = 原始CD * 面板装填加成 * 2.2
-        $res.append(`共得到${res.length}种可选方案`);
-        if (res.length === 0) {
+        $res.append(`共得到${cdResults.length}种可选方案`);
+        if (cdResults.length === 0) {
             return;
         }
+        if (data.chartIdx >= cdResults.length) {
+            data.chartIdx = 0;
+        }
         let dispLimit = 50;
-        if (res.length > dispLimit) {
+        if (cdResults.length > dispLimit) {
             $res.append(', 将显示前' + dispLimit + '种');
-            res.splice(dispLimit, res.length - dispLimit);
+            cdResults.splice(dispLimit, cdResults.length - dispLimit);
         }
         $res.append('.<br>');
         let $tbl = $(getTemplate('result-table-template'));
@@ -533,22 +545,22 @@
         let dispRatio = getCDMultiplier(data.ship.reload + data.reload.tech.CV) * 2.2;
         let firstRatio = realRatio * (1 - (data.ship.firstCDBuff || 0) / 100);
         let $tbody = $tbl.find('tbody');
-        for (let item of res) {
+        for (let [idx, item] of cdResults.entries()) {
             let dispCD = (item.cd * dispRatio);
-            let realCD = (item.cd * realRatio + extraCD.CV);
-            let firstCD = (item.cd * firstRatio);
-            let tr = [`<tr onclick="updateChartOption(this)" data-offset=${firstCD} data-cd=${realCD}>`]
+            item.realCD = (item.cd * realRatio + extraCD.CV);
+            item.firstCD = (item.cd * firstRatio);
+            let tr = [`<tr onclick="updateChartOption(${idx})">`]
             item.choice.forEach((c) => {
                 tr.push('<td class="disp-equip">' + c.name + '</td>')
             });
             tr.push(`
             <td class="disp-cd">${dispCD.toFixed(2)}</td>
-            <td class="disp-cd">${firstCD.toFixed(4)}</td>
-            <td class="disp-cd">${realCD.toFixed(4)}</td>`)
+            <td class="disp-cd">${item.firstCD.toFixed(4)}</td>
+            <td class="disp-cd">${item.realCD.toFixed(4)}</td>`)
             tr.push('</tr>');
             $tbody.append(tr.join(''));
         }
-        updateChartOption($tbl.find('tbody tr')[0]);
+        updateChartOption();
         return;
     }
     function getAllOptions(slot) {
@@ -594,6 +606,7 @@
         }
         $(`.slot input`).off();
         $(`.cd input`).off();
+        data.chartIdx = 0;
         updateDomData();
         updateResult();
     }
@@ -634,6 +647,8 @@
         bindInput(data.reload.tech, 'CV', '#tech-inc-cv', updateResult);
         bindInput(data.reload.cat, 'CV', '#cat-inc-cv', updateResult);
 
+        bindInput(data.config, 'maxDuration', '#max-duration', updateResult);
+        bindInput(data.config, 'showTimeAsLeft', '#time-inv', updateResult);
         bindInput(data.config.offset, 'ALL', '#offset-all', updateResult);
         bindInput(data.config.offset, 'CV', '#offset-cv', updateResult);
         bindInput(data.config.duration, 'CV', '#duration-cv', updateResult);
