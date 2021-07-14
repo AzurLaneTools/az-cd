@@ -4,6 +4,7 @@ import json
 import shutil
 
 from utils.crawl import get_text
+from utils.ships import get_raw_ship_data
 
 
 def setup_ship_reload_info():
@@ -28,6 +29,12 @@ def setup_ship_reload_info():
         json.dump(ship_data, f, ensure_ascii=False, indent=2)
 
 
+def setup_ship_data():
+    for ship in get_raw_ship_data():
+        # TODO: 实现舰娘数据解析
+        print(ship["query"]["pages"][0]["title"])
+
+
 def generate_files():
     if os.path.exists("build"):
         shutil.rmtree("build")
@@ -37,4 +44,5 @@ def generate_files():
 
 if __name__ == "__main__":
     setup_ship_reload_info()
+    setup_ship_data()
     generate_files()
