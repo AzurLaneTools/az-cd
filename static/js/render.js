@@ -59,23 +59,15 @@
                 return params.marker + params.name + range;
             }
         },
-        title: {
-            text: '碧蓝航线CD计算器',
-            left: 'center'
-        },
         dataZoom: [{
             type: 'slider',
             filterMode: 'weakFilter',
             showDataShadow: false,
-            top: 400,
             labelFormatter: ''
         }, {
             type: 'inside',
             filterMode: 'weakFilter'
         }],
-        grid: {
-            height: 300
-        },
         xAxis: {
             min: 0,
             scale: true,
@@ -95,7 +87,7 @@
 
     myChart.setOption(option);
 
-    window.setChartOption = function (categories, data, setConfig) {
+    window.setChartOption = function (categories, data, setConfig, extra) {
         config.showTimeAsLeft = setConfig.showTimeAsLeft;
         config.maxDuration = setConfig.maxDuration;
         myChart.setOption({
@@ -113,6 +105,7 @@
                 data: categories,
                 inverse: true,
             },
+            ...(extra || {})
         });
     }
 })(window, document);
