@@ -5,7 +5,6 @@ import json
 import shutil
 
 from utils.crawl import get_text
-from utils.ships import get_ship_data
 
 
 def setup_ship_reload_info():
@@ -31,11 +30,23 @@ def setup_ship_reload_info():
 
 
 def setup_ship_data():
+    from utils.ships import get_ship_data
+
     ship_info = []
     for ship in get_ship_data():
         ship_info.append(ship)
     with open('resources/ships.json', 'w', -1, 'UTF8') as f:
         json.dump(ship_info, f, ensure_ascii=False, indent=2)
+
+
+def setup_equip_data():
+    from utils.equips import get_equip_data
+
+    equip_info = []
+    for equip in get_equip_data():
+        equip_info.append(equip)
+    with open('resources/equips.json', 'w', -1, 'UTF8') as f:
+        json.dump(equip_info, f, ensure_ascii=False, indent=2)
 
 
 def generate_files():
@@ -49,5 +60,6 @@ if __name__ == "__main__":
     logging.basicConfig(level="INFO")
 
     # setup_ship_reload_info()
-    # setup_ship_data()
-    generate_files()
+    setup_ship_data()
+    setup_equip_data()
+    # generate_files()
