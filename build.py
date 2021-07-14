@@ -1,3 +1,4 @@
+import logging
 import os
 import re
 import json
@@ -43,6 +44,8 @@ def generate_files():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level="INFO")
+
     setup_ship_reload_info()
     setup_ship_data()
     generate_files()

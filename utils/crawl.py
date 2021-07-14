@@ -1,6 +1,8 @@
 import requests
 import os
+import logging
 
+logger = logging.getLogger(__name__)
 session = requests.session()
 
 
@@ -35,7 +37,7 @@ def get_data(url, params, path, cache=True) -> bytes:
     if read_cache and os.path.exists(path):
         with open(path, "rb") as f:
             return f.read()
-
+    logger.info("Make Request: %s %s", url, params)
     resp = session.get(url, params=params)
     if write_cache:
         ensure_parent_dir(path)
