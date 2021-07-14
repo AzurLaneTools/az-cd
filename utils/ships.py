@@ -138,7 +138,7 @@ def extract(raw, op):
     if op['op'] == 'map':
         return op['map'][extract(raw, op['key'])]
     if op['op'] == 'attr':
-        key = 'PN' + raw['编号'] + '3'
+        key = raw['编号']
         if key in attrs:
             return get_attr(attrs[key], op['key'])
         return int(extract(raw, '满级' + op['key']) / 1.06)
