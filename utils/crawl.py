@@ -1,9 +1,21 @@
+import json
 import requests
 import os
+import re
 import logging
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 logger = logging.getLogger(__name__)
 session = requests.session()
+
+API_URL = "https://wiki.biligame.com/blhx/api.php"
+
+
+def sanitize_filename(name):
+    for c in "[]/\\;,><&*:%=+@!#^()|?^":
+        name = name.replace(c, "_")
+    name = re.sub(r"_+", "_", name)
+    return name
 
 
 def ensure_dir(path):
@@ -48,3 +60,75 @@ def get_data(url, params, path, cache=True) -> bytes:
 
 def get_text(url, params, path, cache=True, charset="UTF8"):
     return get_data(url, params, path, cache).decode(charset)
+
+
+def get_categorymembers(category):
+    resp = get_text(
+        API_URL,
+        params={
+            "action": "query",
+            "formatversion": "2",
+            "prop": "revisions",
+            "list": "categorymembers",
+            "format": "json",
+            "rvprop": "content",
+            "cmtitle": "分类:" + category,
+            "cmsort": "timestamp",
+            "cmlimit": 500,
+        },
+        path="resources/cache/分类_%s_列表.json" % sanitize_filename(category),
+    )
+    data = json.loads(resp)
+    yield from data["query"]["categorymembers"]
+
+    idx = 1
+    while data.get("continue"):
+        idx += 1
+        resp = get_text(
+            API_URL,
+            params={
+                "action": "query",
+                "formatversion": "2",
+                "prop": "revisions",
+                "list": "categorymembers",
+                "format": "json",
+                "rvprop": "content",
+                "cmtitle": "分类:" + category,
+                "cmsort": "timestamp",
+                "cmlimit": 500,
+                **data['continue'],
+            },
+            path="resources/cache/分类_%s_列表_%d.json"
+            % (sanitize_filename(category), idx),
+        )
+        data = json.loads(resp)
+        yield from data["query"]["categorymembers"]
+
+
+def get_categorymember_details(category):
+    dir_name = sanitize_filename(category)
+    executor = ThreadPoolExecutor(10)
+
+    fs = []
+    for item in get_categorymembers(category):
+        f = executor.submit(
+            get_text,
+            API_URL,
+            params={
+                "action": "query",
+                "formatversion": "2",
+                "prop": "revisions|categories",
+                "format": "json",
+                "rvprop": "timestamp|content",
+                "rvslots": "*",
+                "titles": item["title"],
+            },
+            path="resources/cache/%s/%s.json"
+            % (dir_name, sanitize_filename(item["title"])),
+        )
+        fs.append(f)
+
+    for f in as_completed(fs):
+        resp = f.result()
+        yield json.loads(resp)
+
