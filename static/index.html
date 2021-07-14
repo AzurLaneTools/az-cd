@@ -28,7 +28,8 @@
 
 <body>
     <h1>碧蓝航线CD计算器-Alpha</h1>
-    <a href="./cv-helper.html">航母装备选择辅助工具</a><br><br>
+    <a href="./cv-helper.html">航母装备选择辅助工具</a><button onclick="resetData(); initAll();">重置数据(出现问题时请尝试点击)</button>
+    <br><br>
     <label>
         配置名称
         <input type="text" id="record-name">
@@ -37,7 +38,6 @@
     <button onclick="copyRecord()">复制配置</button>
     <button id="delete-record" onclick="deleteCurrentRecord()">删除当前配置</button>
     <select name="records" id="records" onchange="loadRecord()"></select>
-    <button onclick="resetData(); initAll();">重置本地缓存</button>
 
     <hr>
     <div id="extra-reload-inc">
@@ -311,7 +311,7 @@
         function updateRealCD() {
             info.realCD = getRealCD(data.current.reload, info);
             console.log('updateRealCD', info.name, info.realCD)
-            $node.find('.real-cd').text(trimmedNum(info.realCD));
+            $node.find('.real-cd').text(trimmedNum(parseFloat(info.realCD) + extraCD.BB));
             updateChartOption();
         }
         for (let name of ['type', 'name', 'cd', 'reload', 'reloadBuff', 'CDBuff', 'firstCDBuff']) {
@@ -439,7 +439,16 @@
         };
         console.log('updateChartOption');
         let { categories, chartData } = buildOption(data.current);
-        window.setChartOption(categories, chartData, data.current.config);
+        window.setChartOption(
+            categories, chartData, data.current.config,
+            {
+                title: {
+                    text: '碧蓝航线CD计算器',
+                    left: 'center',
+                    show: true,
+                },
+            }
+        );
     }
     var buffData = {};
     async function loadBuffData() {

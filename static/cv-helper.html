@@ -67,7 +67,27 @@
             background-color: #fff;
             display: none;
             z-index: 11;
-            cursor: default;
+        }
+
+        #chart-container {
+            position: fixed;
+            left: 0;
+            bottom: 0px;
+            width: 100%;
+            height: 200px;
+            background: #fff;
+            z-index: 9;
+        }
+
+        #results {
+            padding-bottom: 200px;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0 0 0 0;
         }
 
         .slot-options label {
@@ -88,19 +108,30 @@
             overflow-y: scroll;
             height: 400px;
         }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        tr {
+            cursor: pointer;
+            border: 1px solid black;
+        }
+
+        div.container {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
     </style>
 </head>
 
 <body>
-    <h1>碧蓝航线CD计算器-航母装备选择</h1>
-    <a href="./">CD计算器</a><br><br>
-    <!-- 
-    流程:
-    1. 配置基础数据
-    2. 选择目标CD
-    3. 
- -->
-    <div id="extra-reload-inc">
+    <div class="container">
+        <h1>碧蓝航线CD计算器-航母装备选择</h1>
+        <a href="./">CD计算器</a> <button onclick="resetData(); initAll();">重置数据(出现问题时请尝试点击)</button>
+        <br><br>
+    </div>
+    <div id="extra-reload-inc" class="container">
         <label>
             命中延迟
             <input type="number" name="offset-cv" id="offset-cv" value="0" min="0">
@@ -125,17 +156,12 @@
         </label>
     </div>
     <hr>
-    <div class="shipinfo ship-cv">
+    <div class="shipinfo ship-cv container">
         <label>
             舰娘
             <select name="name" id="ship-name">
                 <option value="custom">自定义</option>
             </select>
-        </label>
-        <label>
-            目标CD:
-            <input type="number" name="target-cd-min" min="5" max="100"> - <input type="number" name="target-cd-max"
-                min="5" max="100">
         </label>
         <br>
         <div class="slot slot0">
@@ -186,40 +212,81 @@
             </label>
             <br>
         </div>
-
-        <div id="cover" class="modal" onclick="finishSelect()">
-            <div style="text-align: center; color: white; font-size: 3em; margin-top: 5%;">点击遮罩层退出</div>
-        </div>
-        <div id="modal" class="modal">
-            <div class="slot-buttons">
-                选中:
-                <button class="slot-option" data-q="input.slot-option" data-set="1">全部</button> |
-                <button class="slot-option" data-q="input.slot-option.fast" data-set="1">调速</button>
-                <button class="slot-option" data-q="input.slot-option.damage" data-set="1">伤害</button> |
-                <button class="slot-option z" data-q="input.slot-option.z" data-set="1">战斗机</button>
-                <button class="slot-option h" data-q="input.slot-option.h" data-set="1">轰炸机</button>
-                <button class="slot-option y" data-q="input.slot-option.y.js" data-set="1">集束雷</button>
-                <button class="slot-option y" data-q="input.slot-option.y.px" data-set="1">平行雷</button>
-                <br>
-                取消:
-                <button class="slot-option" data-q="input.slot-option" data-set="0">全部</button> |
-                <button class="slot-option" data-q="input.slot-option.fast" data-set="0">调速</button>
-                <button class="slot-option" data-q="input.slot-option.damage" data-set="0">伤害</button> |
-                <button class="slot-option z" data-q="input.slot-option.z" data-set="0">战斗机</button>
-                <button class="slot-option h" data-q="input.slot-option.h" data-set="0">轰炸机</button>
-                <button class="slot-option y" data-q="input.slot-option.y.js" data-set="0">集束雷</button>
-                <button class="slot-option y" data-q="input.slot-option.y.px" data-set="0">平行雷</button>
-                <br>
-            </div>
-            <div class="slot-options">
-                <div class="slot-option z"></div><br>
-                <div class="slot-option h"></div><br>
-                <div class="slot-option y"></div><br>
-            </div>
-        </div>
     </div>
     <hr>
-    <div id="results"></div>
+    <div id="target" class="container">
+        <label>
+            战斗时间
+            <input type="number" name="max-duration" id="max-duration">
+            s
+        </label>
+        &nbsp;
+        <label>
+            按剩余时间显示
+            <input type="checkbox" name="time-inv" id="time-inv">
+        </label>
+        <br>
+        对轴目标
+        <label>
+            类型
+            <select name="type">
+                <option value="fixed">周期性</option>
+                <option value="predefined">预定义</option>
+            </select>
+        </label>
+        <div class="layer buff fixed">
+            <label>
+                CD
+                <input type="number" min="0" step="any" name="cd">
+            </label>
+            <label>
+                持续时间
+                <input type="number" min="0" step="any" name="duration">
+            </label>
+            <label>
+                首轮CD
+                <input type="number" min="0" step="any" name="offset">
+            </label>
+        </div>
+        <div class="layer buff predefined">
+            <input name="data" style="width: 80%" placeholder="请输入 start,end,start,end 格式的时间记录"></textarea>
+        </div>
+        <hr>
+    </div>
+    <div id="cover" class="modal" onclick="finishSelect()">
+        <div style="text-align: center; color: white; font-size: 3em; margin-top: 5%;">点击遮罩层退出</div>
+    </div>
+    <div id="modal" class="modal">
+        <div class="slot-buttons">
+            选中:
+            <button class="slot-option" data-q="input.slot-option" data-set="1">全部</button> |
+            <button class="slot-option" data-q="input.slot-option.fast" data-set="1">调速</button>
+            <button class="slot-option" data-q="input.slot-option.damage" data-set="1">伤害</button> |
+            <button class="slot-option z" data-q="input.slot-option.z" data-set="1">战斗机</button>
+            <button class="slot-option h" data-q="input.slot-option.h" data-set="1">轰炸机</button>
+            <button class="slot-option y" data-q="input.slot-option.y.js" data-set="1">集束雷</button>
+            <button class="slot-option y" data-q="input.slot-option.y.px" data-set="1">平行雷</button>
+            <br>
+            取消:
+            <button class="slot-option" data-q="input.slot-option" data-set="0">全部</button> |
+            <button class="slot-option" data-q="input.slot-option.fast" data-set="0">调速</button>
+            <button class="slot-option" data-q="input.slot-option.damage" data-set="0">伤害</button> |
+            <button class="slot-option z" data-q="input.slot-option.z" data-set="0">战斗机</button>
+            <button class="slot-option h" data-q="input.slot-option.h" data-set="0">轰炸机</button>
+            <button class="slot-option y" data-q="input.slot-option.y.js" data-set="0">集束雷</button>
+            <button class="slot-option y" data-q="input.slot-option.y.px" data-set="0">平行雷</button>
+            <br>
+        </div>
+        <div class="slot-options">
+            <div class="slot-option z"></div><br>
+            <div class="slot-option h"></div><br>
+            <div class="slot-option y"></div><br>
+        </div>
+    </div>
+    <div id="chart-container">
+        <div id="chart" style="height: 200px;"></div>
+    </div>
+    <div id="results" class="container"></div>
 
     <!-- 模板开始 -->
     <template id="result-table-template">
@@ -240,13 +307,17 @@
 </body>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"
+    integrity="sha256-TI0rIaxop+pDlHNVI6kDCFvmpxNYUnVH/SMjknZ/W0Y=" crossorigin="anonymous"></script>
 <script src="js/utils.js"></script>
 <script src="js/cd.js"></script>
+<script src="js/render.js"></script>
 <script>
     const STORE_KEY = 'AzurLaneCDTool-CacheData-CVHelper';
     let data;
     let shipData, aircraftData;
     let targetSlot;
+    let cdResults = [];
     function saveData() {
         localStorage.setItem(STORE_KEY, JSON.stringify(data));
     }
@@ -296,6 +367,7 @@
             });
         });
         $(`div.slot.slot${targetSlot} span.option-desc`).text(`${slot.options.length}种舰载机`);
+        data.chartIdx = 0;
         updateResult();
     }
     function resetData() {
@@ -309,14 +381,37 @@
                     { cnt: 0, z: 0, h: 0, y: 0 },
                 ],
                 reload: null,
-                cd: null,
                 firstCDBuff: 0,
                 CDBuff: 0,
                 reloadBuff: 0,
             },
-            reload: { tech: 0, cat: 0 },
-            offset: { CV: 2, ALL: 1.5 },
-            duration: { CV: 3 }
+            target: {
+                type: 'fixed',
+                cd: 20,
+                duration: 10,
+                offset: null,
+                data: '',
+            },
+            reload: {
+                tech: {
+                    CV: 0,
+                },
+                cat: {
+                    CV: 0,
+                }
+            },
+            chartIdx: 0,
+            config: {
+                maxDuration: 180,
+                showTimeAsLeft: false,
+                offset: {
+                    ALL: 1.5,
+                    CV: 1,
+                },
+                duration: {
+                    CV: 3,
+                },
+            }
         };
         saveData();
     }
@@ -324,7 +419,7 @@
         let res = [];
         return res;
     }
-    function getAllChoices(slots, minCD, maxCD) {
+    function getAllChoices(slots) {
         let groups = [];
         for (let slot of slots) {
             let group = {
@@ -344,9 +439,6 @@
             for (let sb of b.choices) {
                 for (let sc of c.choices) {
                     let cd = (sa.cd * a.cnt + sb.cd * b.cnt + sc.cd * c.cnt) / (a.cnt + b.cnt + c.cnt);
-                    if (cd < minCD || cd > maxCD) {
-                        continue;
-                    }
                     let choice = [sa, sb, sc];
                     res.push({ cd, choice });
                 }
@@ -357,75 +449,119 @@
         });
         return res;
     }
+    function updateChartOption(idx) {
+        if (!isNaN(parseFloat(idx))) {
+            data.chartIdx = idx;
+        }
+        console.log('chartIdx', data.chartIdx, cdResults)
+        let item = cdResults[data.chartIdx];
+        if (!item) {
+            if (cdResults.length === 0) {
+                return
+            }
+            data.chartIdx = 0;
+        }
+        let name = [];
+        item.choice.forEach((c) => {
+            if (c.name !== '-') {
+                name.push(c.name)
+            }
+
+        })
+        let record = {
+            ships: [{
+                name: name.join('\n'),
+                type: 'CV',
+                realCD: item.realCD - extraCD.CV,
+                firstCDBuff: data.ship.firstCDBuff,
+                CDBuff: data.ship.CDBuff,
+                reloadBuff: data.ship.reloadBuff,
+                bindSkills: [],
+            }],
+            buffs: [{
+                ...data.target,
+                name: '目标Buff'
+            }],
+            config: data.config
+        }
+        let { categories, chartData } = buildOption(record);
+        chartData.title = '';
+        window.setChartOption(categories, chartData, record.config, {
+            title: { show: false }, grid: {
+                top: '2%',
+            }
+        });
+    }
     function updateResult() {
-        console.log('updateResult', data.ship);
-        let minCD = data.ship.minCD, maxCD = data.ship.maxCD;
+        console.log('updateResult', data.ship, data.target);
         let $res = $('#results');
         $res.html('');
         let comCnt = 1;
         for (let slot of data.ship.slots) {
+            if (!slot.options) {
+                slot.options = getAllOptions(slot);
+            }
             if (slot.options.length > 1) {
                 comCnt = comCnt * slot.options.length;
             }
         }
+        updateChartOption();
         $res.append(`总选项数量${comCnt}`);
-        if (comCnt < 500) {
-            // 不限制CD
-            minCD = 0;
-            maxCD = 100;
-            $res.append(', 将忽略CD限制.<br>');
+        if (comCnt > 1000) {
+            $res.append(', 请减少舰载机选项数量!');
+            return;
         } else {
             $res.append('.<br>');
-            if (!minCD || !maxCD || maxCD <= minCD || maxCD - minCD > 10) {
-                $res.append('请给出合理的目标CD范围!');
-                return;
-            }
         }
         // 计算目标CD对应的舰载机原始CD
         // 实际CD = (装填加成 * 原始CD * 2.2) * 射速加成 + 前后摇
         // 原始CD = (实际CD - 前后摇) / (装填加成 * 射速加成 * 2.2)
-        let realReload = (data.ship.reload + data.reload.tech + data.reload.cat) * (1 + (data.ship.reloadBuff || 0) / 100);
+        let realReload = (data.ship.reload + data.reload.tech.CV + data.reload.cat.CV) * (1 + (data.ship.reloadBuff || 0) / 100);
         let realRatio = getCDMultiplier(realReload) * (1 - (data.ship.CDBuff || 0) / 100) * 2.2;
         if (!data.ship.reload || !realRatio) {
             $res.append('请补全舰娘数据!');
             return;
         }
         console.log(realRatio);
-        let minRawCD = (minCD - extraCD.CV) / realRatio;
-        let maxRawCD = (maxCD - extraCD.CV) / realRatio;
-        console.log('原始CD过滤条件:', minRawCD, maxRawCD);
-        let res = getAllChoices(data.ship.slots, minRawCD, maxRawCD);
-        console.log('计算完毕. 可选数量: ', res.length);
+        cdResults = getAllChoices(data.ship.slots);
+        console.log('计算完毕. 可选数量: ', cdResults.length);
         // 计算面板CD
         // 面板CD = 原始CD * 面板装填加成 * 2.2
-        $res.append(`共得到${res.length}种可选方案`);
-        if (res.length === 0) {
+        $res.append(`共得到${cdResults.length}种可选方案`);
+        if (cdResults.length === 0) {
             return;
         }
+        if (data.chartIdx >= cdResults.length) {
+            data.chartIdx = 0;
+        }
         let dispLimit = 50;
-        if (res.length > dispLimit) {
+        if (cdResults.length > dispLimit) {
             $res.append(', 将显示前' + dispLimit + '种');
-            res.splice(dispLimit, res.length - dispLimit);
+            cdResults.splice(dispLimit, cdResults.length - dispLimit);
         }
         $res.append('.<br>');
         let $tbl = $(getTemplate('result-table-template'));
         $res.append($tbl);
 
-        let dispRatio = getCDMultiplier(data.ship.reload + data.reload.tech) * 2.2;
+        let dispRatio = getCDMultiplier(data.ship.reload + data.reload.tech.CV) * 2.2;
         let firstRatio = realRatio * (1 - (data.ship.firstCDBuff || 0) / 100);
         let $tbody = $tbl.find('tbody');
-        for (let item of res) {
-            let dispCD = (item.cd * dispRatio).toFixed(2);
-            let realCD = (item.cd * realRatio + extraCD.CV).toFixed(4);
-            let firstCD = (item.cd * firstRatio).toFixed(4);
-            let tr = ['<tr>']
+        for (let [idx, item] of cdResults.entries()) {
+            let dispCD = (item.cd * dispRatio);
+            item.realCD = (item.cd * realRatio + extraCD.CV);
+            item.firstCD = (item.cd * firstRatio);
+            let tr = [`<tr onclick="updateChartOption(${idx})">`]
             item.choice.forEach((c) => {
                 tr.push('<td class="disp-equip">' + c.name + '</td>')
             });
-            tr.push(`<td class="disp-cd">${dispCD}</td><td class="disp-cd">${firstCD}</td><td class="disp-cd">${realCD}</td>`)
+            tr.push(`
+            <td class="disp-cd">${dispCD.toFixed(2)}</td>
+            <td class="disp-cd">${item.firstCD.toFixed(4)}</td>
+            <td class="disp-cd">${item.realCD.toFixed(4)}</td>`)
             tr.push('</tr>');
             $tbody.append(tr.join(''));
         }
+        updateChartOption();
         return;
     }
     function getAllOptions(slot) {
@@ -471,6 +607,7 @@
         }
         $(`.slot input`).off();
         $(`.cd input`).off();
+        data.chartIdx = 0;
         updateDomData();
         updateResult();
     }
@@ -506,17 +643,16 @@
         $('input, select, button').off();
         bindInput(data.ship, 'name', '#ship-name', onShipSelect);
 
-        bindInput(data.ship, 'minCD', 'input[name=target-cd-min]', updateResult);
-        bindInput(data.ship, 'maxCD', 'input[name=target-cd-max]', updateResult);
-
         updateDomData();
 
-        bindInput(data.reload, 'tech', '#tech-inc-cv', updateResult);
-        bindInput(data.reload, 'cat', '#cat-inc-cv', updateResult);
+        bindInput(data.reload.tech, 'CV', '#tech-inc-cv', updateResult);
+        bindInput(data.reload.cat, 'CV', '#cat-inc-cv', updateResult);
 
-        bindInput(data.offset, 'ALL', '#offset-all', updateResult);
-        bindInput(data.offset, 'CV', '#offset-cv', updateResult);
-        bindInput(data.duration, 'CV', '#duration-cv', updateResult);
+        bindInput(data.config, 'maxDuration', '#max-duration', updateResult);
+        bindCheckbox(data.config, 'showTimeAsLeft', '#time-inv', updateResult);
+        bindInput(data.config.offset, 'ALL', '#offset-all', updateResult);
+        bindInput(data.config.offset, 'CV', '#offset-cv', updateResult);
+        bindInput(data.config.duration, 'CV', '#duration-cv', updateResult);
     }
     async function initAll() {
         let resp = await fetch('data/ships.json');
@@ -533,7 +669,11 @@
                 if (aircraft.cd < 10) {
                     cls.push('fast')
                 }
-                target.append(`<label class="${cls.join(' ')}">${aircraft.name}<input data-cd="${aircraft.cd}" data-type="${key}" class="${cls.join(' ')}" name="${aircraft.name}" type="checkbox"></label>`)
+                target.append(`
+                <label class="${cls.join(' ')}">${aircraft.name}
+                <input data-cd="${aircraft.cd}" data-type="${key}" 
+                class="${cls.join(' ')}" name="${aircraft.name}" type="checkbox">
+                </label>`)
             }
         }
         let $dom = $('#ship-name');
@@ -541,9 +681,32 @@
             $dom.append(`<option value="${key}">${shipData[key].name}</option>`);
         }
         loadDataAndDom();
+
+
+        bindInput(data.target, 'minCD', 'input[name=target-cd-min]', updateResult);
+        bindInput(data.target, 'maxCD', 'input[name=target-cd-max]', updateResult);
+
+        let $node = $('#target');
+        for (let name of ['type', 'cd', 'duration', 'offset', 'data']) {
+            bindInput(data.target, name, $node.find(`[name=${name}]`), updateResult);
+        }
+        let $type = $node.find('[name=type]');
+        function updateDisplay() {
+            console.log('updateDisplay', $type)
+            console.log($node.find('div.buff'));
+            $node.find('div.buff').hide();
+            $node.find('div.buff.' + $type.val()).show();
+        }
+        $type.on('change', updateDisplay);
+        updateDisplay();
         updateResult();
     }
-    initAll();
+    try {
+        initAll();
+    } catch (e) {
+        resetData();
+        initAll();
+    }
 </script>
 
 </html>
