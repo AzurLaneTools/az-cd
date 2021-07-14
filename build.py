@@ -60,6 +60,6 @@ if __name__ == "__main__":
     logging.basicConfig(level="INFO")
 
     # setup_ship_reload_info()
-    setup_ship_data()
-    setup_equip_data()
+    # setup_ship_data()
+    # setup_equip_data()
     # generate_files()
