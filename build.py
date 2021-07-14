@@ -53,7 +53,6 @@ def generate_files():
     if os.path.exists("build"):
         shutil.rmtree("build")
     shutil.copytree("static", "build")
-    shutil.copy2("resources/data_reload.json", "build/data_reload.json")
 
 
 if __name__ == "__main__":
@@ -62,4 +61,4 @@ if __name__ == "__main__":
     # setup_ship_reload_info()
     # setup_ship_data()
     # setup_equip_data()
-    # generate_files()
+    generate_files()
