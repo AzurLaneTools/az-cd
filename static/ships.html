@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <title>碧蓝航线CD计算器-舰娘配置</title>
+    <style>
+        img.icon.small {
+            width: 50px;
+            height: 50px;
+        }
+
+        .search-select {
+            min-width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>碧蓝航线CD计算器-舰娘配置</h1>
+    <select class="search-select" name="ship" id="ship-select">
+        <option value="test">测试</option>
+        <option value="test" data-match="维克托 weiketuo vv">维克托</option>
+        <option value="test" data-match="花园 新泽西 huayuan xinzexi">新泽西</option>
+        <option value="test">测试</option>
+        <option value="test">测试</option>
+        <option value="test">测试</option>
+        <option value="test">测试</option>
+        <option value="test">测试</option>
+        <option value="test">测试</option>
+    </select>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"
+        integrity="sha256-9yRP/2EFlblE92vzCA10469Ctd0jT48HnmmMw5rJZrA=" crossorigin="anonymous"></script>
+    <script>
+        // In your Javascript (external .js resource or <script> tag)
+        $(document).ready(function () {
+            $('.search-select').select2({
+                placeholder: '请选择舰娘.',
+                templateResult: (state) => {
+                    console.log(state);
+                    var content = $(state.element).data('content');
+                    if (!content) {
+                        return state.text;
+                    }
+                    console.log('return content')
+                    return $(content);
+                },
+                selectOnClose: true,
+                matcher: (params, data) => {
+                    var term = $.trim(params.term);
+                    // If there are no search terms, return all of the data
+                    if (term === '') {
+                        return data;
+                    }
+                    term = term.replace(/'/g, '').toLowerCase();
+                    // `params.term` should be the term that is used for searching
+                    // `data.text` is the text that is displayed for the data object
+                    var text = $(data.element).data('match') || data.text;
+                    if (text.indexOf(term) > -1) {
+                        // You can return modified objects from here
+                        // This includes matching the `children` how you want in nested data sets
+                        return data;
+                    }
+                    return null;
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
