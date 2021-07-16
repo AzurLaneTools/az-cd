@@ -12,10 +12,16 @@ API_URL = "https://wiki.biligame.com/blhx/api.php"
 
 
 def sanitize_filename(name):
+    name, ext = os.path.splitext(name)
     for c in "[]/\\;,><&*:%=+@!#^()|?^":
         name = name.replace(c, "_")
-    name = re.sub(r"_+", "_", name)
-    return name
+    for a, b in [
+        [r'_+', '_'],
+        [r'_+$', ''],
+        [r'^_+', ''],
+    ]:
+        name = re.sub(a, b, name)
+    return name + ext
 
 
 def ensure_dir(path):
