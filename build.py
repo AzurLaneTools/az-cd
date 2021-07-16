@@ -61,7 +61,7 @@ def generate_files():
     with open('resources/ships.json', 'r', -1, 'UTF8') as f:
         data = json.load(f)
     data = [copy_dict(s, ['编号', '名称', '类型', 'match']) for s in data]
-    with open('static/data/ships.json', 'w', -1, 'UTF8') as f:
+    with open('static/data/all-ships.json', 'w', -1, 'UTF8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
     if os.path.exists("build"):
