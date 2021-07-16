@@ -35,10 +35,15 @@ def setup_ship_data():
     from utils.ship_trans import get_ship_data as get_ship_data_trans
 
     ensure_dir('static/extra')
-    with open('resources/ships.json', 'w', -1, 'UTF8') as f:
-        json.dump(list(get_ship_data()), f, ensure_ascii=False, indent=2)
     with open('static/extra/ship_trans.json', 'w', -1, 'UTF8') as f:
         json.dump(list(get_ship_data_trans()), f, ensure_ascii=False, indent=2)
+
+    ships_all = list(get_ship_data())
+    with open('static/data/ships-full.json', 'w', -1, 'UTF8') as f:
+        json.dump(ships_all, f, ensure_ascii=False, indent=2)
+    ships_simple = [copy_dict(s, ['编号', '名称', '类型', 'match']) for s in ships_all]
+    with open('static/data/ships-simple.json', 'w', -1, 'UTF8') as f:
+        json.dump(ships_simple, f, ensure_ascii=False, indent=2)
 
 
 def setup_equip_data():
@@ -57,12 +62,6 @@ def copy_dict(d, keys=None):
 
 
 def generate_files():
-    with open('resources/ships.json', 'r', -1, 'UTF8') as f:
-        data = json.load(f)
-    data = [copy_dict(s, ['编号', '名称', '类型', 'match']) for s in data]
-    with open('static/data/all-ships.json', 'w', -1, 'UTF8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-
     if os.path.exists("build"):
         shutil.rmtree("build")
     shutil.copytree("static", "build")
@@ -77,7 +76,7 @@ def get_parser():
 def main():
     parser = get_parser()
     args = parser.parse_args()
-    if args == 'build':
+    if args.action == 'build':
         setup_ship_reload_info()
         setup_ship_data()
         setup_equip_data()
