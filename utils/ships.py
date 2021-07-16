@@ -2,11 +2,23 @@ import re
 import wikitextparser as wtp
 from pypinyin import slug
 
-from utils.crawl import get_categorymember_details
+from utils.crawl import get_categorymember_details, sanitize_filename
 from utils.point import attrs
 
 
-REMAP = {"装甲类型": {"轻型": "轻型", "中型": "中型", "中型装甲": "中型", "重型": "重型", "重甲": "重型",}}
+REMAP = {
+    "装甲类型": {
+        "轻甲": "轻型",
+        "轻型": "轻型",
+        "轻型装甲": "轻型",
+        "中甲": "中型",
+        "中型": "中型",
+        "中型装甲": "中型",
+        "重型": "重型",
+        "重甲": "重型",
+        "重型装甲": "重型",
+    }
+}
 
 GROUP_PREFIX = {'联动': 'Collab', '方案': 'Plan'}
 
@@ -112,8 +124,6 @@ def get_ship_data():
     for category in ['舰娘', '联动舰娘', '方案舰娘']:
         for ship in get_categorymember_details(category):
             page = ship['query']['pages'][0]
-            if '布里' in page['title']:
-                continue
             try:
                 yield parse_ship_content(
                     page['revisions'][0]['slots']['main']['content']
