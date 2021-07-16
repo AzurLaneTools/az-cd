@@ -45,7 +45,7 @@
     <script>
         // In your Javascript (external .js resource or <script> tag)
         $(document).ready(async function () {
-            let resp = await fetch('data/all-ships.json');
+            let resp = await fetch('data/ships-simple.json');
             let data = await resp.json();
             for (let ship of data) {
                 $('#ship-select').append(`<option value="${ship.编号}" data-match="${ship.match}">${ship.名称}</option>`);
