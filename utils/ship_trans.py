@@ -1,4 +1,5 @@
 import re
+import wikitextparser as wtp
 
 from utils.crawl import get_categorymember_details
 from utils.point import attrs
@@ -114,6 +115,7 @@ WP_MAP = {
 }
 
 OPTIONAL_KEYS = {'1号槽满破武器数': '1', '2号槽满破武器数': '1', '3号槽满破武器数': '1', '满级反潜': '0'}
+GROUP_PREFIX = {'联动': 'Collab', '方案': 'Plan'}
 
 re_int = re.compile(r'^\s*\d+$')
 re_float = re.compile(r'^\s*\d*\.\d+$')
@@ -180,13 +182,20 @@ def extract(raw, op):
 
 
 def parse_ship_content(content: str):
-    m = re.search(r'(?s)\{\{舰娘图鉴(.+?)\n\}\}[\r\n]', content)
-    if not m:
-        print(content)
-    desc = m.group(1)
+    parsed = wtp.parse(content)
     raw_map = {}
-    for key, val in re.findall(r"(?m)^\|+(.+?)=(.+)$", desc):
-        raw_map[key] = val
+    for t in parsed.templates:
+        if '舰娘图鉴' not in t.name:
+            continue
+        for arg in t.arguments:
+            key = arg.name.strip()
+            val = arg.value.strip()
+            if not val:
+                continue
+            raw_map[key] = val
+
+    if raw_map.get('分组'):
+        raw_map['编号'] = GROUP_PREFIX[raw_map['分组']] + raw_map['编号']
     res = {}
     for key, val in KEY_MAP.items():
         res[key] = extract(raw_map, val)
