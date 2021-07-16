@@ -45,9 +45,14 @@ def setup_ship_data():
     ships_all.sort(key=lambda a: a['编号'])
     with open('static/data/ships-full.json', 'w', -1, 'UTF8') as f:
         json.dump(ships_all, f, ensure_ascii=False, indent=2)
-    ships_simple = [copy_dict(s, ['编号', '名称', '类型', 'match']) for s in ships_all]
-    for s in ships_simple:
-        s['img'] = sanitize_filename(s['名称']) + '.jpg'
+
+    ships_simple = []
+    for sf in ships_all:
+        ss = copy_dict(sf, ['编号', '名称', '类型', 'match'])
+        ss['img'] = sanitize_filename(sf['名称']) + '.jpg'
+        if sf.get('和谐名'):
+            ss['名称'] = '{}({})'.format(sf['名称'], sf['和谐名'])
+        ships_simple.append(ss)
     with open('static/data/ships-simple.json', 'w', -1, 'UTF8') as f:
         json.dump(ships_simple, f, ensure_ascii=False, indent=2)
 
