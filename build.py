@@ -39,6 +39,7 @@ def setup_ship_data():
         json.dump(list(get_ship_data_trans()), f, ensure_ascii=False, indent=2)
 
     ships_all = list(get_ship_data())
+    ships_all.sort(key=lambda a: a['编号'])
     with open('static/data/ships-full.json', 'w', -1, 'UTF8') as f:
         json.dump(ships_all, f, ensure_ascii=False, indent=2)
     ships_simple = [copy_dict(s, ['编号', '名称', '类型', 'match']) for s in ships_all]
