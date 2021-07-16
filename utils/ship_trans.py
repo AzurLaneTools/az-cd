@@ -141,7 +141,7 @@ def get_attr(raw, key):
             + data.get('可强化' + key, 0)
             + data[key + '改造']
         )
-        return round(val, 4)
+        return round(val, 6)
 
     akey = '改造满级' + key
     if akey not in raw:
