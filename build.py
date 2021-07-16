@@ -49,7 +49,21 @@ def setup_equip_data():
         json.dump(equip_info, f, ensure_ascii=False, indent=2)
 
 
+def copy_dict(d, keys=None):
+    if d is None:
+        return None
+    if keys is None:
+        keys = d.keys()
+    return {k: d[k] for k in keys}
+
+
 def generate_files():
+    with open('resources/ships.json', 'r', -1, 'UTF8') as f:
+        data = json.load(f)
+    data = [copy_dict(s, ['编号', '名称', '类型', 'match']) for s in data]
+    with open('static/data/ships.json', 'w', -1, 'UTF8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
     if os.path.exists("build"):
         shutil.rmtree("build")
     shutil.copytree("static", "build")
@@ -59,6 +73,6 @@ if __name__ == "__main__":
     logging.basicConfig(level="INFO")
 
     # setup_ship_reload_info()
-    # setup_ship_data()
+    setup_ship_data()
     # setup_equip_data()
     generate_files()
