@@ -134,13 +134,14 @@ def get_attr(raw, key):
     if key in ('耐久', '装填', '炮击', '雷击', '机动', '防空', '航空', '反潜',) and raw['编号'] in attrs:
         data = attrs[raw['编号']]
         lvl = 120
-        return (
+        val = (
             data[key + '基础']
             + data[key + '成长'] * (lvl - 1) / 1000
             + data[key + '额外'] * (lvl - 100) / 1000
             + data.get('可强化' + key, 0)
             + data[key + '改造']
         )
+        return round(val, 4)
 
     akey = '改造满级' + key
     if akey not in raw:
@@ -150,7 +151,7 @@ def get_attr(raw, key):
     val = int(raw.get(akey, 0))
     if key == '消耗':
         return val
-    return val / 1.06
+    return int(val / 1.06)
 
 
 def extract(raw, op):
