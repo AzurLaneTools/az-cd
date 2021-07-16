@@ -26,17 +26,10 @@
 
 <body>
     <h1>碧蓝航线CD计算器-舰娘配置</h1>
-    <select class="search-select" name="ship" id="ship-select">
-        <option value="test">测试</option>
-        <option value="test" data-match="维克托 weiketuo vv">维克托</option>
-        <option value="test" data-match="花园 新泽西 huayuan xinzexi">新泽西</option>
-        <option value="test">测试</option>
-        <option value="test">测试</option>
-        <option value="test">测试</option>
-        <option value="test">测试</option>
-        <option value="test">测试</option>
-        <option value="test">测试</option>
-    </select>
+    <select class="search-select" name="ship" id="ship-select"></select>
+
+    <input type="number" name="reload" id="reload">
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"
@@ -51,17 +44,22 @@
         integrity="sha256-9yRP/2EFlblE92vzCA10469Ctd0jT48HnmmMw5rJZrA=" crossorigin="anonymous"></script>
     <script>
         // In your Javascript (external .js resource or <script> tag)
-        $(document).ready(function () {
+        $(document).ready(async function () {
+            let resp = await fetch('data/all-ships.json');
+            let data = await resp.json();
+            for (let ship of data) {
+                $('#ship-select').append(`<option value="${ship.编号}" data-match="${ship.match}">${ship.名称}</option>`);
+            }
             $('.search-select').select2({
                 placeholder: '请选择舰娘.',
                 templateResult: (state) => {
                     console.log(state);
-                    var content = $(state.element).data('content');
-                    if (!content) {
+                    var imgUrl = $(state.element).data('imgUrl');
+                    if (!imgUrl) {
                         return state.text;
                     }
-                    console.log('return content')
-                    return $(content);
+                    console.log('add img', state.text, imgUrl);
+                    return $(`<img href="${imgUrl}"/><span>${state.text}</span>`);
                 },
                 selectOnClose: true,
                 matcher: (params, data) => {
