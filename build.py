@@ -35,8 +35,10 @@ def setup_ship_data():
     from utils.ship_trans import get_ship_data as get_ship_data_trans
 
     ensure_dir('static/extra')
+    ship_transed = list(get_ship_data_trans())
+    ship_transed.sort(key=lambda a: a['name'])
     with open('static/extra/ship_trans.json', 'w', -1, 'UTF8') as f:
-        json.dump(list(get_ship_data_trans()), f, ensure_ascii=False, indent=2)
+        json.dump(ship_transed, f, ensure_ascii=False, indent=2)
 
     ships_all = list(get_ship_data())
     ships_all.sort(key=lambda a: a['编号'])
