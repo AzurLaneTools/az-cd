@@ -39,13 +39,24 @@ KEY_MAP = {
             "维希教廷": "CuriaofVichya",
             "撒丁帝国": "SardinianEmpire",
             "余烬": "ASHES",
+            "海王星": "联动:海王星",
+            "传颂之物": "联动:传颂之物",
+            "哔哩哔哩": "联动:哔哩哔哩",
+            "KizunaAI": "联动:KizunaAI",
+            "DOAXVV": "联动:DOA",
             "其他": "其他",
         },
     },
     'armor': {
         'op': 'map',
         'key': '装甲类型',
-        'map': {"轻型": "Light", "中型": "Medium", "重型": "Heavy", "重甲": "Heavy",},
+        'map': {
+            "轻型": "Light",
+            "中型": "Medium",
+            "中型装甲": "Medium",
+            "重型": "Heavy",
+            "重甲": "Heavy",
+        },
     },
     'health': {'op': 'attr', 'key': '耐久'},
     'reload': {'op': 'attr', 'key': '装填'},
@@ -55,7 +66,7 @@ KEY_MAP = {
     'antiAir': {'op': 'attr', 'key': '防空'},
     'aviation': {'op': 'attr', 'key': '航空'},
     'antiSubmar': {'op': 'attr', 'key': '反潜'},
-    'oil': '满级消耗',
+    'oil': {'op': 'attr', 'key': '消耗'},
     'luck': '幸运',
     'speed': '航速',
     'weaponType1': '1号槽装备类型',
@@ -72,7 +83,9 @@ KEY_MAP = {
         'key': '稀有度',
         'map': {
             '海上传奇': 'UltraRare',
+            '决战方案': 'UltraRare',
             '超稀有': 'SuperRare',
+            '最高方案': 'SuperRare',
             '精锐': 'Elite',
             '稀有': 'Rare',
             '普通': 'Normal',
@@ -117,15 +130,27 @@ def try_parse_num(text):
     return text.strip()
 
 
-def get_attr(data, key):
-    lvl = 120
-    return (
-        data[key + '基础']
-        + data[key + '成长'] * (lvl - 1) / 1000
-        + data[key + '额外'] * (lvl - 100) / 1000
-        + data.get('可强化' + key, 0)
-        + data[key + '改造']
-    )
+def get_attr(raw, key):
+    if key in ('耐久', '装填', '炮击', '雷击', '机动', '防空', '航空', '反潜',) and raw['编号'] in attrs:
+        data = attrs[raw['编号']]
+        lvl = 120
+        return (
+            data[key + '基础']
+            + data[key + '成长'] * (lvl - 1) / 1000
+            + data[key + '额外'] * (lvl - 100) / 1000
+            + data.get('可强化' + key, 0)
+            + data[key + '改造']
+        )
+
+    akey = '改造满级' + key
+    if akey not in raw:
+        akey = '满级' + key
+    if akey not in raw and '方案' in raw['稀有度']:
+        akey = '初始' + key
+    val = int(raw.get(akey, 0))
+    if key == '消耗':
+        return val
+    return val / 1.06
 
 
 def extract(raw, op):
@@ -138,14 +163,7 @@ def extract(raw, op):
     if op['op'] == 'map':
         return op['map'][extract(raw, op['key'])]
     if op['op'] == 'attr':
-        key = raw['编号']
-        if key in attrs:
-            return get_attr(attrs[key], op['key'])
-        key = '改造满级' + op['key']
-        if key not in raw:
-            key = '满级' + op['key']
-        return int(raw.get(key, 0) / 1.06)
-
+        return get_attr(raw, op['key'])
     if op['op'] == 'type':
         return op['type'][extract(raw, op['key'])]
     if op['op'] == 'split':
@@ -174,6 +192,7 @@ def parse_ship_content(content: str):
         if key.startswith('weaponType'):
             res[key] = [WP_MAP[i] for i in res[key].split('、')]
 
+    res['name'] = str(res['name'])
     res['sprite'] = res['name'] + '.png'
 
     if res['shipType'] in ('航母', '轻航'):
@@ -186,13 +205,16 @@ def parse_ship_content(content: str):
 
 
 def get_ship_data():
-    for ship in get_categorymember_details('舰娘'):
-        title = ship['query']['pages'][0]['title']
-        if '布里' in title:
-            continue
-        try:
-            yield parse_ship_content(
-                ship['query']['pages'][0]['revisions'][0]['slots']['main']['content']
-            )
-        except Exception as e:
-            print('解析失败:', title, repr(e))
+    for category in ['舰娘', '联动舰娘', '方案舰娘']:
+        for ship in get_categorymember_details(category):
+            title = ship['query']['pages'][0]['title']
+            if '布里' in title:
+                continue
+            try:
+                yield parse_ship_content(
+                    ship['query']['pages'][0]['revisions'][0]['slots']['main'][
+                        'content'
+                    ]
+                )
+            except Exception as e:
+                print('解析失败:', title, repr(e))
