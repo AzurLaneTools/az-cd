@@ -8,6 +8,8 @@ from utils.point import attrs
 
 REMAP = {"装甲类型": {"轻型": "轻型", "中型": "中型", "中型装甲": "中型", "重型": "重型", "重甲": "重型",}}
 
+GROUP_PREFIX = {'联动': 'Collab', '方案': 'Plan'}
+
 re_int = re.compile(r'^\s*\d+$')
 re_float = re.compile(r'^\s*\d*\.\d+$')
 re_percent = re.compile(r'^\s*(\d*\.\d+|\d+)%$')
@@ -35,12 +37,6 @@ def get_attr(data, key):
 
 
 def extract(raw, op):
-    if isinstance(op, str):
-        if op in OPTIONAL_KEYS:
-            val = raw.get(op, OPTIONAL_KEYS[op])
-        else:
-            val = raw[op]
-        return try_parse_num(val)
     if op['op'] == 'map':
         return op['map'][extract(raw, op['key'])]
     if op['op'] == 'attr':
@@ -102,6 +98,9 @@ def parse_ship_content(content: str):
                 continue
             raw_map[key] = val
 
+    if raw_map.get('分组'):
+        raw_map['编号'] = GROUP_PREFIX[raw_map['分组']] + raw_map['编号']
+
     match = [raw_map['英文名'].lower(), *get_match_text(raw_map['名称'])]
     if raw_map.get('和谐名'):
         match.extend(get_match_text(raw_map['和谐名']))
@@ -112,12 +111,12 @@ def parse_ship_content(content: str):
 def get_ship_data():
     for category in ['舰娘', '联动舰娘', '方案舰娘']:
         for ship in get_categorymember_details(category):
-            title = ship['query']['pages'][0]['title']
-            if '布里' in title:
+            page = ship['query']['pages'][0]
+            if '布里' in page['title']:
                 continue
             try:
                 yield parse_ship_content(
-                    ship['query']['pages'][0]['revisions'][0]['slots']['main']['content']
+                    page['revisions'][0]['slots']['main']['content']
                 )
             except Exception as e:
-                print('解析失败:', title, repr(e))
+                print('解析失败:', page['title'], repr(e))
