@@ -3,8 +3,9 @@ import os
 import re
 import json
 import shutil
+import argparse
 
-from utils.crawl import get_text
+from utils.crawl import ensure_dir, get_text
 
 
 def setup_ship_reload_info():
@@ -31,22 +32,20 @@ def setup_ship_reload_info():
 
 def setup_ship_data():
     from utils.ships import get_ship_data
+    from utils.ship_trans import get_ship_data as get_ship_data_trans
 
-    ship_info = []
-    for ship in get_ship_data():
-        ship_info.append(ship)
+    ensure_dir('static/extra')
     with open('resources/ships.json', 'w', -1, 'UTF8') as f:
-        json.dump(ship_info, f, ensure_ascii=False, indent=2)
+        json.dump(list(get_ship_data()), f, ensure_ascii=False, indent=2)
+    with open('static/extra/ship_trans.json', 'w', -1, 'UTF8') as f:
+        json.dump(list(get_ship_data_trans()), f, ensure_ascii=False, indent=2)
 
 
 def setup_equip_data():
     from utils.equips import get_equip_data
 
-    equip_info = []
-    for equip in get_equip_data():
-        equip_info.append(equip)
     with open('resources/equips.json', 'w', -1, 'UTF8') as f:
-        json.dump(equip_info, f, ensure_ascii=False, indent=2)
+        json.dump(list(get_equip_data()), f, ensure_ascii=False, indent=2)
 
 
 def copy_dict(d, keys=None):
@@ -69,10 +68,23 @@ def generate_files():
     shutil.copytree("static", "build")
 
 
+def get_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('action', default='copy', choices=['build', 'copy'], nargs='?')
+    return parser
+
+
+def main():
+    parser = get_parser()
+    args = parser.parse_args()
+    if args == 'build':
+        setup_ship_reload_info()
+        setup_ship_data()
+        setup_equip_data()
+    else:
+        generate_files()
+
+
 if __name__ == "__main__":
     logging.basicConfig(level="INFO")
-
-    # setup_ship_reload_info()
-    setup_ship_data()
-    # setup_equip_data()
-    generate_files()
+    main()
