@@ -19,7 +19,6 @@
         }
 
         .search-select {
-            width: 400px;
             height: 50px;
         }
 
@@ -40,14 +39,80 @@
         .select2-selection__arrow {
             height: 54px !important;
         }
+
+        /* #ship-select {
+            width: 100%;
+        } */
     </style>
 </head>
 
 <body>
-    <h1>碧蓝航线CD计算器-舰娘配置</h1>
-    <select class="search-select" name="ship" id="ship-select"></select>
+    <div class="container">
+        <h1>碧蓝航线CD计算器-舰娘配置</h1>
+        <div class="col-md-12 row">
+            <select class="col-md-12 search-select form-select" name="ship" id="ship-select"></select>
+        </div>
+        <div class="mb-3 row">
+            <span class="col-sm-3 col-form-label">
+                舰娘属性输入方式
+            </span>
+            <span class="col-sm-3 col-form-label">
+                <label class="form-check-inline">
+                    <input class="form-check-input" type="radio" name="mode" checked>
+                    自动计算
+                </label>
+                <label class="form-check-inline">
+                    <input class="form-check-input" type="radio" name="mode">
+                    手动输入
+                </label>
+            </span>
+        </div>
+        <div class="col-md-12 row">
+            <span class="col-sm-3">
+                好感
+            </span>
+            <span class="col-sm-7 col-form-label">
+                <label class="form-check-inline">
+                    <input class="form-check-input" type="radio" name="love">
+                    <span class="form-check-label">失望/陌生</span>
+                </label>
+                <label class="form-check-inline">
+                    <input class="form-check-input" type="radio" name="love">
+                    <span class="form-check-label">喜欢</span>
+                </label>
+                <label class="form-check-inline">
+                    <input class="form-check-input" type="radio" name="love" checked>
+                    <span class="form-check-label">爱</span>
+                </label>
+                <label class="form-check-inline">
+                    <input class="form-check-input" type="radio" name="love">
+                    <span class="form-check-label">誓约</span>
+                </label>
+                <label class="form-check-inline">
+                    <input class="form-check-input" type="radio" name="love">
+                    <span class="form-check-label">誓约200</span>
+                </label>
+            </span>
+        </div>
 
-    <input type="number" name="reload" id="reload">
+        <label class="col-sm-12 input-group input-group-sm">
+            <span class="col-sm-2 col-form-label">
+                等级
+            </span>
+            <div class="col-sm-10">
+                <input class="form-control" type="number" name="level" id="level" value="120" min="1" max="120">
+            </div>
+        </label>
+        <label class="col-md-12 input-group input-group-sm">
+            <span class="col-sm-2 col-form-label">
+                装填
+            </span>
+            <div class="col-sm-10">
+                <input class="form-control" type="number" name="reload" id="reload">
+            </div>
+        </label>
+
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
