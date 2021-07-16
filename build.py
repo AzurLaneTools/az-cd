@@ -4,8 +4,9 @@ import re
 import json
 import shutil
 import argparse
+from utils.images import crawl_all_ship_icon
 
-from utils.crawl import ensure_dir, get_text
+from utils.crawl import ensure_dir, get_text, sanitize_filename
 
 
 def setup_ship_reload_info():
@@ -45,6 +46,8 @@ def setup_ship_data():
     with open('static/data/ships-full.json', 'w', -1, 'UTF8') as f:
         json.dump(ships_all, f, ensure_ascii=False, indent=2)
     ships_simple = [copy_dict(s, ['编号', '名称', '类型', 'match']) for s in ships_all]
+    for s in ships_simple:
+        s['img'] = sanitize_filename(s['名称']) + '.jpg'
     with open('static/data/ships-simple.json', 'w', -1, 'UTF8') as f:
         json.dump(ships_simple, f, ensure_ascii=False, indent=2)
 
@@ -82,6 +85,7 @@ def main():
     if args.action == 'build':
         setup_ship_reload_info()
         setup_ship_data()
+        crawl_all_ship_icon()
         setup_equip_data()
     else:
         generate_files()
