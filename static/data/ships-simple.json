@@ -1,0 +1,2918 @@
+[
+  {
+    "编号": "255",
+    "名称": "长春",
+    "类型": "驱逐",
+    "match": "pran chang chun|长春|changchun"
+  },
+  {
+    "编号": "253",
+    "名称": "鞍山",
+    "类型": "驱逐",
+    "match": "pran an shan|鞍山|anshan"
+  },
+  {
+    "编号": "256",
+    "名称": "太原",
+    "类型": "驱逐",
+    "match": "pran tai yuan|太原|taiyuan"
+  },
+  {
+    "编号": "259",
+    "名称": "平海",
+    "类型": "轻巡",
+    "match": "roc ping hai|平海|pinghai"
+  },
+  {
+    "编号": "258",
+    "名称": "宁海",
+    "类型": "轻巡",
+    "match": "roc ning hai|宁海|ninghai"
+  },
+  {
+    "编号": "254",
+    "名称": "抚顺",
+    "类型": "驱逐",
+    "match": "pran fu shun|抚顺|fushun"
+  },
+  {
+    "编号": "094",
+    "名称": "萤火虫",
+    "类型": "驱逐",
+    "match": "hms glowworm|萤火虫|yinghuochong"
+  },
+  {
+    "编号": "065",
+    "名称": "南达科他",
+    "类型": "战列",
+    "match": "uss south dakota|南达科他|nandaketa"
+  },
+  {
+    "编号": "037",
+    "名称": "克利夫兰",
+    "类型": "轻巡",
+    "match": "uss cleveland|克利夫兰|kelifulan"
+  },
+  {
+    "编号": "359",
+    "名称": "鲁莽",
+    "类型": "驱逐",
+    "match": "ffnf le téméraire|鲁莽|lumang"
+  },
+  {
+    "编号": "089",
+    "名称": "新月",
+    "类型": "驱逐",
+    "match": "hms crescent|新月|xinyue"
+  },
+  {
+    "编号": "115",
+    "名称": "贝尔法斯特",
+    "类型": "轻巡",
+    "match": "hms belfast|贝尔法斯特|beierfasite"
+  },
+  {
+    "编号": "395",
+    "名称": "倔强",
+    "类型": "驱逐",
+    "match": "ffnf l'opiniâtre|倔强|juejiang"
+  },
+  {
+    "编号": "224",
+    "名称": "赤城",
+    "类型": "航母",
+    "match": "ijn akagi|赤城|chicheng|凰|huang"
+  },
+  {
+    "编号": "386",
+    "名称": "U-556",
+    "类型": "潜艇",
+    "match": "kms u-556|U-556|U-556"
+  },
+  {
+    "编号": "368",
+    "名称": "加贺BB",
+    "类型": "战列",
+    "match": "ijn kaga|加贺BB|jiaheBB|鸾|luan"
+  },
+  {
+    "编号": "295",
+    "名称": "新月JP",
+    "类型": "驱逐",
+    "match": "ijn niizuki|新月JP|xinyueJP|枥|li"
+  },
+  {
+    "编号": "046",
+    "名称": "阿斯托利亚",
+    "类型": "重巡",
+    "match": "uss astoria|阿斯托利亚|asituoliya"
+  },
+  {
+    "编号": "187",
+    "名称": "阿武隈",
+    "类型": "轻巡",
+    "match": "ijn abukuma|阿武隈|awuwei|貃|mo"
+  },
+  {
+    "编号": "271",
+    "名称": "睦月",
+    "类型": "驱逐",
+    "match": "ijn mutsuki|睦月|muyue|松|song"
+  },
+  {
+    "编号": "179",
+    "名称": "夕张",
+    "类型": "轻巡",
+    "match": "ijn yūbari|夕张|xizhang|狐|hu"
+  },
+  {
+    "编号": "361",
+    "名称": "纽卡斯尔",
+    "类型": "轻巡",
+    "match": "hms newcastle|纽卡斯尔|niukasier"
+  },
+  {
+    "编号": "093",
+    "名称": "格伦维尔",
+    "类型": "驱逐",
+    "match": "hms grenville|格伦维尔|gelunweier"
+  },
+  {
+    "编号": "301",
+    "名称": "尼古拉斯",
+    "类型": "驱逐",
+    "match": "uss nicholas|尼古拉斯|nigulasi"
+  },
+  {
+    "编号": "016",
+    "名称": "富特",
+    "类型": "驱逐",
+    "match": "uss foote|富特|fute"
+  },
+  {
+    "编号": "270",
+    "名称": "松风",
+    "类型": "驱逐",
+    "match": "ijn matsukaze|松风|songfeng|棡|gang"
+  },
+  {
+    "编号": "309",
+    "名称": "神通",
+    "类型": "轻巡",
+    "match": "ijn jintsū|神通|shentong|貎|ni"
+  },
+  {
+    "编号": "017",
+    "名称": "斯彭斯",
+    "类型": "驱逐",
+    "match": "uss spence|斯彭斯|sipengsi"
+  },
+  {
+    "编号": "272",
+    "名称": "如月",
+    "类型": "驱逐",
+    "match": "ijn kisaragi|如月|ruyue|樟|zhang"
+  },
+  {
+    "编号": "269",
+    "名称": "神风",
+    "类型": "驱逐",
+    "match": "ijn kamikaze|神风|shenfeng|榊|shen"
+  },
+  {
+    "编号": "277",
+    "名称": "文月",
+    "类型": "驱逐",
+    "match": "ijn fumizuki|文月|wenyue|橗|meng"
+  },
+  {
+    "编号": "365",
+    "名称": "黑泽伍德",
+    "类型": "驱逐",
+    "match": "uss hazelwood|黑泽伍德|heizewude"
+  },
+  {
+    "编号": "280",
+    "名称": "三日月",
+    "类型": "驱逐",
+    "match": "ijn mikazuki|三日月|sanriyue|檧|song"
+  },
+  {
+    "编号": "011",
+    "名称": "弗莱彻",
+    "类型": "驱逐",
+    "match": "uss fletcher|弗莱彻|fulaiche"
+  },
+  {
+    "编号": "369",
+    "名称": "旗风",
+    "类型": "驱逐",
+    "match": "ijn hatakaze|旗风|qifeng|樋|tong"
+  },
+  {
+    "编号": "278",
+    "名称": "长月",
+    "类型": "驱逐",
+    "match": "ijn nagatsuki|长月|zhangyue|枨|cheng"
+  },
+  {
+    "编号": "409",
+    "名称": "斯坦利",
+    "类型": "驱逐",
+    "match": "uss stanly|斯坦利|sitanli"
+  },
+  {
+    "编号": "407",
+    "名称": "贝奇",
+    "类型": "驱逐",
+    "match": "uss bache|贝奇|beiqi"
+  },
+  {
+    "编号": "299",
+    "名称": "拉德福特",
+    "类型": "驱逐",
+    "match": "uss radford|拉德福特|ladefute"
+  },
+  {
+    "编号": "417",
+    "名称": "斯莫利",
+    "类型": "驱逐",
+    "match": "uss smalley|斯莫利|simoli"
+  },
+  {
+    "编号": "310",
+    "名称": "那珂",
+    "类型": "轻巡",
+    "match": "ijn naka|那珂|nake|豻|an"
+  },
+  {
+    "编号": "360",
+    "名称": "孟菲斯",
+    "类型": "轻巡",
+    "match": "uss memphis|孟菲斯|mengfeisi"
+  },
+  {
+    "编号": "038",
+    "名称": "哥伦比亚",
+    "类型": "轻巡",
+    "match": "uss columbia|哥伦比亚|gelunbiya"
+  },
+  {
+    "编号": "375",
+    "名称": "马拉尼",
+    "类型": "驱逐",
+    "match": "uss mullany|马拉尼|malani"
+  },
+  {
+    "编号": "329",
+    "名称": "蒙彼利埃",
+    "类型": "轻巡",
+    "match": "uss montpelier|蒙彼利埃|mengbiliai"
+  },
+  {
+    "编号": "330",
+    "名称": "丹佛",
+    "类型": "轻巡",
+    "match": "uss denver|丹佛|danfu"
+  },
+  {
+    "编号": "374",
+    "名称": "金伯利",
+    "类型": "驱逐",
+    "match": "uss kimberly|金伯利|jinboli"
+  },
+  {
+    "编号": "183",
+    "名称": "五十铃",
+    "类型": "轻巡",
+    "match": "ijn isuzu|五十铃|wushiling|貉|hao"
+  },
+  {
+    "编号": "164",
+    "名称": "夕立",
+    "类型": "驱逐",
+    "match": "ijn yūdachi|夕立|xili|椿|chun"
+  },
+  {
+    "编号": "213",
+    "名称": "陆奥",
+    "类型": "战列",
+    "match": "ijn mutsu|陆奥|luao|鲛|jiao"
+  },
+  {
+    "编号": "212",
+    "名称": "长门",
+    "类型": "战列",
+    "match": "ijn nagato|长门|changmen|鲨|sha"
+  },
+  {
+    "编号": "410",
+    "名称": "利托里奥",
+    "类型": "战列",
+    "match": "rn littorio|利托里奥|lituoliao"
+  },
+  {
+    "编号": "077",
+    "名称": "企业",
+    "类型": "航母",
+    "match": "uss enterprise|企业|qiye"
+  },
+  {
+    "编号": "378",
+    "名称": "香格里拉",
+    "类型": "航母",
+    "match": "uss shangri-la|香格里拉|xianggelila"
+  },
+  {
+    "编号": "380",
+    "名称": "邦克山",
+    "类型": "航母",
+    "match": "uss bunker hill|邦克山|bangkeshan"
+  },
+  {
+    "编号": "223",
+    "名称": "龙骧",
+    "类型": "轻航",
+    "match": "ijn ryūjō|龙骧|longxiang|枭|xiao"
+  },
+  {
+    "编号": "232",
+    "名称": "明石",
+    "类型": "维修",
+    "match": "ijn akashi|明石|mingshi|茗|ming"
+  },
+  {
+    "编号": "377",
+    "名称": "独立",
+    "类型": "轻航",
+    "match": "uss independence|独立|duli"
+  },
+  {
+    "编号": "320",
+    "名称": "三笠",
+    "类型": "战列",
+    "match": "ijn mikasa|三笠|sanli|鲐|tai"
+  },
+  {
+    "编号": "014",
+    "名称": "撒切尔",
+    "类型": "驱逐",
+    "match": "uss thatcher|撒切尔|saqieer"
+  },
+  {
+    "编号": "300",
+    "名称": "杰金斯",
+    "类型": "驱逐",
+    "match": "uss jenkins|杰金斯|jiejinsi"
+  },
+  {
+    "编号": "182",
+    "名称": "长良",
+    "类型": "轻巡",
+    "match": "ijn nagara|长良|zhangliang|貊|mo"
+  },
+  {
+    "编号": "364",
+    "名称": "明尼阿波利斯",
+    "类型": "重巡",
+    "match": "uss minneapolis|明尼阿波利斯|mingniabolisi"
+  },
+  {
+    "编号": "394",
+    "名称": "恶毒",
+    "类型": "驱逐",
+    "match": "mnf le malin|恶毒|edu"
+  },
+  {
+    "编号": "240",
+    "名称": "科隆",
+    "类型": "轻巡",
+    "match": "kms köln|科隆|kelong"
+  },
+  {
+    "编号": "367",
+    "名称": "天城",
+    "类型": "战巡",
+    "match": "ijn amagi|天城|tiancheng|鳐|yao"
+  },
+  {
+    "编号": "405",
+    "名称": "伯明翰",
+    "类型": "轻巡",
+    "match": "uss birmingham|伯明翰|bominghan"
+  },
+  {
+    "编号": "005",
+    "名称": "卡辛",
+    "类型": "驱逐",
+    "match": "uss cassin|卡辛|kaxin"
+  },
+  {
+    "编号": "071",
+    "名称": "博格",
+    "类型": "轻航",
+    "match": "uss bogue|博格|boge"
+  },
+  {
+    "编号": "027",
+    "名称": "哈曼",
+    "类型": "驱逐",
+    "match": "uss hammann|哈曼|haman"
+  },
+  {
+    "编号": "072",
+    "名称": "兰利",
+    "类型": "轻航",
+    "match": "uss langley|兰利|lanli"
+  },
+  {
+    "编号": "053",
+    "名称": "俄克拉荷马",
+    "类型": "战列",
+    "match": "uss oklahoma|俄克拉荷马|ekelahema"
+  },
+  {
+    "编号": "036",
+    "名称": "圣地亚哥",
+    "类型": "轻巡",
+    "match": "uss san diego|圣地亚哥|shengdiyage"
+  },
+  {
+    "编号": "250",
+    "名称": "俾斯麦",
+    "类型": "战列",
+    "match": "kms bismarck|俾斯麦|bisimai"
+  },
+  {
+    "编号": "070",
+    "名称": "长岛",
+    "类型": "轻航",
+    "match": "uss long island|长岛|zhangdao"
+  },
+  {
+    "编号": "075",
+    "名称": "突击者",
+    "类型": "轻航",
+    "match": "uss ranger|突击者|tujizhe"
+  },
+  {
+    "编号": "044",
+    "名称": "波特兰",
+    "类型": "重巡",
+    "match": "uss portland|波特兰|botelan"
+  },
+  {
+    "编号": "082",
+    "名称": "阿卡司塔",
+    "类型": "驱逐",
+    "match": "hms acasta|阿卡司塔|akasita"
+  },
+  {
+    "编号": "119",
+    "名称": "伦敦",
+    "类型": "重巡",
+    "match": "hms london|伦敦|lundun"
+  },
+  {
+    "编号": "106",
+    "名称": "阿贾克斯",
+    "类型": "轻巡",
+    "match": "hms ajax|阿贾克斯|ajiakesi"
+  },
+  {
+    "编号": "104",
+    "名称": "利安得",
+    "类型": "轻巡",
+    "match": "hms leander|利安得|liande"
+  },
+  {
+    "编号": "090",
+    "名称": "小天鹅",
+    "类型": "驱逐",
+    "match": "hms cygnet|小天鹅|xiaotiane"
+  },
+  {
+    "编号": "122",
+    "名称": "萨福克",
+    "类型": "重巡",
+    "match": "hms suffolk|萨福克|safuke"
+  },
+  {
+    "编号": "101",
+    "名称": "标枪",
+    "类型": "驱逐",
+    "match": "hms javelin|标枪|biaoqiang"
+  },
+  {
+    "编号": "140",
+    "名称": "竞技神",
+    "类型": "轻航",
+    "match": "hms hermes|竞技神|jingjishen"
+  },
+  {
+    "编号": "074",
+    "名称": "萨拉托加",
+    "类型": "航母",
+    "match": "uss saratoga|萨拉托加|salatuojia"
+  },
+  {
+    "编号": "155",
+    "名称": "绫波",
+    "类型": "驱逐",
+    "match": "ijn ayanami|绫波|lingbo|柚|you"
+  },
+  {
+    "编号": "131",
+    "名称": "厌战",
+    "类型": "战列",
+    "match": "hms warspite|厌战|yanzhan"
+  },
+  {
+    "编号": "168",
+    "名称": "不知火",
+    "类型": "驱逐",
+    "match": "ijn shiranui|不知火|buzhihuo|蒲|pu"
+  },
+  {
+    "编号": "176",
+    "名称": "夕暮",
+    "类型": "驱逐",
+    "match": "ijn yūgure|夕暮|ximu|棭|yi"
+  },
+  {
+    "编号": "165",
+    "名称": "时雨",
+    "类型": "驱逐",
+    "match": "ijn shigure|时雨|shiyu|栴|zhan"
+  },
+  {
+    "编号": "208",
+    "名称": "扶桑",
+    "类型": "战列",
+    "match": "ijn fuso|扶桑|fusang|魟|hong"
+  },
+  {
+    "编号": "126",
+    "名称": "埃克塞特",
+    "类型": "重巡",
+    "match": "hms exeter|埃克塞特|aikesaite"
+  },
+  {
+    "编号": "190",
+    "名称": "古鹰",
+    "类型": "重巡",
+    "match": "ijn furutaka|古鹰|guying|狼|lang"
+  },
+  {
+    "编号": "211",
+    "名称": "日向",
+    "类型": "战列",
+    "match": "ijn hyūga|日向|rixiang|螯|ao"
+  },
+  {
+    "编号": "210",
+    "名称": "伊势",
+    "类型": "战列",
+    "match": "ijn ise|伊势|yishi|鳌|ao"
+  },
+  {
+    "编号": "209",
+    "名称": "山城",
+    "类型": "战列",
+    "match": "ijn yamashiro|山城|shancheng|鲼|fen"
+  },
+  {
+    "编号": "222",
+    "名称": "祥凤",
+    "类型": "轻航",
+    "match": "ijn shōhō|祥凤|xiangfeng|鹞|yao"
+  },
+  {
+    "编号": "188",
+    "名称": "最上",
+    "类型": "轻巡",
+    "match": "ijn mogami|最上|zuishang|猨|yuan"
+  },
+  {
+    "编号": "236",
+    "名称": "Z23",
+    "类型": "驱逐",
+    "match": "kms z23|Z23|Z23"
+  },
+  {
+    "编号": "226",
+    "名称": "苍龙",
+    "类型": "航母",
+    "match": "ijn sōryū|苍龙|canglong|蛟|jiao"
+  },
+  {
+    "编号": "263",
+    "名称": "贝利",
+    "类型": "驱逐",
+    "match": "uss bailey|贝利|beili"
+  },
+  {
+    "编号": "319",
+    "名称": "谷风",
+    "类型": "驱逐",
+    "match": "ijn tanikaze|谷风|gufeng|栭|er"
+  },
+  {
+    "编号": "239",
+    "名称": "卡尔斯鲁厄",
+    "类型": "轻巡",
+    "match": "kms karlsruhe|卡尔斯鲁厄|kaersilue"
+  },
+  {
+    "编号": "233",
+    "名称": "Z1",
+    "类型": "驱逐",
+    "match": "kms leberecht maass|Z1|Z1"
+  },
+  {
+    "编号": "008",
+    "名称": "克雷文",
+    "类型": "驱逐",
+    "match": "uss craven|克雷文|keleiwen"
+  },
+  {
+    "编号": "227",
+    "名称": "飞龙",
+    "类型": "航母",
+    "match": "ijn hiryū|飞龙|feilong|龙|long"
+  },
+  {
+    "编号": "265",
+    "名称": "Z20",
+    "类型": "驱逐",
+    "match": "kms karl galster|Z20|Z20"
+  },
+  {
+    "编号": "266",
+    "名称": "Z21",
+    "类型": "驱逐",
+    "match": "kms wilhelm heidkamp|Z21|Z21"
+  },
+  {
+    "编号": "087",
+    "名称": "大斗犬",
+    "类型": "驱逐",
+    "match": "hms bulldog|大斗犬|dadouquan"
+  },
+  {
+    "编号": "241",
+    "名称": "莱比锡",
+    "类型": "轻巡",
+    "match": "kms leipzig|莱比锡|laibixi"
+  },
+  {
+    "编号": "318",
+    "名称": "滨风",
+    "类型": "驱逐",
+    "match": "ijn hamakaze|滨风|binfeng|樇|xiu"
+  },
+  {
+    "编号": "086",
+    "名称": "小猎兔犬",
+    "类型": "驱逐",
+    "match": "hms beagle|小猎兔犬|xiaolietuquan"
+  },
+  {
+    "编号": "004",
+    "名称": "杜威",
+    "类型": "驱逐",
+    "match": "uss dewey|杜威|duwei"
+  },
+  {
+    "编号": "007",
+    "名称": "格里德利",
+    "类型": "驱逐",
+    "match": "uss gridley|格里德利|gelideli"
+  },
+  {
+    "编号": "162",
+    "名称": "电",
+    "类型": "驱逐",
+    "match": "ijn inazuma|电|dian|柏|bai"
+  },
+  {
+    "编号": "100",
+    "名称": "猎人",
+    "类型": "驱逐",
+    "match": "hms hunter|猎人|lieren"
+  },
+  {
+    "编号": "159",
+    "名称": "晓",
+    "类型": "驱逐",
+    "match": "ijn akatsuki|晓|xiao|枫|feng"
+  },
+  {
+    "编号": "161",
+    "名称": "雷",
+    "类型": "驱逐",
+    "match": "ijn ikazuchi|雷|lei|梓|zi"
+  },
+  {
+    "编号": "081",
+    "名称": "女将",
+    "类型": "驱逐",
+    "match": "hms amazon|女将|nvjiang"
+  },
+  {
+    "编号": "174",
+    "名称": "初霜",
+    "类型": "驱逐",
+    "match": "ijn hatsushimo|初霜|chushuang|檨|she"
+  },
+  {
+    "编号": "175",
+    "名称": "有明",
+    "类型": "驱逐",
+    "match": "ijn ariake|有明|youming|榎|jia"
+  },
+  {
+    "编号": "102",
+    "名称": "天后",
+    "类型": "驱逐",
+    "match": "hms juno|天后|tianhou"
+  },
+  {
+    "编号": "331",
+    "名称": "朝潮",
+    "类型": "驱逐",
+    "match": "ijn asashio|朝潮|chaochao|棹|zhao"
+  },
+  {
+    "编号": "332",
+    "名称": "大潮",
+    "类型": "驱逐",
+    "match": "ijn ōshio|大潮|dachao|荙|da"
+  },
+  {
+    "编号": "293",
+    "名称": "清波",
+    "类型": "驱逐",
+    "match": "ijn kiyonami|清波|qingbo|棈|qian"
+  },
+  {
+    "编号": "171",
+    "名称": "初春",
+    "类型": "驱逐",
+    "match": "ijn hatsuharu|初春|chuchun|梅|mei"
+  },
+  {
+    "编号": "173",
+    "名称": "若叶",
+    "类型": "驱逐",
+    "match": "ijn wakaba|若叶|ruoye|楉|ruo"
+  },
+  {
+    "编号": "334",
+    "名称": "荒潮",
+    "类型": "驱逐",
+    "match": "ijn arashio|荒潮|huangchao|栘|yi"
+  },
+  {
+    "编号": "264",
+    "名称": "Z19",
+    "类型": "驱逐",
+    "match": "kms hermann künne|Z19|Z19"
+  },
+  {
+    "编号": "163",
+    "名称": "白露",
+    "类型": "驱逐",
+    "match": "ijn shiratsuyu|白露|bailu|梿|lian"
+  },
+  {
+    "编号": "389",
+    "名称": "回声",
+    "类型": "驱逐",
+    "match": "hms echo|回声|huisheng"
+  },
+  {
+    "编号": "306",
+    "名称": "丘比特",
+    "类型": "驱逐",
+    "match": "hms jupiter|丘比特|qiubite"
+  },
+  {
+    "编号": "363",
+    "名称": "科尔克",
+    "类型": "驱逐",
+    "match": "uss kalk|科尔克|keerke"
+  },
+  {
+    "编号": "096",
+    "名称": "勇敢",
+    "类型": "驱逐",
+    "match": "hms hardy|勇敢|yonggan"
+  },
+  {
+    "编号": "010",
+    "名称": "莫里",
+    "类型": "驱逐",
+    "match": "uss maury|莫里|moli"
+  },
+  {
+    "编号": "346",
+    "名称": "Z18",
+    "类型": "驱逐",
+    "match": "kms hans lüdemann|Z18|Z18"
+  },
+  {
+    "编号": "362",
+    "名称": "霍比",
+    "类型": "驱逐",
+    "match": "uss hobby|霍比|huobi"
+  },
+  {
+    "编号": "333",
+    "名称": "满潮",
+    "类型": "驱逐",
+    "match": "ijn michishio|满潮|manchao|樠|man"
+  },
+  {
+    "编号": "317",
+    "名称": "矶风",
+    "类型": "驱逐",
+    "match": "ijn isokaze|矶风|jifeng|柉|fan"
+  },
+  {
+    "编号": "170",
+    "名称": "野分",
+    "类型": "驱逐",
+    "match": "ijn nowaki|野分|yefen|苓|ling"
+  },
+  {
+    "编号": "406",
+    "名称": "艾尔温",
+    "类型": "驱逐",
+    "match": "uss aylwin|艾尔温|aierwen"
+  },
+  {
+    "编号": "297",
+    "名称": "宵月",
+    "类型": "驱逐",
+    "match": "ijn yoizuki|宵月|xiaoyue|楛|hu"
+  },
+  {
+    "编号": "103",
+    "名称": "吸血鬼",
+    "类型": "驱逐",
+    "match": "hms vampire|吸血鬼|xixuegui"
+  },
+  {
+    "编号": "345",
+    "名称": "Z35",
+    "类型": "驱逐",
+    "match": "kms z35|Z35|Z35"
+  },
+  {
+    "编号": "151",
+    "名称": "吹雪",
+    "类型": "驱逐",
+    "match": "ijn fubuki|吹雪|chuixue|桐|tong"
+  },
+  {
+    "编号": "325",
+    "名称": "无敌",
+    "类型": "驱逐",
+    "match": "hms matchless|无敌|wudi"
+  },
+  {
+    "编号": "237",
+    "名称": "Z25",
+    "类型": "驱逐",
+    "match": "kms z25|Z25|Z25"
+  },
+  {
+    "编号": "296",
+    "名称": "春月",
+    "类型": "驱逐",
+    "match": "ijn harutsuki|春月|chunyue|桸|xi"
+  },
+  {
+    "编号": "370",
+    "名称": "卷波",
+    "类型": "驱逐",
+    "match": "ijn makinami|卷波|juanbo|棬|quan"
+  },
+  {
+    "编号": "238",
+    "名称": "柯尼斯堡",
+    "类型": "轻巡",
+    "match": "kms königsberg|柯尼斯堡|kenisibao"
+  },
+  {
+    "编号": "326",
+    "名称": "火枪手",
+    "类型": "驱逐",
+    "match": "hms musketeer|火枪手|huoqiangshou"
+  },
+  {
+    "编号": "288",
+    "名称": "江风",
+    "类型": "驱逐",
+    "match": "ijn kawakaze|江风|jiangfeng|茳|jiang"
+  },
+  {
+    "编号": "166",
+    "名称": "雪风",
+    "类型": "驱逐",
+    "match": "ijn yukikaze|雪风|xuefeng|莲|lian"
+  },
+  {
+    "编号": "029",
+    "名称": "奥马哈",
+    "类型": "轻巡",
+    "match": "uss omaha|奥马哈|aomaha"
+  },
+  {
+    "编号": "030",
+    "名称": "罗利",
+    "类型": "轻巡",
+    "match": "uss raleigh|罗利|luoli"
+  },
+  {
+    "编号": "415",
+    "名称": "龙骑兵",
+    "类型": "驱逐",
+    "match": "rn carabiniere|龙骑兵|longqibing"
+  },
+  {
+    "编号": "379",
+    "名称": "Z2",
+    "类型": "驱逐",
+    "match": "kms georg thiele|Z2|Z2"
+  },
+  {
+    "编号": "028",
+    "名称": "埃尔德里奇",
+    "类型": "驱逐",
+    "match": "uss eldridge|埃尔德里奇|aierdeliqi"
+  },
+  {
+    "编号": "303",
+    "名称": "里士满",
+    "类型": "轻巡",
+    "match": "uss richmond|里士满|lishiman"
+  },
+  {
+    "编号": "117",
+    "名称": "加拉蒂亚",
+    "类型": "轻巡",
+    "match": "hms galatea|加拉蒂亚|jialadiya"
+  },
+  {
+    "编号": "328",
+    "名称": "牙买加",
+    "类型": "轻巡",
+    "match": "hms jamaica|牙买加|yamaijia"
+  },
+  {
+    "编号": "034",
+    "名称": "亚特兰大",
+    "类型": "轻巡",
+    "match": "uss atlanta|亚特兰大|yatelanda"
+  },
+  {
+    "编号": "035",
+    "名称": "朱诺",
+    "类型": "轻巡",
+    "match": "uss juneau|朱诺|zhunuo"
+  },
+  {
+    "编号": "110",
+    "名称": "南安普顿",
+    "类型": "轻巡",
+    "match": "hms southampton|南安普顿|nananpudun"
+  },
+  {
+    "编号": "423",
+    "名称": "格拉斯哥",
+    "类型": "轻巡",
+    "match": "hms glasgow|格拉斯哥|gelasige"
+  },
+  {
+    "编号": "304",
+    "名称": "火奴鲁鲁",
+    "类型": "轻巡",
+    "match": "uss honolulu|火奴鲁鲁|huonululu"
+  },
+  {
+    "编号": "327",
+    "名称": "斐济",
+    "类型": "轻巡",
+    "match": "hms fiji|斐济|feiji"
+  },
+  {
+    "编号": "033",
+    "名称": "海伦娜",
+    "类型": "轻巡",
+    "match": "uss helena|海伦娜|hailunna"
+  },
+  {
+    "编号": "032",
+    "名称": "菲尼克斯",
+    "类型": "轻巡",
+    "match": "uss phoenix|菲尼克斯|feinikesi"
+  },
+  {
+    "编号": "114",
+    "名称": "爱丁堡",
+    "类型": "轻巡",
+    "match": "hms edinburgh|爱丁堡|aidingbao"
+  },
+  {
+    "编号": "257",
+    "名称": "逸仙",
+    "类型": "轻巡",
+    "match": "roc yat sen|逸仙|yixian"
+  },
+  {
+    "编号": "031",
+    "名称": "布鲁克林",
+    "类型": "轻巡",
+    "match": "uss brooklyn|布鲁克林|bulukelin"
+  },
+  {
+    "编号": "111",
+    "名称": "谢菲尔德",
+    "类型": "轻巡",
+    "match": "hms sheffield|谢菲尔德|xiefeierde"
+  },
+  {
+    "编号": "408",
+    "名称": "黑太子",
+    "类型": "轻巡",
+    "match": "hms black prince|黑太子|heitaizi"
+  },
+  {
+    "编号": "189",
+    "名称": "三隈",
+    "类型": "轻巡",
+    "match": "ijn mikuma|三隈|sanwei|狻|suan"
+  },
+  {
+    "编号": "321",
+    "名称": "阿贺野",
+    "类型": "轻巡",
+    "match": "ijn agano|阿贺野|aheye|豼|pi"
+  },
+  {
+    "编号": "116",
+    "名称": "阿瑞托莎",
+    "类型": "轻巡",
+    "match": "hms arethusa|阿瑞托莎|aruituosha"
+  },
+  {
+    "编号": "262",
+    "名称": "阿芙乐尔",
+    "类型": "轻巡",
+    "match": "sn avrora|阿芙乐尔|afuleer"
+  },
+  {
+    "编号": "118",
+    "名称": "欧若拉",
+    "类型": "轻巡",
+    "match": "hms aurora|欧若拉|ouruola"
+  },
+  {
+    "编号": "404",
+    "名称": "圣胡安",
+    "类型": "轻巡",
+    "match": "uss san juan|圣胡安|shenghuan"
+  },
+  {
+    "编号": "393",
+    "名称": "确捷",
+    "类型": "轻巡",
+    "match": "hms swiftsure|确捷|quejie"
+  },
+  {
+    "编号": "042",
+    "名称": "芝加哥",
+    "类型": "重巡",
+    "match": "uss chicago|芝加哥|zhijiage"
+  },
+  {
+    "编号": "192",
+    "名称": "青叶",
+    "类型": "重巡",
+    "match": "ijn aoba|青叶|qingye|犹|you"
+  },
+  {
+    "编号": "039",
+    "名称": "彭萨科拉",
+    "类型": "重巡",
+    "match": "uss pensacola|彭萨科拉|pengsakela"
+  },
+  {
+    "编号": "371",
+    "名称": "天狼星",
+    "类型": "轻巡",
+    "match": "hms sirius|天狼星|tianlangxing"
+  },
+  {
+    "编号": "121",
+    "名称": "肯特",
+    "类型": "重巡",
+    "match": "hms kent|肯特|kente"
+  },
+  {
+    "编号": "193",
+    "名称": "衣笠",
+    "类型": "重巡",
+    "match": "ijn kinugasa|衣笠|yili|猅|pai"
+  },
+  {
+    "编号": "043",
+    "名称": "休斯敦",
+    "类型": "重巡",
+    "match": "uss houston|休斯敦|xiusidun"
+  },
+  {
+    "编号": "414",
+    "名称": "特伦托",
+    "类型": "重巡",
+    "match": "rn trento|特伦托|teluntuo"
+  },
+  {
+    "编号": "123",
+    "名称": "诺福克",
+    "类型": "重巡",
+    "match": "hms norfolk|诺福克|nuofuke"
+  },
+  {
+    "编号": "120",
+    "名称": "什罗普郡",
+    "类型": "重巡",
+    "match": "hms shropshire|什罗普郡|shenluopujun"
+  },
+  {
+    "编号": "041",
+    "名称": "北安普敦",
+    "类型": "重巡",
+    "match": "uss northampton|北安普敦|beianpudun"
+  },
+  {
+    "编号": "337",
+    "名称": "苏塞克斯",
+    "类型": "重巡",
+    "match": "hms sussex|苏塞克斯|susaikesi"
+  },
+  {
+    "编号": "040",
+    "名称": "盐湖城",
+    "类型": "重巡",
+    "match": "uss salt lake city|盐湖城|yanhucheng"
+  },
+  {
+    "编号": "124",
+    "名称": "多塞特郡",
+    "类型": "重巡",
+    "match": "hms dorsetshire|多塞特郡|duosaitejun"
+  },
+  {
+    "编号": "045",
+    "名称": "印第安纳波利斯",
+    "类型": "重巡",
+    "match": "uss indianapolis|印第安纳波利斯|yindiannabolisi"
+  },
+  {
+    "编号": "049",
+    "名称": "威奇塔",
+    "类型": "重巡",
+    "match": "uss wichita|威奇塔|weiqita"
+  },
+  {
+    "编号": "242",
+    "名称": "希佩尔海军上将",
+    "类型": "重巡",
+    "match": "kms admiral hipper|希佩尔海军上将|xipeierhaijunshangjiang"
+  },
+  {
+    "编号": "382",
+    "名称": "铃谷",
+    "类型": "重巡",
+    "match": "ijn suzuya|铃谷|linggu|狺|yin"
+  },
+  {
+    "编号": "198",
+    "名称": "足柄",
+    "类型": "重巡",
+    "match": "ijn ashigara|足柄|zubing|狳|yu"
+  },
+  {
+    "编号": "048",
+    "名称": "文森斯",
+    "类型": "重巡",
+    "match": "uss vincennes|文森斯|wensensi"
+  },
+  {
+    "编号": "203",
+    "名称": "鸟海",
+    "类型": "重巡",
+    "match": "ijn chōkai|鸟海|niaohai|猋|biao"
+  },
+  {
+    "编号": "047",
+    "名称": "昆西",
+    "类型": "重巡",
+    "match": "uss quincy|昆西|kunxi"
+  },
+  {
+    "编号": "246",
+    "名称": "斯佩伯爵海军上将",
+    "类型": "重巡",
+    "match": "kms admiral graf.spee|斯佩伯爵海军上将|sipeibojuehaijunshangjiang"
+  },
+  {
+    "编号": "245",
+    "名称": "德意志",
+    "类型": "重巡",
+    "match": "kms deutschland|德意志|deyizhi"
+  },
+  {
+    "编号": "202",
+    "名称": "摩耶",
+    "类型": "重巡",
+    "match": "ijn maya|摩耶|moye|犮|ba"
+  },
+  {
+    "编号": "204",
+    "名称": "金刚",
+    "类型": "战巡",
+    "match": "ijn kongō|金刚|jingang|鲤|li"
+  },
+  {
+    "编号": "127",
+    "名称": "声望",
+    "类型": "战巡",
+    "match": "hms renown|声望|shengwang"
+  },
+  {
+    "编号": "205",
+    "名称": "比叡",
+    "类型": "战巡",
+    "match": "ijn hiei|比叡|birui|鲟|xun"
+  },
+  {
+    "编号": "206",
+    "名称": "榛名",
+    "类型": "战巡",
+    "match": "ijn haruna|榛名|zhenming|鲑|gui"
+  },
+  {
+    "编号": "207",
+    "名称": "雾岛",
+    "类型": "战巡",
+    "match": "ijn kirishima|雾岛|wudao|鳗|man"
+  },
+  {
+    "编号": "244",
+    "名称": "欧根亲王",
+    "类型": "重巡",
+    "match": "kms prinz eugen|欧根亲王|ougenqinwang"
+  },
+  {
+    "编号": "050",
+    "名称": "巴尔的摩",
+    "类型": "重巡",
+    "match": "uss baltimore|巴尔的摩|baerdemo"
+  },
+  {
+    "编号": "413",
+    "名称": "扎拉",
+    "类型": "重巡",
+    "match": "rn zara|扎拉|zhala"
+  },
+  {
+    "编号": "249",
+    "名称": "格奈森瑙",
+    "类型": "战巡",
+    "match": "kms gneisenau|格奈森瑙|genaisennao"
+  },
+  {
+    "编号": "128",
+    "名称": "反击",
+    "类型": "战巡",
+    "match": "hms repulse|反击|fanji"
+  },
+  {
+    "编号": "200",
+    "名称": "高雄",
+    "类型": "重巡",
+    "match": "ijn takao|高雄|gaoxiong|獒|ao"
+  },
+  {
+    "编号": "248",
+    "名称": "沙恩霍斯特",
+    "类型": "战巡",
+    "match": "kms scharnhorst|沙恩霍斯特|shaenhuosite"
+  },
+  {
+    "编号": "411",
+    "名称": "加富尔伯爵",
+    "类型": "战列",
+    "match": "rn conte di cavour|加富尔伯爵|jiafuerbojue"
+  },
+  {
+    "编号": "129",
+    "名称": "胡德",
+    "类型": "战巡",
+    "match": "hms hood|胡德|hude"
+  },
+  {
+    "编号": "054",
+    "名称": "宾夕法尼亚",
+    "类型": "战列",
+    "match": "uss pennsylvania|宾夕法尼亚|binxifaniya"
+  },
+  {
+    "编号": "059",
+    "名称": "加利福尼亚",
+    "类型": "战列",
+    "match": "uss california|加利福尼亚|jialifuniya"
+  },
+  {
+    "编号": "058",
+    "名称": "田纳西",
+    "类型": "战列",
+    "match": "uss tennessee|田纳西|tiannaxi"
+  },
+  {
+    "编号": "060",
+    "名称": "科罗拉多",
+    "类型": "战列",
+    "match": "uss colorado|科罗拉多|keluoladuo"
+  },
+  {
+    "编号": "055",
+    "名称": "亚利桑那",
+    "类型": "战列",
+    "match": "uss arizona|亚利桑那|yalisangna"
+  },
+  {
+    "编号": "062",
+    "名称": "西弗吉尼亚",
+    "类型": "战列",
+    "match": "uss west virginia|西弗吉尼亚|xifujiniya"
+  },
+  {
+    "编号": "061",
+    "名称": "马里兰",
+    "类型": "战列",
+    "match": "uss maryland|马里兰|malilan"
+  },
+  {
+    "编号": "064",
+    "名称": "华盛顿",
+    "类型": "战列",
+    "match": "uss washington|华盛顿|huashengdun"
+  },
+  {
+    "编号": "133",
+    "名称": "罗德尼",
+    "类型": "战列",
+    "match": "hms rodney|罗德尼|luodeni"
+  },
+  {
+    "编号": "132",
+    "名称": "纳尔逊",
+    "类型": "战列",
+    "match": "hms nelson|纳尔逊|naerxun"
+  },
+  {
+    "编号": "401",
+    "名称": "阿拉巴马",
+    "类型": "战列",
+    "match": "uss alabama|阿拉巴马|alabama"
+  },
+  {
+    "编号": "134",
+    "名称": "英王乔治五世",
+    "类型": "战列",
+    "match": "hms king george v|英王乔治五世|yingwangqiaozhiwushi"
+  },
+  {
+    "编号": "063",
+    "名称": "北卡罗来纳",
+    "类型": "战列",
+    "match": "uss north carolina|北卡罗来纳|beikaluolaina"
+  },
+  {
+    "编号": "073",
+    "名称": "列克星敦",
+    "类型": "航母",
+    "match": "uss lexington|列克星敦|liekexingdun"
+  },
+  {
+    "编号": "078",
+    "名称": "大黄蜂",
+    "类型": "航母",
+    "match": "uss hornet|大黄蜂|daihuangfeng"
+  },
+  {
+    "编号": "079",
+    "名称": "胡蜂",
+    "类型": "航母",
+    "match": "uss wasp|胡蜂|hufeng"
+  },
+  {
+    "编号": "130",
+    "名称": "伊丽莎白女王",
+    "类型": "战列",
+    "match": "hms queen elizabeth|伊丽莎白女王|yilishabainvwang"
+  },
+  {
+    "编号": "145",
+    "名称": "光辉",
+    "类型": "航母",
+    "match": "hms illustrious|光辉|guanghui"
+  },
+  {
+    "编号": "144",
+    "名称": "皇家方舟",
+    "类型": "航母",
+    "match": "hms ark royal|皇家方舟|huangjiafangzhou"
+  },
+  {
+    "编号": "076",
+    "名称": "约克城",
+    "类型": "航母",
+    "match": "uss yorktown|约克城|yuekecheng"
+  },
+  {
+    "编号": "218",
+    "名称": "飞鹰",
+    "类型": "轻航",
+    "match": "ijn hiyō|飞鹰|feiying|鸱|chi"
+  },
+  {
+    "编号": "412",
+    "名称": "朱利奥·凯撒",
+    "类型": "战列",
+    "match": "rn giulio cesare|朱利奥 凯撒|zhuliao kaisa"
+  },
+  {
+    "编号": "229",
+    "名称": "瑞鹤",
+    "类型": "航母",
+    "match": "ijn zuikaku|瑞鹤|ruihe|鹤|he"
+  },
+  {
+    "编号": "147",
+    "名称": "可畏",
+    "类型": "航母",
+    "match": "hms formidable|可畏|kewei"
+  },
+  {
+    "编号": "220",
+    "名称": "凤翔",
+    "类型": "轻航",
+    "match": "ijn hōshō|凤翔|fengxiang|凤|feng"
+  },
+  {
+    "编号": "228",
+    "名称": "翔鹤",
+    "类型": "航母",
+    "match": "ijn shōkaku|翔鹤|xianghe|鹬|yu"
+  },
+  {
+    "编号": "146",
+    "名称": "胜利",
+    "类型": "航母",
+    "match": "hms victorious|胜利|shengli"
+  },
+  {
+    "编号": "148",
+    "名称": "光荣",
+    "类型": "航母",
+    "match": "hms glorious|光荣|guangrong"
+  },
+  {
+    "编号": "149",
+    "名称": "黑暗界",
+    "类型": "重炮",
+    "match": "hms erebus|黑暗界|heianjie"
+  },
+  {
+    "编号": "316",
+    "名称": "浦风",
+    "类型": "驱逐",
+    "match": "ijn urakaze|浦风|pufeng|槆|chun"
+  },
+  {
+    "编号": "150",
+    "名称": "恐怖",
+    "类型": "重炮",
+    "match": "hms terror|恐怖|kongbu"
+  },
+  {
+    "编号": "336",
+    "名称": "阿贝克隆比",
+    "类型": "重炮",
+    "match": "hms abercrombie|阿贝克隆比|abeikelongbi"
+  },
+  {
+    "编号": "252",
+    "名称": "齐柏林伯爵",
+    "类型": "航母",
+    "match": "kms graf zeppelin|齐柏林伯爵|qibolinbojue"
+  },
+  {
+    "编号": "425",
+    "名称": "骏河",
+    "类型": "战列",
+    "match": "ijn suruga|骏河|junhe|鲪|jun"
+  },
+  {
+    "编号": "167",
+    "名称": "阳炎",
+    "类型": "驱逐",
+    "match": "ijn kagerō|阳炎|yangyan|萩|qiu"
+  },
+  {
+    "编号": "142",
+    "名称": "独角兽",
+    "类型": "轻航",
+    "match": "hms unicorn|独角兽|dujiaoshou"
+  },
+  {
+    "编号": "403",
+    "名称": "巴丹",
+    "类型": "轻航",
+    "match": "uss bataan|巴丹|badan"
+  },
+  {
+    "编号": "307",
+    "名称": "泽西",
+    "类型": "驱逐",
+    "match": "hms jersey|泽西|zexi"
+  },
+  {
+    "编号": "349",
+    "名称": "埃米尔·贝尔汀",
+    "类型": "轻巡",
+    "match": "ffnf émile bertin|埃米尔 贝尔汀|aimier beierting"
+  },
+  {
+    "编号": "376",
+    "名称": "追赶者",
+    "类型": "轻航",
+    "match": "hms chaser|追赶者|zhuiganzhe"
+  },
+  {
+    "编号": "080",
+    "名称": "女灶神",
+    "类型": "维修",
+    "match": "uss vestal|女灶神|nvzaoshen"
+  },
+  {
+    "编号": "178",
+    "名称": "亲潮",
+    "类型": "驱逐",
+    "match": "ijn oyashio|亲潮|qinchao|藮|qiao"
+  },
+  {
+    "编号": "348",
+    "名称": "福尔班",
+    "类型": "驱逐",
+    "match": "ffnf forbin|福尔班|fuerban"
+  },
+  {
+    "编号": "355",
+    "名称": "布什",
+    "类型": "驱逐",
+    "match": "uss bush|布什|bushen"
+  },
+  {
+    "编号": "366",
+    "名称": "康克德",
+    "类型": "轻巡",
+    "match": "uss concord|康克德|kangkede"
+  },
+  {
+    "编号": "177",
+    "名称": "黑潮",
+    "类型": "驱逐",
+    "match": "ijn kuroshio|黑潮|heichao|蓉|rong"
+  },
+  {
+    "编号": "392",
+    "名称": "小圣地亚哥",
+    "类型": "轻巡",
+    "match": "li'l sandy|小圣地亚哥|xiaoshengdiyage"
+  },
+  {
+    "编号": "196",
+    "名称": "妙高",
+    "类型": "重巡",
+    "match": "ijn myōkō|妙高|miaogao|獌|man"
+  },
+  {
+    "编号": "347",
+    "名称": "凯旋",
+    "类型": "驱逐",
+    "match": "ffnf le triomphant|凯旋|kaixuan"
+  },
+  {
+    "编号": "335",
+    "名称": "小贝法",
+    "类型": "轻巡",
+    "match": "little bel|小贝法|xiaobeifa"
+  },
+  {
+    "编号": "420",
+    "名称": "克利夫兰(μ兵装)",
+    "类型": "轻巡",
+    "match": "uss cleveland|克利夫兰(μ兵装)|kelifulan(μbingzhuang)"
+  },
+  {
+    "编号": "422",
+    "名称": "希佩尔海军上将(μ兵装)",
+    "类型": "重巡",
+    "match": "kms admiral hipper|希佩尔海军上将(μ兵装)|xipeierhaijunshangjiang(μbingzhuang)"
+  },
+  {
+    "编号": "391",
+    "名称": "小克利夫兰",
+    "类型": "轻巡",
+    "match": "clevelad|小克利夫兰|xiaokelifulan"
+  },
+  {
+    "编号": "390",
+    "名称": "小海伦娜",
+    "类型": "轻巡",
+    "match": "lena|小海伦娜|xiaohailunna"
+  },
+  {
+    "编号": "421",
+    "名称": "谢菲尔德(μ兵装)",
+    "类型": "轻巡",
+    "match": "hms sheffield|谢菲尔德(μ兵装)|xiefeierde(μbingzhuang)"
+  },
+  {
+    "编号": "197",
+    "名称": "那智",
+    "类型": "重巡",
+    "match": "ijn nachi|那智|nazhi|狏|tuo"
+  },
+  {
+    "编号": "339",
+    "名称": "伊26",
+    "类型": "潜艇",
+    "match": "ijn i26|伊26|yi26|双叶梦|shuangyemeng"
+  },
+  {
+    "编号": "352",
+    "名称": "敦刻尔克",
+    "类型": "战巡",
+    "match": "mnf dunkerque|敦刻尔克|dunkeerke"
+  },
+  {
+    "编号": "383",
+    "名称": "小比叡",
+    "类型": "战巡",
+    "match": "hiei-chan|小比叡|xiaobirui|小鲟|xiaoxun"
+  },
+  {
+    "编号": "338",
+    "名称": "伊19",
+    "类型": "潜艇",
+    "match": "ijn i19|伊19|yi19|衣玖|yijiu"
+  },
+  {
+    "编号": "343",
+    "名称": "U-47",
+    "类型": "潜艇",
+    "match": "kms u-47|U-47|U-47"
+  },
+  {
+    "编号": "342",
+    "名称": "鲦鱼",
+    "类型": "潜艇",
+    "match": "uss dace|鲦鱼|tiaoyu"
+  },
+  {
+    "编号": "416",
+    "名称": "U-110",
+    "类型": "潜艇",
+    "match": "kms u-110|U-110|U-110"
+  },
+  {
+    "编号": "135",
+    "名称": "威尔士亲王",
+    "类型": "战列",
+    "match": "hms prince of wales|威尔士亲王|weiershiqinwang"
+  },
+  {
+    "编号": "397",
+    "名称": "伊56",
+    "类型": "潜艇",
+    "match": "ijn i56|伊56|yi56|冴梦|humeng"
+  },
+  {
+    "编号": "387",
+    "名称": "U-73",
+    "类型": "潜艇",
+    "match": "kms u-73|U-73|U-73"
+  },
+  {
+    "编号": "353",
+    "名称": "让·巴尔",
+    "类型": "战列",
+    "match": "mnf jean bart|让 巴尔|rang baer"
+  },
+  {
+    "编号": "402",
+    "名称": "棘鳍",
+    "类型": "潜艇",
+    "match": "uss cavalla|棘鳍|jiqi"
+  },
+  {
+    "编号": "358",
+    "名称": "大青花鱼",
+    "类型": "潜艇",
+    "match": "uss albacore|大青花鱼|daqinghuayu"
+  },
+  {
+    "编号": "136",
+    "名称": "约克公爵",
+    "类型": "战列",
+    "match": "hms duke of york|约克公爵|yuekegongjue"
+  },
+  {
+    "编号": "396",
+    "名称": "伊25",
+    "类型": "潜艇",
+    "match": "ijn i25|伊25|yi25|双叶檎|shuangyeqin"
+  },
+  {
+    "编号": "350",
+    "名称": "絮库夫",
+    "类型": "潜艇",
+    "match": "ffnf surcouf|絮库夫|xukufu"
+  },
+  {
+    "编号": "398",
+    "名称": "伊168",
+    "类型": "潜艇",
+    "match": "ijn i168|伊168|yi168|伊吕波|yilvbo"
+  },
+  {
+    "编号": "357",
+    "名称": "埃塞克斯",
+    "类型": "航母",
+    "match": "uss essex|埃塞克斯|aisaikesi"
+  },
+  {
+    "编号": "400",
+    "名称": "U-522",
+    "类型": "潜艇",
+    "match": "kms u-522|U-522|U-522"
+  },
+  {
+    "编号": "356",
+    "名称": "半人马",
+    "类型": "轻航",
+    "match": "hms centaur|半人马|banrenma"
+  },
+  {
+    "编号": "341",
+    "名称": "U-81",
+    "类型": "潜艇",
+    "match": "kms u-81|U-81|U-81"
+  },
+  {
+    "编号": "354",
+    "名称": "马萨诸塞",
+    "类型": "战列",
+    "match": "uss massachusetts|马萨诸塞|masazhusai"
+  },
+  {
+    "编号": "344",
+    "名称": "U-557",
+    "类型": "潜艇",
+    "match": "kms u-557|U-557|U-557"
+  },
+  {
+    "编号": "340",
+    "名称": "伊58",
+    "类型": "潜艇",
+    "match": "ijn i58|伊58|yi58|冴矢|hushi"
+  },
+  {
+    "编号": "384",
+    "名称": "小赤城",
+    "类型": "航母",
+    "match": "akagi-chan|小赤城|xiaochicheng|小凰|xiaohuang"
+  },
+  {
+    "编号": "385",
+    "名称": "小齐柏林",
+    "类型": "航母",
+    "match": "zeppy|小齐柏林|xiaoqibolin"
+  },
+  {
+    "编号": "418",
+    "名称": "加斯科涅(μ兵装)",
+    "类型": "战列",
+    "match": "mnf gascogne|加斯科涅(μ兵装)|jiasikenie(μbingzhuang)"
+  },
+  {
+    "编号": "427",
+    "名称": "哈尔西·鲍威尔",
+    "类型": "驱逐",
+    "match": "uss halsey powell|哈尔西 鲍威尔|haerxi baoweier"
+  },
+  {
+    "编号": "381",
+    "名称": "伊13",
+    "类型": "潜艇",
+    "match": "ijn i13|伊13|yi13|十纱|shisha"
+  },
+  {
+    "编号": "399",
+    "名称": "U-101",
+    "类型": "潜艇",
+    "match": "kms u-101|U-101|U-101"
+  },
+  {
+    "编号": "419",
+    "名称": "赤城(μ兵装)",
+    "类型": "航母",
+    "match": "ijn akagi|赤城(μ兵装)|chicheng(μbingzhuang)|凰(μ兵装)|huang(μbingzhuang)"
+  },
+  {
+    "编号": "160",
+    "名称": "响",
+    "类型": "驱逐",
+    "match": "ijn hibiki|响|xiang|栀|zhi"
+  },
+  {
+    "编号": "426",
+    "名称": "龙凤",
+    "类型": "轻航",
+    "match": "ijn ryūhō|龙凤|longfeng|鸗|long"
+  },
+  {
+    "编号": "107",
+    "名称": "黛朵",
+    "类型": "轻巡",
+    "match": "hms dido|黛朵|daiduo"
+  },
+  {
+    "编号": "191",
+    "名称": "加古",
+    "类型": "重巡",
+    "match": "ijn kako|加古|jiagu|狌|sheng"
+  },
+  {
+    "编号": "429",
+    "名称": "浦波",
+    "类型": "驱逐",
+    "match": "ijn uranami|浦波|pubo|朴|pu"
+  },
+  {
+    "编号": "113",
+    "名称": "格罗斯特",
+    "类型": "轻巡",
+    "match": "hms gloucester|格罗斯特|geluosite"
+  },
+  {
+    "编号": "230",
+    "名称": "大凤",
+    "类型": "航母",
+    "match": "ijn taihō|大凤|dafeng|鹩|liao"
+  },
+  {
+    "编号": "274",
+    "名称": "卯月",
+    "类型": "驱逐",
+    "match": "ijn uzuki|卯月|maoyue|楙|mao"
+  },
+  {
+    "编号": "428",
+    "名称": "比洛克西",
+    "类型": "轻巡",
+    "match": "uss biloxi|比洛克西|biluokexi"
+  },
+  {
+    "编号": "372",
+    "名称": "库拉索",
+    "类型": "轻巡",
+    "match": "hms curacoa|库拉索|kulasuo"
+  },
+  {
+    "编号": "091",
+    "名称": "狐提",
+    "类型": "驱逐",
+    "match": "hms foxhound|狐提|huti"
+  },
+  {
+    "编号": "052",
+    "名称": "内华达",
+    "类型": "战列",
+    "match": "uss nevada|内华达|neihuada"
+  },
+  {
+    "编号": "219",
+    "名称": "隼鹰",
+    "类型": "轻航",
+    "match": "ijn jun'yō|隼鹰|sunying|鸢|yuan"
+  },
+  {
+    "编号": "015",
+    "名称": "奥利克",
+    "类型": "驱逐",
+    "match": "uss aulick|奥利克|aolike"
+  },
+  {
+    "编号": "351",
+    "名称": "勒马尔",
+    "类型": "驱逐",
+    "match": "mnf le mars|勒马尔|leimaer"
+  },
+  {
+    "编号": "006",
+    "名称": "唐斯",
+    "类型": "驱逐",
+    "match": "uss downes|唐斯|tangsi"
+  },
+  {
+    "编号": "009",
+    "名称": "麦考尔",
+    "类型": "驱逐",
+    "match": "uss mccall|麦考尔|maikaoer"
+  },
+  {
+    "编号": "105",
+    "名称": "阿基里斯",
+    "类型": "轻巡",
+    "match": "hms achilles|阿基里斯|ajilisi"
+  },
+  {
+    "编号": "373",
+    "名称": "杓鹬",
+    "类型": "轻巡",
+    "match": "hms curlew|杓鹬|biaoyu"
+  },
+  {
+    "编号": "088",
+    "名称": "彗星",
+    "类型": "驱逐",
+    "match": "hms comet|彗星|huixing"
+  },
+  {
+    "编号": "019",
+    "名称": "拉菲",
+    "类型": "驱逐",
+    "match": "uss laffey|拉菲|lafei"
+  },
+  {
+    "编号": "276",
+    "名称": "水无月",
+    "类型": "驱逐",
+    "match": "ijn minazuki|水无月|shuiwuyue|杌|wu"
+  },
+  {
+    "编号": "424",
+    "名称": "霞",
+    "类型": "驱逐",
+    "match": "ijn kasumi|霞|xia|蕸|xia"
+  },
+  {
+    "编号": "092",
+    "名称": "命运女神",
+    "类型": "驱逐",
+    "match": "hms fortune|命运女神|mingyunnvshen"
+  },
+  {
+    "编号": "308",
+    "名称": "川内",
+    "类型": "轻巡",
+    "match": "ijn sendai|川内|chuannei|貆|huan"
+  },
+  {
+    "编号": "434",
+    "名称": "水星纪念",
+    "类型": "轻巡",
+    "match": "sn pamiat' merkuria|水星纪念|shuixingjinian"
+  },
+  {
+    "编号": "436",
+    "名称": "恰巴耶夫",
+    "类型": "轻巡",
+    "match": "sn chapayev|恰巴耶夫|qiabayefu"
+  },
+  {
+    "编号": "432",
+    "名称": "明斯克",
+    "类型": "驱逐",
+    "match": "sn minsk|明斯克|mingsike"
+  },
+  {
+    "编号": "018",
+    "名称": "本森",
+    "类型": "驱逐",
+    "match": "uss benson|本森|bensen"
+  },
+  {
+    "编号": "431",
+    "名称": "威严",
+    "类型": "驱逐",
+    "match": "sn grozny|威严|weiyan"
+  },
+  {
+    "编号": "433",
+    "名称": "塔什干",
+    "类型": "驱逐",
+    "match": "sn tashkent|塔什干|tashigan"
+  },
+  {
+    "编号": "437",
+    "名称": "甘古特",
+    "类型": "战列",
+    "match": "sn gangut|甘古特|gangute"
+  },
+  {
+    "编号": "442",
+    "名称": "无畏",
+    "类型": "航母",
+    "match": "uss intrepid|无畏|wuwei"
+  },
+  {
+    "编号": "445",
+    "名称": "里诺",
+    "类型": "轻巡",
+    "match": "uss reno|里诺|linuo"
+  },
+  {
+    "编号": "443",
+    "名称": "布莱默顿",
+    "类型": "重巡",
+    "match": "uss bremerton|布莱默顿|bulaimodun"
+  },
+  {
+    "编号": "444",
+    "名称": "库珀",
+    "类型": "驱逐",
+    "match": "uss cooper|库珀|kupo"
+  },
+  {
+    "编号": "446",
+    "名称": "蓝鳃鱼",
+    "类型": "潜艇",
+    "match": "uss bluegill|蓝鳃鱼|lansaiyu"
+  },
+  {
+    "编号": "447",
+    "名称": "卡萨布兰卡",
+    "类型": "轻航",
+    "match": "uss casablanca|卡萨布兰卡|kasabulanka"
+  },
+  {
+    "编号": "448",
+    "名称": "马布尔黑德",
+    "类型": "轻巡",
+    "match": "uss marblehead|马布尔黑德|mabuerheide"
+  },
+  {
+    "编号": "026",
+    "名称": "西姆斯",
+    "类型": "驱逐",
+    "match": "uss sims|西姆斯|ximusi"
+  },
+  {
+    "编号": "441",
+    "名称": "苏维埃罗西亚",
+    "类型": "战列",
+    "match": "sn sovetskaya rossiya|苏维埃罗西亚|suweiailuoxiya"
+  },
+  {
+    "编号": "215",
+    "名称": "土佐",
+    "类型": "战列",
+    "match": "ijn tosa|土佐|tuzuo|䲠|chun"
+  },
+  {
+    "编号": "451",
+    "名称": "小声望",
+    "类型": "战巡",
+    "match": "little renown|小声望|xiaoshengwang"
+  },
+  {
+    "编号": "452",
+    "名称": "塔尔图",
+    "类型": "驱逐",
+    "match": "mnf tartu|塔尔图|taertu"
+  },
+  {
+    "编号": "450",
+    "名称": "长波",
+    "类型": "驱逐",
+    "match": "ijn naganami|长波|changbo|苌|chang"
+  },
+  {
+    "编号": "388",
+    "名称": "Z36",
+    "类型": "驱逐",
+    "match": "kms z36|Z36|Z36"
+  },
+  {
+    "编号": "456",
+    "名称": "拉·加利索尼埃",
+    "类型": "轻巡",
+    "match": "mnf la galissonnière|拉 加利索尼埃|la jialisuoniai"
+  },
+  {
+    "编号": "449",
+    "名称": "花月",
+    "类型": "驱逐",
+    "match": "ijn hanazuki|花月|huayue|榵|rong"
+  },
+  {
+    "编号": "453",
+    "名称": "黎塞留",
+    "类型": "战列",
+    "match": "ffnf richelieu|黎塞留|lisailiu"
+  },
+  {
+    "编号": "458",
+    "名称": "贝亚恩",
+    "类型": "航母",
+    "match": "ffnf béarn|贝亚恩|beiyaen"
+  },
+  {
+    "编号": "454",
+    "名称": "圣女贞德",
+    "类型": "轻巡",
+    "match": "ffnf jeanne d'arc|圣女贞德|shengnvzhende"
+  },
+  {
+    "编号": "460",
+    "名称": "爱斯基摩人",
+    "类型": "驱逐",
+    "match": "hms eskimo|爱斯基摩人|aisijimoren"
+  },
+  {
+    "编号": "251",
+    "名称": "提尔比茨",
+    "类型": "战列",
+    "match": "kms tirpitz|提尔比茨|tierbici"
+  },
+  {
+    "编号": "465",
+    "名称": "伊卡洛斯",
+    "类型": "驱逐",
+    "match": "hms icarus|伊卡洛斯|yikaluosi"
+  },
+  {
+    "编号": "463",
+    "名称": "赫敏",
+    "类型": "轻巡",
+    "match": "hms hermione|赫敏|hemin"
+  },
+  {
+    "编号": "459",
+    "名称": "小光辉",
+    "类型": "航母",
+    "match": "little illustrious|小光辉|xiaoguanghui"
+  },
+  {
+    "编号": "457",
+    "名称": "沃克兰",
+    "类型": "驱逐",
+    "match": "mnf vauquelin|沃克兰|wokelan"
+  },
+  {
+    "编号": "461",
+    "名称": "豪",
+    "类型": "战列",
+    "match": "hms howe|豪|hao"
+  },
+  {
+    "编号": "225",
+    "名称": "加贺",
+    "类型": "航母",
+    "match": "ijn kaga|加贺|jiahe|鸾|luan"
+  },
+  {
+    "编号": "455",
+    "名称": "阿尔及利亚",
+    "类型": "重巡",
+    "match": "mnf algérie|阿尔及利亚|aerjiliya"
+  },
+  {
+    "编号": "464",
+    "名称": "英勇",
+    "类型": "战列",
+    "match": "hms valiant|英勇|yingyong"
+  },
+  {
+    "编号": "143",
+    "名称": "鹰",
+    "类型": "航母",
+    "match": "hms eagle|鹰|ying"
+  },
+  {
+    "编号": "201",
+    "名称": "爱宕",
+    "类型": "重巡",
+    "match": "ijn atago|爱宕|aidang|犬|quan"
+  },
+  {
+    "编号": "462",
+    "名称": "英仙座",
+    "类型": "轻航",
+    "match": "hms perseus|英仙座|yingxianzuo"
+  },
+  {
+    "编号": "305",
+    "名称": "圣路易斯",
+    "类型": "轻巡",
+    "match": "uss st. louis|圣路易斯|shengluyisi"
+  },
+  {
+    "编号": "468",
+    "名称": "凉月",
+    "类型": "驱逐",
+    "match": "ijn suzutsuki|凉月|liangyue|栎|li"
+  },
+  {
+    "编号": "466",
+    "名称": "Z26",
+    "类型": "驱逐",
+    "match": "kms z26|Z26|Z26"
+  },
+  {
+    "编号": "467",
+    "名称": "U-96",
+    "类型": "潜艇",
+    "match": "kms u-96|U-96|U-96"
+  },
+  {
+    "编号": "231",
+    "名称": "信浓",
+    "类型": "航母",
+    "match": "ijn shinano|信浓|xinnong|鵗|xi"
+  },
+  {
+    "编号": "267",
+    "名称": "Z46",
+    "类型": "驱逐",
+    "match": "kms z46|Z46|Z46"
+  },
+  {
+    "编号": "186",
+    "名称": "鬼怒",
+    "类型": "轻巡",
+    "match": "ijn kinu|鬼怒|guinu|猤|gui"
+  },
+  {
+    "编号": "470",
+    "名称": "千岁",
+    "类型": "轻航",
+    "match": "ijn chitose|千岁|qiansui|鹂|li"
+  },
+  {
+    "编号": "472",
+    "名称": "樫野",
+    "类型": "运输",
+    "match": "ijn kashino|樫野|jianye|㭴|jian"
+  },
+  {
+    "编号": "469",
+    "名称": "熊野",
+    "类型": "重巡",
+    "match": "ijn kumano|熊野|xiongye|猁|li"
+  },
+  {
+    "编号": "214",
+    "名称": "纪伊",
+    "类型": "战列",
+    "match": "ijn kii|纪伊|jiyi|鲣|jian"
+  },
+  {
+    "编号": "476",
+    "名称": "黛朵(μ兵装)",
+    "类型": "轻巡",
+    "match": "hms dido|黛朵(μ兵装)|daiduo(μbingzhuang)"
+  },
+  {
+    "编号": "471",
+    "名称": "千代田",
+    "类型": "轻航",
+    "match": "ijn chiyoda|千代田|qiandaitian|鹃|juan"
+  },
+  {
+    "编号": "479",
+    "名称": "罗恩(μ兵装)",
+    "类型": "重巡",
+    "match": "kms roon|罗恩(μ兵装)|luoen(μbingzhuang)"
+  },
+  {
+    "编号": "473",
+    "名称": "普林斯顿",
+    "类型": "轻航",
+    "match": "uss princeton|普林斯顿|pulinsidun"
+  },
+  {
+    "编号": "474",
+    "名称": "大凤(μ兵装)",
+    "类型": "航母",
+    "match": "ijn taihō|大凤(μ兵装)|dafeng(μbingzhuang)|鹩(μ兵装)|liao(μbingzhuang)"
+  },
+  {
+    "编号": "478",
+    "名称": "巴尔的摩(μ兵装)",
+    "类型": "重巡",
+    "match": "uss baltimore|巴尔的摩(μ兵装)|baerdemo(μbingzhuang)"
+  },
+  {
+    "编号": "483",
+    "名称": "海因里希亲王",
+    "类型": "重巡",
+    "match": "kms prinz heinrich|海因里希亲王|haiyinlixiqinwang"
+  },
+  {
+    "编号": "481",
+    "名称": "恶毒(μ兵装)",
+    "类型": "驱逐",
+    "match": "mnf le malin|恶毒(μ兵装)|edu(μbingzhuang)"
+  },
+  {
+    "编号": "480",
+    "名称": "光辉(μ兵装)",
+    "类型": "航母",
+    "match": "hms illustrious|光辉(μ兵装)|guanghui(μbingzhuang)"
+  },
+  {
+    "编号": "477",
+    "名称": "大青花鱼(μ兵装)",
+    "类型": "潜艇",
+    "match": "uss albacore|大青花鱼(μ兵装)|daqinghuayu(μbingzhuang)"
+  },
+  {
+    "编号": "486",
+    "名称": "纽伦堡",
+    "类型": "轻巡",
+    "match": "kms nürnberg|纽伦堡|niulunbao"
+  },
+  {
+    "编号": "485",
+    "名称": "威悉",
+    "类型": "轻航",
+    "match": "kms weser|威悉|weixi"
+  },
+  {
+    "编号": "484",
+    "名称": "U-37",
+    "类型": "潜艇",
+    "match": "kms u-37|U-37|U-37"
+  },
+  {
+    "编号": "482",
+    "名称": "彼得·史特拉塞",
+    "类型": "航母",
+    "match": "kms peter strasser|彼得 史特拉塞|bide shitelasai"
+  },
+  {
+    "编号": "493",
+    "名称": "应瑞",
+    "类型": "轻巡",
+    "match": "roc ying swei|应瑞|yingrui"
+  },
+  {
+    "编号": "475",
+    "名称": "塔什干(μ兵装)",
+    "类型": "驱逐",
+    "match": "sn tashkent|塔什干(μ兵装)|tashigan(μbingzhuang)"
+  },
+  {
+    "编号": "487",
+    "名称": "Z24",
+    "类型": "驱逐",
+    "match": "kms z24|Z24|Z24"
+  },
+  {
+    "编号": "489",
+    "名称": "波拉",
+    "类型": "重巡",
+    "match": "rn pola|波拉|bola"
+  },
+  {
+    "编号": "490",
+    "名称": "文琴佐·焦贝蒂",
+    "类型": "驱逐",
+    "match": "rn vincenzo gioberti|文琴佐 焦贝蒂|wenqinzuo jiaobeidi"
+  },
+  {
+    "编号": "494",
+    "名称": "肇和",
+    "类型": "轻巡",
+    "match": "roc chao ho|肇和|zhaohe"
+  },
+  {
+    "编号": "488",
+    "名称": "Z28",
+    "类型": "驱逐",
+    "match": "kms z28|Z28|Z28"
+  },
+  {
+    "编号": "492",
+    "名称": "U-410",
+    "类型": "潜艇",
+    "match": "kms u-410|U-410|U-410"
+  },
+  {
+    "编号": "495",
+    "名称": "佩内洛珀",
+    "类型": "轻巡",
+    "match": "hms penelope|佩内洛珀|peineiluopo"
+  },
+  {
+    "编号": "322",
+    "名称": "能代",
+    "类型": "轻巡",
+    "match": "ijn noshiro|能代|nengdai|貅|xiu"
+  },
+  {
+    "编号": "496",
+    "名称": "塔林",
+    "类型": "重巡",
+    "match": "sn tallinn|塔林|talin"
+  },
+  {
+    "编号": "498",
+    "名称": "摩尔曼斯克",
+    "类型": "轻巡",
+    "match": "sn murmansk|摩尔曼斯克|moermansike"
+  },
+  {
+    "编号": "499",
+    "名称": "洪亮",
+    "类型": "驱逐",
+    "match": "sn gromky|洪亮|hongliang"
+  },
+  {
+    "编号": "440",
+    "名称": "苏维埃贝拉罗斯",
+    "类型": "战列",
+    "match": "sn sovetskaya belorussiya|苏维埃贝拉罗斯|suweiaibeilaluosi"
+  },
+  {
+    "编号": "508",
+    "名称": "艾伦·萨姆纳",
+    "类型": "驱逐",
+    "match": "uss allen m. sumner|艾伦 萨姆纳|ailun samuna"
+  },
+  {
+    "编号": "491",
+    "名称": "神速",
+    "类型": "驱逐",
+    "match": "sn stremitelny|神速|shensu"
+  },
+  {
+    "编号": "509",
+    "名称": "史蒂芬·波特",
+    "类型": "驱逐",
+    "match": "uss stephen potter|史蒂芬 波特|shidifen bote"
+  },
+  {
+    "编号": "503",
+    "名称": "托里拆利",
+    "类型": "潜艇",
+    "match": "rn torricelli|托里拆利|tuolichaili"
+  },
+  {
+    "编号": "497",
+    "名称": "雷鸣",
+    "类型": "驱逐",
+    "match": "sn gremyashchy|雷鸣|leiming"
+  },
+  {
+    "编号": "507",
+    "名称": "追风",
+    "类型": "驱逐",
+    "match": "ijn oite|追风|zhuifeng|椎|chui"
+  },
+  {
+    "编号": "435",
+    "名称": "基洛夫",
+    "类型": "轻巡",
+    "match": "sn kirov|基洛夫|jiluofu"
+  },
+  {
+    "编号": "506",
+    "名称": "尼科洛索·达雷科",
+    "类型": "驱逐",
+    "match": "rn nicoloso da recco|尼科洛索 达雷科|nikeluosuo daleike"
+  },
+  {
+    "编号": "501",
+    "名称": "阿布鲁齐公爵",
+    "类型": "轻巡",
+    "match": "rn duca degli abruzzi|阿布鲁齐公爵|abuluqigongjue"
+  },
+  {
+    "编号": "013",
+    "名称": "查尔斯·奥斯本",
+    "类型": "驱逐",
+    "match": "uss charles ausburne|查尔斯 奥斯本|chaersi aosiben"
+  },
+  {
+    "编号": "510",
+    "名称": "小天城",
+    "类型": "战巡",
+    "match": "ijn amagi-chan|小天城|xiaotiancheng|小鳐|xiaoyao"
+  },
+  {
+    "编号": "500",
+    "名称": "维托里奥·维内托",
+    "类型": "战列",
+    "match": "rn vittorio veneto|维托里奥 维内托|weituoliao weineituo"
+  },
+  {
+    "编号": "083",
+    "名称": "热心",
+    "类型": "驱逐",
+    "match": "hms ardent|热心|rexin"
+  },
+  {
+    "编号": "505",
+    "名称": "西南风",
+    "类型": "驱逐",
+    "match": "rn libeccio|西南风|xinanfeng"
+  },
+  {
+    "编号": "502",
+    "名称": "天鹰",
+    "类型": "航母",
+    "match": "rn aquila|天鹰|tianying"
+  },
+  {
+    "编号": "504",
+    "名称": "西北风",
+    "类型": "驱逐",
+    "match": "rn maestrale|西北风|xibeifeng"
+  },
+  {
+    "编号": "512",
+    "名称": "旧金山",
+    "类型": "重巡",
+    "match": "uss san francisco|旧金山|jiujinshan|雾城|wucheng"
+  },
+  {
+    "编号": "125",
+    "名称": "约克",
+    "类型": "重巡",
+    "match": "hms york|约克|yueke"
+  },
+  {
+    "编号": "511",
+    "名称": "提康德罗加",
+    "类型": "航母",
+    "match": "uss ticonderoga|提康德罗加|tikangdeluojia|卡莉永|kaliyong"
+  },
+  {
+    "编号": "516",
+    "名称": "小企业",
+    "类型": "航母",
+    "match": "uss little enterprise|小企业|xiaoqiye"
+  },
+  {
+    "编号": "513",
+    "名称": "射水鱼",
+    "类型": "潜艇",
+    "match": "uss archerfish|射水鱼|sheshuiyu|喷水鱼|penshuiyu"
+  },
+  {
+    "编号": "517",
+    "名称": "风云",
+    "类型": "驱逐",
+    "match": "ijn kazagumo|风云|fengyun|枟|yun"
+  },
+  {
+    "编号": "515",
+    "名称": "莫里森",
+    "类型": "驱逐",
+    "match": "uss morrison|莫里森|molisen|赛普拉斯|saipulasi"
+  },
+  {
+    "编号": "152",
+    "名称": "白雪",
+    "类型": "驱逐",
+    "match": "ijn shirayuki|白雪|baixue|杉|shan"
+  },
+  {
+    "编号": "068",
+    "名称": "新泽西",
+    "类型": "战列",
+    "match": "uss new jersey|新泽西|xinzexi|花园|huayuan"
+  },
+  {
+    "编号": "514",
+    "名称": "博伊西",
+    "类型": "轻巡",
+    "match": "uss boise|博伊西|boyixi|树城|shucheng"
+  },
+  {
+    "编号": "002",
+    "名称": "诺瓦露",
+    "类型": "重巡",
+    "match": "hdn noire|诺瓦露|nuowalu"
+  },
+  {
+    "编号": "021",
+    "名称": "22",
+    "类型": "驱逐",
+    "match": "bili 22|22|22"
+  },
+  {
+    "编号": "003",
+    "名称": "布兰",
+    "类型": "驱逐",
+    "match": "hdn blanc|布兰|bulan"
+  },
+  {
+    "编号": "004",
+    "名称": "贝露",
+    "类型": "航母",
+    "match": "hdn vert|贝露|beilu"
+  },
+  {
+    "编号": "006",
+    "名称": "圣黑之心",
+    "类型": "重巡",
+    "match": "hdn black heart|圣黑之心|shengheizhixin"
+  },
+  {
+    "编号": "007",
+    "名称": "群白之心",
+    "类型": "驱逐",
+    "match": "hdn white heart|群白之心|qunbaizhixin"
+  },
+  {
+    "编号": "033",
+    "名称": "露露缇耶",
+    "类型": "轻巡",
+    "match": "rurutie|露露缇耶|lulutiye"
+  },
+  {
+    "编号": "031",
+    "名称": "久远",
+    "类型": "重巡",
+    "match": "kuon|久远|jiuyuan"
+  },
+  {
+    "编号": "005",
+    "名称": "绀紫之心",
+    "类型": "轻巡",
+    "match": "hdn purple heart|绀紫之心|ganzizhixin"
+  },
+  {
+    "编号": "036",
+    "名称": "芙米露露",
+    "类型": "航母",
+    "match": "fumiruiru|芙米露露|fumilulu"
+  },
+  {
+    "编号": "001",
+    "名称": "涅普顿",
+    "类型": "轻巡",
+    "match": "hdn neptune|涅普顿|niepudun"
+  },
+  {
+    "编号": "032",
+    "名称": "猫音",
+    "类型": "驱逐",
+    "match": "nekone|猫音|maoyin"
+  },
+  {
+    "编号": "022",
+    "名称": "33",
+    "类型": "驱逐",
+    "match": "bili 33|33|33"
+  },
+  {
+    "编号": "008",
+    "名称": "翡绿之心",
+    "类型": "航母",
+    "match": "hdn green heart|翡绿之心|feilvzhixin"
+  },
+  {
+    "编号": "044",
+    "名称": "绊爱·SuperGamer",
+    "类型": "战列",
+    "match": "kizuna·supergamer|绊爱 SuperGamer|banai SuperGamer"
+  },
+  {
+    "编号": "065",
+    "名称": "凪咲",
+    "类型": "战列",
+    "match": "nagisa|凪咲|zhixiao"
+  },
+  {
+    "编号": "041",
+    "名称": "绊爱",
+    "类型": "驱逐",
+    "match": "kizuna|绊爱|banai"
+  },
+  {
+    "编号": "067",
+    "名称": "莫妮卡",
+    "类型": "轻巡",
+    "match": "monica|莫妮卡|monika"
+  },
+  {
+    "编号": "035",
+    "名称": "萨拉娜",
+    "类型": "轻航",
+    "match": "saraana|萨拉娜|salana"
+  },
+  {
+    "编号": "061",
+    "名称": "玛莉萝丝",
+    "类型": "驱逐",
+    "match": "marie rose|玛莉萝丝|maliluosi"
+  },
+  {
+    "编号": "042",
+    "名称": "绊爱·Elegant",
+    "类型": "重巡",
+    "match": "kizuna·elegant|绊爱 Elegant|banai Elegant"
+  },
+  {
+    "编号": "062",
+    "名称": "穗香",
+    "类型": "战列",
+    "match": "honoka|穗香|suixiang"
+  },
+  {
+    "编号": "043",
+    "名称": "绊爱·Anniversary",
+    "类型": "航母",
+    "match": "kizuna·anniversary|绊爱 Anniversary|banai Anniversary"
+  },
+  {
+    "编号": "064",
+    "名称": "海咲",
+    "类型": "轻巡",
+    "match": "misaki|海咲|haixiao"
+  },
+  {
+    "编号": "066",
+    "名称": "女天狗",
+    "类型": "航母",
+    "match": "nyotengu|女天狗|nvtiangou"
+  },
+  {
+    "编号": "063",
+    "名称": "霞DOA",
+    "类型": "重巡",
+    "match": "kasumi|霞DOA|xiaDOA"
+  },
+  {
+    "编号": "034",
+    "名称": "乌璐露",
+    "类型": "轻航",
+    "match": "uruuru|乌璐露|wululu"
+  },
+  {
+    "编号": "003",
+    "名称": "伊吹",
+    "类型": "重巡",
+    "match": "ijn ibuki|伊吹|yichui|峦|luan"
+  },
+  {
+    "编号": "010",
+    "名称": "吾妻",
+    "类型": "超巡",
+    "match": "ijn azuma|吾妻|wuqi|猉|qi"
+  },
+  {
+    "编号": "002",
+    "名称": "君主",
+    "类型": "战列",
+    "match": "hms monarch|君主|junzhu"
+  },
+  {
+    "编号": "012",
+    "名称": "加斯科涅",
+    "类型": "战列",
+    "match": "mnf gascogne|加斯科涅|jiasikenie"
+  },
+  {
+    "编号": "001",
+    "名称": "海王星",
+    "类型": "轻巡",
+    "match": "hms neptune|海王星|haiwangxing"
+  },
+  {
+    "编号": "005",
+    "名称": "罗恩",
+    "类型": "重巡",
+    "match": "kms roon|罗恩|luoen"
+  },
+  {
+    "编号": "011",
+    "名称": "腓特烈大帝",
+    "类型": "战列",
+    "match": "kms friedrich der große|腓特烈大帝|feiteliedadi"
+  },
+  {
+    "编号": "009",
+    "名称": "北风",
+    "类型": "驱逐",
+    "match": "ijn kitakaze|北风|beifeng|苝|bei"
+  },
+  {
+    "编号": "008",
+    "名称": "佐治亚",
+    "类型": "战列",
+    "match": "uss georgia|佐治亚|zuozhiya"
+  },
+  {
+    "编号": "006",
+    "名称": "路易九世",
+    "类型": "重巡",
+    "match": "ffnf saint louis|路易九世|luyijiushi"
+  },
+  {
+    "编号": "007",
+    "名称": "西雅图",
+    "类型": "轻巡",
+    "match": "uss seattle|西雅图|xiyatu"
+  },
+  {
+    "编号": "017",
+    "名称": "香槟",
+    "类型": "战列",
+    "match": "ffnf champagne|香槟|xiangbin"
+  },
+  {
+    "编号": "004",
+    "名称": "出云",
+    "类型": "战列",
+    "match": "ijn izumo|出云|chuyun|侌|yin"
+  },
+  {
+    "编号": "016",
+    "名称": "奥丁",
+    "类型": "战巡",
+    "match": "kms odin|奥丁|aoding"
+  },
+  {
+    "编号": "013",
+    "名称": "柴郡",
+    "类型": "重巡",
+    "match": "hms cheshire|柴郡|chaijun"
+  },
+  {
+    "编号": "021",
+    "名称": "奥古斯特·冯·帕塞瓦尔",
+    "类型": "航母",
+    "match": "kms august von parseval|奥古斯特 冯 帕塞瓦尔|aogusite feng pasaiwaer"
+  },
+  {
+    "编号": "014",
+    "名称": "德雷克",
+    "类型": "重巡",
+    "match": "hms drake|德雷克|deleike"
+  },
+  {
+    "编号": "022",
+    "名称": "马可·波罗",
+    "类型": "战列",
+    "match": "rn marco polo|马可 波罗|make boluo"
+  },
+  {
+    "编号": "020",
+    "名称": "埃吉尔",
+    "类型": "超巡",
+    "match": "kms ägir|埃吉尔|aijier"
+  },
+  {
+    "编号": "015",
+    "名称": "美因茨",
+    "类型": "轻巡",
+    "match": "kms mainz|美因茨|meiyinci"
+  },
+  {
+    "编号": "018",
+    "名称": "安克雷奇",
+    "类型": "重巡",
+    "match": "uss anchorage|安克雷奇|ankeleiqi"
+  },
+  {
+    "编号": "019",
+    "名称": "白龙",
+    "类型": "航母",
+    "match": "ijn hakuryū|白龙|bailong|鹫|jiu"
+  }
+]
