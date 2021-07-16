@@ -141,7 +141,11 @@ def extract(raw, op):
         key = raw['编号']
         if key in attrs:
             return get_attr(attrs[key], op['key'])
-        return int(extract(raw, '满级' + op['key']) / 1.06)
+        key = '改造满级' + op['key']
+        if key not in raw:
+            key = '满级' + op['key']
+        return int(raw.get(key, 0) / 1.06)
+
     if op['op'] == 'type':
         return op['type'][extract(raw, op['key'])]
     if op['op'] == 'split':
