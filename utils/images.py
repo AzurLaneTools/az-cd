@@ -23,4 +23,5 @@ def crawl_all_ship_icon():
     for f in as_completed(fs):
         pass
     ensure_dir('static/images')
-    shutil.copytree('resources/cache/images/舰娘头像', 'static/images/headers')
+    
+    shutil.copytree('resources/cache/images/舰娘头像', 'static/images/headers', dirs_exist_ok=True)
