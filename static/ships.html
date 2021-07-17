@@ -30,13 +30,18 @@
         }
 
         .align-middle {
-
             float: none;
-
             display: inline-block;
-
             vertical-align: middle;
+        }
 
+        #alert {
+            display: block;
+            position: fixed;
+            top: 10px;
+            left: 5%;
+            width: 90%;
+            z-index: 2000;
         }
     </style>
 </head>
@@ -47,8 +52,8 @@
 
         <div class="mb-3 row align-items-center">
             <div class="col-2" style="height: 80px;">
-                <div class="thumbnail">
-                    <img id="cur-ship-img" class="head" src="">
+                <div class="thumbnail click-target">
+                    <img id="cur-ship-img" class="head" data-toggle="modal" data-target="#ship-modal" src="">
                 </div>
             </div>
             <div class="col-2">
@@ -68,7 +73,14 @@
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <div id="ships" class="row"></div>
+                        <div class="md-3 row">
+                            <div class="col-12">
+                                <input type="text" class="form-control" id="ship-filter"
+                                    placeholder="请输入舰娘名称(支持模糊搜索/拼音)">
+                            </div>
+                        </div>
+                        <br>
+                        <div id="ships" class="md-3 row"></div>
                     </div>
                 </div>
             </div>
@@ -79,7 +91,7 @@
                     <div class="modal-body">
                         <div class="md-3 row">
                             <div class="col-12">
-                                <input type="text" class="form-control" id="ship-filter"
+                                <input type="text" class="form-control" id="ship-template-filter"
                                     placeholder="请输入舰娘名称(支持模糊搜索/拼音)">
                             </div>
                         </div>
@@ -157,7 +169,7 @@
         </div>
 
     </div>
-    <div id="alert" class="alert alert-danger close" role="alert" style="z-index: 99;"></div>
+    <div id="alert" class="alert alert-danger" style="display: none;"></div>
     <template id="panel">
         <div class="row">
             <div class="col-md-12">
@@ -196,36 +208,49 @@
         window.addEventListener('beforeunload', saveData);
         let curIdx = getCurrentShipIdx();
         let shipBasicData = {};
-        $('#ship-filter').keyup(function () {
-            var ipt = $(this);
-            var term = $.trim(ipt.val());
-            term = term.replace(/'/g, '').toLowerCase();
-            if (ipt.data('lastTerm') === term) {
-                return;
-            }
-            ipt.data('lastTerm', term);
-            console.log('filter', this, term);
-            $('#ship-tempaltes > .ship-template').each((idx, elem) => {
-                var elem = $(elem);
-                if (term === '') {
-                    elem.removeClass('hide');
+        function bindFilter(filter, target) {
+            $(filter).keyup(function () {
+                var ipt = $(filter);
+                var term = $.trim(ipt.val());
+                term = term.replace(/'/g, '').toLowerCase();
+                if (ipt.data('lastTerm') === term) {
                     return;
                 }
-                var text = elem.data('match') || elem.text();
-                if (text.indexOf(term) > -1) {
-                    elem.removeClass('hide');
-                    return;
-                }
-                console.log('hide', elem);
-                elem.addClass('hide');
-            })
-        });
+                ipt.data('lastTerm', term);
+                console.log('apply filter', filter, term);
+                $(target).each((idx, elem) => {
+                    var elem = $(elem);
+                    if (term === '') {
+                        elem.removeClass('hide');
+                        return;
+                    }
+                    var text = elem.data('match') || elem.text();
+                    if (text.indexOf(term) > -1) {
+                        elem.removeClass('hide');
+                        return;
+                    }
+                    elem.addClass('hide');
+                })
+            });
+        }
+        bindFilter('#ship-filter', '#ships > .ship');
+        bindFilter('#ship-template-filter', '#ship-tempaltes > .ship-template');
+
         $('#ship-templates-modal').on('shown.bs.modal', function (e) {
             $('#ship-filter')[0].focus();
             console.log('focus on', $(this).find('input')[0]);
         })
+        var alertHandle;
         function makeAlert(text) {
-            alert(text);
+            if (alertHandle) {
+                clearTimeout(alertHandle);
+            }
+            $('#alert').text(text);
+            $('#alert').show();
+            alertHandle = setTimeout(function () {
+                $('#alert').hide();
+                alertHandle = null;
+            }, 1500);
         }
         function checkForShipExist() {
             if (allShip.length === 0) {
@@ -238,7 +263,7 @@
 
         function addShip(idx, ship) {
             $('#ships').append(`
-                <div class="col-sm-3 col-md-2">
+                <div class="col-sm-3 col-md-2 ship" data-match="${shipBasicData[ship.id].match}">
                     <div class="thumbnail text-center">
                         <div class="caption click-target" onclick="selectShip(${idx})">
                             <img class="head" src="images/headers/${shipBasicData[ship.id].img}">
@@ -256,6 +281,9 @@
             }
             allShip.splice(idx, 1);
             reloadShip();
+            // 需要更新lastTerm, 才能触发filter
+            $('#ship-filter').data('lastTerm', '')
+            $('#ship-filter').keyup();
             if (curIdx === idx) {
                 selectShip(0, false);
             }
