@@ -7,16 +7,16 @@ from utils.point import attrs
 
 
 REMAP = {
-    "装甲类型": {
-        "轻甲": "轻型",
-        "轻型": "轻型",
-        "轻型装甲": "轻型",
-        "中甲": "中型",
-        "中型": "中型",
-        "中型装甲": "中型",
-        "重型": "重型",
-        "重甲": "重型",
-        "重型装甲": "重型",
+    '装甲类型': {
+        '轻甲': '轻型',
+        '轻型': '轻型',
+        '轻型装甲': '轻型',
+        '中甲': '中型',
+        '中型': '中型',
+        '中型装甲': '中型',
+        '重型': '重型',
+        '重甲': '重型',
+        '重型装甲': '重型',
     }
 }
 
@@ -72,7 +72,7 @@ def extract(raw, op):
 
 def get_match_text(name):
     name = name.replace('·', ' ')
-    return [name, slug(name, separator="")]
+    return [name, slug(name, separator='')]
 
 
 def get_key_val(arg):
@@ -103,6 +103,61 @@ def get_key_val(arg):
     return key, val
 
 
+def skill_remap(name, ship):
+    NAME_MAP = {
+        '炮术指挥·驱逐舰': '炮术指挥',
+        '炮术指挥·巡洋舰': '炮术指挥',
+        '炮术指挥·战列舰': '炮术指挥',
+        '炮术指挥·先锋': '炮术指挥',
+        '炮术指挥·主力': '炮术指挥',
+        '炮术指挥·全员': '炮术指挥',
+        '战术指挥·驱逐舰': '战术指挥',
+        '战术指挥·巡洋舰': '战术指挥',
+        '战术指挥·战列舰': '战术指挥',
+        '战术指挥·先锋': '战术指挥',
+        '战术指挥·主力': '战术指挥',
+        '战术指挥·全员': '战术指挥',
+        '雷击指挥·巡洋舰': '雷击指挥',
+        '雷击指挥·驱逐舰': '雷击指挥',
+        '雷击指挥·先锋': '雷击指挥',
+        '防空指挥·巡洋舰': '防空指挥',
+        '防空指挥·先锋': '防空指挥',
+        '防空指挥·主力': '防空指挥',
+        '装填指挥·驱逐舰': '装填指挥',
+        '装填指挥·巡洋舰': '装填指挥',
+        '装填指挥·轻航': '装填指挥',
+        '装填指挥·先锋': '装填指挥',
+        '六驱精锐·晓': '六驱精锐',
+        '六驱精锐·响': '六驱精锐',
+        '六驱精锐·雷': '六驱精锐',
+        '六驱精锐·电': '六驱精锐',
+        'Code:Hikari': 'Code-Hikari',
+        '专属弹幕': '{skill_name}-{ship[名称]}',
+        'BIG SEVEN-樱': '{skill_name}-{ship[名称]}',
+        'bili看板娘': '{skill_name}-{ship[名称]}',
+        '全弹发射': '全弹发射-{ship[类型]}',
+        '布里发动了技能！': '{ship[名称]}',
+        '然而什么都没有发生': '{ship[名称]}',
+    }
+    NAME_SHIP_MAP = {
+        '旗舰掩护': ['哈曼'],
+        '变迁之秘': ['鹰'],
+        '花之牌': ['飞龙', '苍龙'],
+        '千之羽': ['千岁', '千代田'],
+        '除恶务尽': ['肇和', '应瑞'],
+    }
+
+    if name in NAME_MAP:
+        return NAME_MAP[name].format(skill_name=name, ship=ship)
+    elif name in NAME_SHIP_MAP:
+        if ship['名称'] in NAME_SHIP_MAP[name]:
+            return '{}-{}'.format(name, ship['名称'])
+    elif name == '全弹发射改':
+        typ = ship.get('改造后类型') or ship.get('类型')
+        return '全弹发射-' + typ
+    return name
+
+
 def parse_ship_content(content: str):
     parsed = wtp.parse(content)
     raw_map = {}
@@ -122,6 +177,20 @@ def parse_ship_content(content: str):
     if raw_map.get('和谐名'):
         match.extend(get_match_text(raw_map['和谐名']))
     raw_map['match'] = '|'.join(match)
+
+    raw_map['技能'] = []
+    for i in '12345':
+        name = raw_map.pop('技能%s名' % i, None)
+        if not name:
+            continue
+        skill = {
+            'name': name,
+            'desc': raw_map.pop('技能%s' % i),
+        }
+        img_name = skill_remap(name, raw_map)
+        if img_name != name:
+            skill['img'] = img_name
+        raw_map['技能'].append(skill)
     return raw_map
 
 
