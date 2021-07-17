@@ -91,8 +91,13 @@ def get_key_val(arg):
     ]:
         if re.search(exclude, key):
             return key, None
-    val = arg.value.strip()
-    val = re.sub(r'(?s)<!--.+?-->', '', val)
+    val = arg.value
+    for a, b in [
+        (r'(?s)<!--.+?-->', ''),
+        (r'^[\s\r\n]+', ''),
+        (r'[\s\r\n]+$', ''),
+    ]:
+        val = re.sub(a, b, val)
     if key in REMAP:
         val = REMAP[key][val]
     return key, val
