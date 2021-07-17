@@ -13,168 +13,339 @@
 
     <title>碧蓝航线CD计算器-舰娘配置</title>
     <style>
-        img.icon.small {
-            width: 50px;
-            height: 50px;
-        }
-
-        .search-select {
-            height: 50px;
-        }
-
         img.head {
-            width: 50px;
-            height: 50px;
+            width: 80px;
+            height: 80px;
             border-radius: 10px;
+            /* margin-top: 10px; */
         }
 
-        .select2-selection__rendered {
-            line-height: 51px !important;
+        .hide {
+            display: none !important;
+
         }
 
-        .select2-container .select2-selection--single {
-            height: 58px !important;
+        .click-target {
+            cursor: pointer;
         }
 
-        .select2-selection__arrow {
-            height: 54px !important;
-        }
+        .align-middle {
 
-        /* #ship-select {
-            width: 100%;
-        } */
+            float: none;
+
+            display: inline-block;
+
+            vertical-align: middle;
+
+        }
     </style>
 </head>
 
 <body>
-    <div class="container">
+    <div class="container text-center">
         <h1>碧蓝航线CD计算器-舰娘配置</h1>
-        <div class="col-md-12 row">
-            <select class="col-md-12 search-select form-select" name="ship" id="ship-select"></select>
+
+        <div class="mb-3 row align-items-center">
+            <div class="col-2" style="height: 80px;">
+                <div class="thumbnail">
+                    <img id="cur-ship-img" class="head" src="">
+                </div>
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ship-modal">
+                    选择舰娘
+                </button>
+            </div>
+
+            <div class="col-2">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ship-templates-modal">
+                    添加新舰娘
+                </button>
+            </div>
+
+        </div>
+        <div id="ship-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div id="ships" class="row"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ship-templates-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="md-3 row">
+                            <div class="col-12">
+                                <input type="text" class="form-control" id="ship-filter"
+                                    placeholder="请输入舰娘名称(支持模糊搜索/拼音)">
+                            </div>
+                        </div>
+                        <br>
+                        <div id="ship-tempaltes" class="md-3 row"></div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="mb-3 row">
-            <span class="col-sm-3 col-form-label">
-                舰娘属性输入方式
+            <span class="col-sm-2 col-form-label">
+                输入方式
             </span>
-            <span class="col-sm-3 col-form-label">
-                <label class="form-check-inline">
-                    <input class="form-check-input" type="radio" name="mode" checked>
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-secondary active">
+                    <input type="radio" name="mode" value="auto" checked>自动计算
+                </label>
+                <label class="btn btn-secondary">
+                    <input type="radio" name="mode" value="manual">手动输入
+                </label>
+            </div>
+            <!-- <span class="col-sm-3 col-form-label">
+                <label class="btn btn-secondary">
+                    <input class="form-check-input" type="radio" name="mode" value="auto" checked>
                     自动计算
                 </label>
-                <label class="form-check-inline">
-                    <input class="form-check-input" type="radio" name="mode">
+                <label class="btn btn-secondary">
+                    <input class="form-check-input" type="radio" name="mode" value="manual">
                     手动输入
                 </label>
-            </span>
+            </span> -->
         </div>
-        <div class="col-md-12 row">
-            <span class="col-sm-3">
-                好感
-            </span>
-            <span class="col-sm-7 col-form-label">
-                <label class="form-check-inline">
-                    <input class="form-check-input" type="radio" name="love">
-                    <span class="form-check-label">失望/陌生</span>
-                </label>
-                <label class="form-check-inline">
-                    <input class="form-check-input" type="radio" name="love">
-                    <span class="form-check-label">喜欢</span>
-                </label>
-                <label class="form-check-inline">
-                    <input class="form-check-input" type="radio" name="love" checked>
-                    <span class="form-check-label">爱</span>
-                </label>
-                <label class="form-check-inline">
-                    <input class="form-check-input" type="radio" name="love">
-                    <span class="form-check-label">誓约</span>
-                </label>
-                <label class="form-check-inline">
-                    <input class="form-check-input" type="radio" name="love">
-                    <span class="form-check-label">誓约200</span>
-                </label>
-            </span>
-        </div>
+        <div class="ship-inputs ship-inputs-auto">
+            <div class="mb-3 row">
+                <div class="col-sm-2">
+                    好感度
+                </div>
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="love" value="1">失望/陌生
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="love" value="1.03">喜欢
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="love" value="1.06" checked>爱
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="love" value="1.09">誓约
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="love" value="1.12">誓约200
+                    </label>
+                </div>
+            </div>
 
-        <label class="col-sm-12 input-group input-group-sm">
-            <span class="col-sm-2 col-form-label">
-                等级
-            </span>
-            <div class="col-sm-10">
-                <input class="form-control" type="number" name="level" id="level" value="120" min="1" max="120">
-            </div>
-        </label>
-        <label class="col-md-12 input-group input-group-sm">
-            <span class="col-sm-2 col-form-label">
-                装填
-            </span>
-            <div class="col-sm-10">
-                <input class="form-control" type="number" name="reload" id="reload">
-            </div>
-        </label>
+            <label class="mb-3 row input-group input-group-sm">
+                <div class="col-sm-2 col-form-label">
+                    等级
+                </div>
+                <div class="col-sm-10">
+                    <input class="form-control" type="number" name="level" id="level" value="120" min="1" max="120">
+                </div>
+            </label>
+        </div>
+        <div class="ship-inputs ship-inputs-manual">
+            <label class="mb-3 row input-group input-group-sm">
+                <div class="col-sm-2 col-form-label">
+                    装填
+                </div>
+                <div class="col-sm-10">
+                    <input class="form-control" type="number" name="reload" id="reload">
+                </div>
+            </label>
+        </div>
 
     </div>
+    <div id="alert" class="alert alert-danger close" role="alert" style="z-index: 99;"></div>
+    <template id="panel">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-body">
+                        <div class="col-sm-6 col-md-4">
+                            <div class="thumbnail">
+                                <img src="">
+                                <div class="caption">
+                                    <h3></h3>
+                                    <button class="btn btn-danger">删除</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
-        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
-        crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
         integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
         crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"
-        integrity="sha256-9yRP/2EFlblE92vzCA10469Ctd0jT48HnmmMw5rJZrA=" crossorigin="anonymous"></script>
+    <script src="js/storage.js?v=3"></script>
     <script>
+        let allShip = loadAllShips();
+        function saveData() {
+            console.log('saveAllShips');
+            saveAllShips(allShip);
+        }
+        window.addEventListener('beforeunload', saveData);
+        let curIdx = getCurrentShipIdx();
+        let shipBasicData = {};
+        $('#ship-filter').keyup(function () {
+            var ipt = $(this);
+            var term = $.trim(ipt.val());
+            term = term.replace(/'/g, '').toLowerCase();
+            if (ipt.data('lastTerm') === term) {
+                return;
+            }
+            ipt.data('lastTerm', term);
+            console.log('filter', this, term);
+            $('#ship-tempaltes > .ship-template').each((idx, elem) => {
+                var elem = $(elem);
+                if (term === '') {
+                    elem.removeClass('hide');
+                    return;
+                }
+                var text = elem.data('match') || elem.text();
+                if (text.indexOf(term) > -1) {
+                    elem.removeClass('hide');
+                    return;
+                }
+                console.log('hide', elem);
+                elem.addClass('hide');
+            })
+        });
+        $('#ship-templates-modal').on('shown.bs.modal', function (e) {
+            $('#ship-filter')[0].focus();
+            console.log('focus on', $(this).find('input')[0]);
+        })
+        function makeAlert(text) {
+            alert(text);
+        }
+        function checkForShipExist() {
+            if (allShip.length === 0) {
+                makeAlert('舰娘列表为空, 请添加舰娘');
+                $('#ship-templates-modal').modal('show');
+            }
+            selectShip(curIdx);
+        }
+        $('#ship-templates-modal').on('hidden.bs.modal', checkForShipExist);
+
+        function addShip(idx, ship) {
+            $('#ships').append(`
+                <div class="col-sm-3 col-md-2">
+                    <div class="thumbnail text-center">
+                        <div class="caption click-target" onclick="selectShip(${idx})">
+                            <img class="head" src="images/headers/${shipBasicData[ship.id].img}">
+                            <p>${ship.name}</p>
+                        </div>
+                        <button type="button" class="btn btn-danger" onclick="deleteShip(${idx})">删除</button>
+                    </div>
+                </div>
+            `);
+        }
+        function deleteShip(idx) {
+            if (allShip.length === 1) {
+                makeAlert('无法删除最后一个舰娘!');
+                return;
+            }
+            allShip.splice(idx, 1);
+            reloadShip();
+            if (curIdx === idx) {
+                selectShip(0, false);
+            }
+            return false;
+        }
+
+        function selectShipTemplate(obj) {
+            var id = $(obj).data('id');
+            console.log('选择舰娘', id, $(obj).attr('title'));
+            curIdx = allShip.length;
+            var ship = {
+                id: id,
+                name: shipBasicData[id].名称,
+                mode: 'manual',
+            };
+            allShip.push(ship);
+            $('#ship-templates-modal').modal('hide');
+            $('#cur-ship-img').attr('src', 'images/headers/' + shipBasicData[ship.id].img);
+            addShip(curIdx, ship);
+        }
+
+        function selectShip(idx, hide = true) {
+            curIdx = idx;
+            var ship = allShip[curIdx];
+            console.log('选择舰娘', ship);
+            if (hide) {
+                $('#ship-modal').modal('hide');
+            }
+            $('#cur-ship-img').attr('src', 'images/headers/' + shipBasicData[ship.id].img);
+        }
+
+        $('input[name=mode]').change(function () {
+            var val = $('input[name=mode]:checked').val();
+            console.log('show', val);
+            allShip[curIdx].mode = val;
+            if (val === 'manual') {
+                $('div.ship-inputs-auto').hide();
+                $('div.ship-inputs-manual input').prop('disabled', false);
+            } else {
+                updateReload();
+                $('div.ship-inputs-auto').show();
+                $('div.ship-inputs-manual input').prop('disabled', true);
+            }
+        });
+        // 根据属性计算装填值
+        function updateReload() {
+            var lvl = parseFloat($('#level').val());
+            allShip[curIdx].reload = lvl * parseFloat($('input[name=love]:checked').val());
+            $('div.ship-inputs-manual input').val(parseFloat(allShip[curIdx].reload.toFixed(6)));
+        }
+        $('div.ship-inputs-auto input').change(updateReload);
+        function saveShip() {
+            localStorage.setItem(STORE_KEYS.ship,);
+        }
+        function initShip(id) {
+            var conf = shipBasicData[id];
+            if (!conf.reloadAttr) {
+                $('input[name=mode][value=manual]')[0].checked = true;
+            }
+        }
+        function reloadShip() {
+            $('#ships').html('');
+            for (var [idx, ship] of allShip.entries()) {
+                addShip(idx, ship);
+            }
+        }
+
         // In your Javascript (external .js resource or <script> tag)
         $(document).ready(async function () {
             let resp = await fetch('data/ships-simple.json');
             let data = await resp.json();
             for (let ship of data) {
-                $('#ship-select').append(`
-                <option value="${ship.编号}" data-img-url="images/headers/${ship.img}"
-                data-match="${ship.match}">${ship.名称}</option>`);
+                shipBasicData[ship.编号] = ship;
+                $('#ship-tempaltes').append(`
+                    <div class="col-2 ship-template" data-match="${ship.match}">
+                        <div class="thumbnail text-center click-target" onclick="selectShipTemplate(this)" data-id="${ship.编号}">
+                            <div class="caption">
+                                <img class="head" src="images/headers/${ship.img}">
+                                <p>${ship.名称}</p>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                //  <img class="d-inline-flex head" src="images/headers/${ship.img}" 
+                //  data-id="${ship.编号}" data-match="${ship.match}" title="${ship.名称}" alt="${ship.名称}"
+                //  onclick="selectShipTemplate(this)"
+                //  >
             }
-            $('.search-select').click(function () {
-                console.log(this);
-                $(this).select2('focus');
-            })
-            function renderItem(state) {
-                var imgUrl = $(state.element).data('imgUrl');
-                if (!imgUrl) {
-                    return state.text;
-                }
-                console.log('add img', state.text, imgUrl);
-                return $(`<img class="head" src="${imgUrl}"/><span>${state.text}</span>`);
-            }
-
-            $('.search-select').select2({
-                placeholder: '请选择舰娘.',
-                templateResult: renderItem,
-                templateSelection: renderItem,
-                selectOnClose: true,
-                matcher: (params, data) => {
-                    var term = $.trim(params.term);
-                    // If there are no search terms, return all of the data
-                    if (term === '') {
-                        return data;
-                    }
-                    term = term.replace(/'/g, '').toLowerCase();
-                    // `params.term` should be the term that is used for searching
-                    // `data.text` is the text that is displayed for the data object
-                    var text = $(data.element).data('match') || data.text;
-                    if (text.indexOf(term) > -1) {
-                        // You can return modified objects from here
-                        // This includes matching the `children` how you want in nested data sets
-                        return data;
-                    }
-                    return null;
-                }
-            });
-            $(document).on('select2:open', () => {
-                document.querySelector('.select2-search__field').focus();
-            });
+            reloadShip();
+            checkForShipExist();
         });
     </script>
 </body>
