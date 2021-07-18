@@ -1,0 +1,1045 @@
+[
+  {
+    "name": "小海狸中队队徽",
+    "tech": 0,
+    "type": "设备",
+    "id": 500,
+    "rarity": 5
+  },
+  {
+    "name": "珍珠之泪",
+    "tech": 0,
+    "type": "设备",
+    "id": 520,
+    "rarity": 5
+  },
+  {
+    "name": "治愈系猫爪",
+    "tech": 0,
+    "type": "设备",
+    "id": 540,
+    "rarity": 5
+  },
+  {
+    "name": "“宁海号”水上侦察机",
+    "tech": 0,
+    "type": "设备",
+    "id": 560,
+    "rarity": 4
+  },
+  {
+    "name": "九一式穿甲弹",
+    "tech": 0,
+    "type": "设备",
+    "id": 580,
+    "rarity": 4
+  },
+  {
+    "name": "一式穿甲弹",
+    "tech": 0,
+    "type": "设备",
+    "id": 600,
+    "rarity": 5
+  },
+  {
+    "name": "超重弹",
+    "tech": 0,
+    "type": "设备",
+    "id": 620,
+    "rarity": 5
+  },
+  {
+    "name": "Z旗",
+    "tech": 0,
+    "type": "设备",
+    "id": 640,
+    "rarity": 6
+  },
+  {
+    "name": "100/150号航空燃油",
+    "tech": 0,
+    "type": "设备",
+    "id": 660,
+    "rarity": 4
+  },
+  {
+    "name": "归航信标",
+    "tech": 0,
+    "type": "设备",
+    "id": 680,
+    "rarity": 4
+  },
+  {
+    "name": "九八式射击延迟装置",
+    "tech": 0,
+    "type": "设备",
+    "id": 700,
+    "rarity": 4
+  },
+  {
+    "name": "约定的证明",
+    "tech": 0,
+    "type": "设备",
+    "id": 720,
+    "rarity": 5
+  },
+  {
+    "name": "侦察报告·纽约近海",
+    "tech": 0,
+    "type": "设备",
+    "id": 760,
+    "rarity": 4
+  },
+  {
+    "name": "机密文件·极地海峡",
+    "tech": 0,
+    "type": "设备",
+    "id": 780,
+    "rarity": 4
+  },
+  {
+    "name": "艇壳改良设计案",
+    "tech": 2,
+    "type": "设备",
+    "id": 800,
+    "rarity": 4
+  },
+  {
+    "name": "开拓者奖章",
+    "tech": 0,
+    "type": "设备",
+    "id": 820,
+    "rarity": 5
+  },
+  {
+    "name": "白鹰精英损管",
+    "tech": 0,
+    "type": "设备",
+    "id": 840,
+    "rarity": 5
+  },
+  {
+    "name": "华盛顿海军条约",
+    "tech": 0,
+    "type": "设备",
+    "id": 860,
+    "rarity": 5
+  },
+  {
+    "name": "纳尔逊的旗语",
+    "tech": 0,
+    "type": "设备",
+    "id": 880,
+    "rarity": 5
+  },
+  {
+    "name": "作战报告：AF",
+    "tech": 0,
+    "type": "设备",
+    "id": 940,
+    "rarity": 4
+  },
+  {
+    "name": "FuMO 25",
+    "tech": 0,
+    "type": "设备",
+    "id": 960,
+    "rarity": 5
+  },
+  {
+    "name": "舰艇维修设备",
+    "tech": 3,
+    "type": "设备",
+    "id": 1000,
+    "rarity": 5
+  },
+  {
+    "name": "对空雷达",
+    "tech": 3,
+    "type": "设备",
+    "id": 1100,
+    "rarity": 4
+  },
+  {
+    "name": "高性能对空雷达",
+    "tech": 0,
+    "type": "设备",
+    "id": 1160,
+    "rarity": 5
+  },
+  {
+    "name": "火控雷达",
+    "tech": 3,
+    "type": "设备",
+    "id": 1200,
+    "rarity": 4
+  },
+  {
+    "name": "高性能火控雷达",
+    "tech": 0,
+    "type": "设备",
+    "id": 1260,
+    "rarity": 5
+  },
+  {
+    "name": "防鱼雷隔舱",
+    "tech": 3,
+    "type": "设备",
+    "id": 1300,
+    "rarity": 4
+  },
+  {
+    "name": "液压弹射装置",
+    "tech": 3,
+    "type": "设备",
+    "id": 1400,
+    "rarity": 5
+  },
+  {
+    "name": "SG雷达",
+    "tech": 3,
+    "type": "设备",
+    "id": 1500,
+    "rarity": 5
+  },
+  {
+    "name": "高性能舵机",
+    "tech": 0,
+    "type": "设备",
+    "id": 1760,
+    "rarity": 5
+  },
+  {
+    "name": "改良锅炉",
+    "tech": 3,
+    "type": "设备",
+    "id": 1800,
+    "rarity": 4
+  },
+  {
+    "name": "海魂迷彩",
+    "tech": 0,
+    "type": "设备",
+    "id": 1960,
+    "rarity": 4
+  },
+  {
+    "name": "燃油滤清器",
+    "tech": 3,
+    "type": "设备",
+    "id": 2000,
+    "rarity": 4
+  },
+  {
+    "name": "航空副油箱",
+    "tech": 3,
+    "type": "设备",
+    "id": 2100,
+    "rarity": 4
+  },
+  {
+    "name": "链式装弹机",
+    "tech": 3,
+    "type": "设备",
+    "id": 2200,
+    "rarity": 4
+  },
+  {
+    "name": "陀螺仪",
+    "tech": 3,
+    "type": "设备",
+    "id": 2300,
+    "rarity": 4
+  },
+  {
+    "name": "维修工具",
+    "tech": 3,
+    "type": "设备",
+    "id": 2400,
+    "rarity": 4
+  },
+  {
+    "name": "九三式纯氧鱼雷",
+    "tech": 3,
+    "type": "设备",
+    "id": 2600,
+    "rarity": 6
+  },
+  {
+    "name": "533mm磁性鱼雷",
+    "tech": 3,
+    "type": "设备",
+    "id": 2700,
+    "rarity": 5
+  },
+  {
+    "name": "94式高射装置",
+    "tech": 0,
+    "type": "设备",
+    "id": 2800,
+    "rarity": 4
+  },
+  {
+    "name": "基础声呐",
+    "tech": 3,
+    "type": "设备",
+    "id": 2900,
+    "rarity": 4
+  },
+  {
+    "name": "改良声呐",
+    "tech": 3,
+    "type": "设备",
+    "id": 3000,
+    "rarity": 5
+  },
+  {
+    "name": "高压氧气瓶",
+    "tech": 0,
+    "type": "设备",
+    "id": 3100,
+    "rarity": 4
+  },
+  {
+    "name": "改良型水下进气管",
+    "tech": 0,
+    "type": "设备",
+    "id": 3120,
+    "rarity": 5
+  },
+  {
+    "name": "改良蓄电池阵列",
+    "tech": 0,
+    "type": "设备",
+    "id": 3140,
+    "rarity": 5
+  },
+  {
+    "name": "VH装甲钢板",
+    "tech": 0,
+    "type": "设备",
+    "id": 3200,
+    "rarity": 5
+  },
+  {
+    "name": "VC装甲钢板",
+    "tech": 0,
+    "type": "设备",
+    "id": 3220,
+    "rarity": 4
+  },
+  {
+    "name": "四神之印",
+    "tech": 0,
+    "type": "设备",
+    "id": 3300,
+    "rarity": 5
+  },
+  {
+    "name": "改良深弹投射器",
+    "tech": 3,
+    "type": "设备",
+    "id": 4100,
+    "rarity": 4
+  },
+  {
+    "name": "试作型四联装356mm主炮MkB",
+    "tech": 0,
+    "type": "舰炮(战列)",
+    "id": 14160,
+    "rarity": 4
+  },
+  {
+    "name": "双联装406mm主炮Mk5",
+    "tech": 3,
+    "type": "舰炮(战列)",
+    "id": 14200,
+    "rarity": 4
+  },
+  {
+    "name": "双联装406mm主炮Mk8",
+    "tech": 0,
+    "type": "舰炮(战列)",
+    "id": 14260,
+    "rarity": 4
+  },
+  {
+    "name": "三联装406mm主炮Mk6",
+    "tech": 3,
+    "type": "舰炮(战列)",
+    "id": 14300,
+    "rarity": 4
+  },
+  {
+    "name": "三联装406mm主炮Mk2",
+    "tech": 0,
+    "type": "舰炮(战列)",
+    "id": 14360,
+    "rarity": 4
+  },
+  {
+    "name": "试作型三联装406mm主炮MkD",
+    "tech": 0,
+    "type": "舰炮(战列)",
+    "id": 14380,
+    "rarity": 5
+  },
+  {
+    "name": "试作型双联装457mm主炮MkA",
+    "tech": 0,
+    "type": "舰炮(战列)",
+    "id": 14500,
+    "rarity": 6
+  },
+  {
+    "name": "三联装406mm主炮Mk7",
+    "tech": 0,
+    "type": "舰炮(战列)",
+    "id": 14400,
+    "rarity": 6
+  },
+  {
+    "name": "PBY-5A卡特琳娜水上机",
+    "tech": 0,
+    "type": "设备",
+    "id": 15500,
+    "rarity": 4
+  },
+  {
+    "name": "F2A水牛(萨奇队)",
+    "tech": 0,
+    "type": "战斗机",
+    "id": 17060,
+    "rarity": 5
+  },
+  {
+    "name": "试作型XF2A-4水牛",
+    "tech": 0,
+    "type": "战斗机",
+    "id": 17080,
+    "rarity": 4
+  },
+  {
+    "name": "F4F野猫",
+    "tech": 3,
+    "type": "战斗机",
+    "id": 17100,
+    "rarity": 4
+  },
+  {
+    "name": "F4U海盗",
+    "tech": 3,
+    "type": "战斗机",
+    "id": 17200,
+    "rarity": 4
+  },
+  {
+    "name": "F4U(VF-17“海盗”中队)",
+    "tech": 0,
+    "type": "战斗机",
+    "id": 17260,
+    "rarity": 5
+  },
+  {
+    "name": "F6F地狱猫",
+    "tech": 3,
+    "type": "战斗机",
+    "id": 17300,
+    "rarity": 5
+  },
+  {
+    "name": "F7F虎猫",
+    "tech": 0,
+    "type": "战斗机",
+    "id": 17360,
+    "rarity": 5
+  },
+  {
+    "name": "F8F熊猫",
+    "tech": 0,
+    "type": "战斗机",
+    "id": 17380,
+    "rarity": 5
+  },
+  {
+    "name": "XF5F天箭",
+    "tech": 0,
+    "type": "战斗机",
+    "id": 17400,
+    "rarity": 4
+  },
+  {
+    "name": "TBD蹂躏者(VT-8中队)",
+    "tech": 0,
+    "type": "鱼雷机",
+    "id": 18060,
+    "rarity": 5
+  },
+  {
+    "name": "TBF复仇者",
+    "tech": 3,
+    "type": "鱼雷机",
+    "id": 18100,
+    "rarity": 4
+  },
+  {
+    "name": "TBM复仇者(VT-18中队)",
+    "tech": 0,
+    "type": "鱼雷机",
+    "id": 18180,
+    "rarity": 5
+  },
+  {
+    "name": "XTB2D-1天空海盗",
+    "tech": 0,
+    "type": "鱼雷机",
+    "id": 18220,
+    "rarity": 5
+  },
+  {
+    "name": "SBD无畏(麦克拉斯基队)",
+    "tech": 0,
+    "type": "轰炸机",
+    "id": 19060,
+    "rarity": 5
+  },
+  {
+    "name": "SB2C地狱俯冲者",
+    "tech": 3,
+    "type": "轰炸机",
+    "id": 19100,
+    "rarity": 4
+  },
+  {
+    "name": "实验型XSB3C-1",
+    "tech": 0,
+    "type": "轰炸机",
+    "id": 19160,
+    "rarity": 5
+  },
+  {
+    "name": "BTD-1毁灭者",
+    "tech": 3,
+    "type": "轰炸机",
+    "id": 19200,
+    "rarity": 5
+  },
+  {
+    "name": "四联装356mm主炮",
+    "tech": 3,
+    "type": "舰炮(战列)",
+    "id": 24000,
+    "rarity": 5
+  },
+  {
+    "name": "双联装356mm主炮",
+    "tech": 0,
+    "type": "舰炮(战列)",
+    "id": 24060,
+    "rarity": 4
+  },
+  {
+    "name": "双联装381mm主炮",
+    "tech": 3,
+    "type": "舰炮(战列)",
+    "id": 24100,
+    "rarity": 4
+  },
+  {
+    "name": "试作型三联装381mm主炮",
+    "tech": 0,
+    "type": "舰炮(战列)",
+    "id": 24160,
+    "rarity": 5
+  },
+  {
+    "name": "三联装406mm主炮",
+    "tech": 3,
+    "type": "舰炮(战列)",
+    "id": 24200,
+    "rarity": 5
+  },
+  {
+    "name": "双联装381mm主炮改",
+    "tech": 0,
+    "type": "舰炮(战列)",
+    "id": 24300,
+    "rarity": 5
+  },
+  {
+    "name": "刺猬弹",
+    "tech": 0,
+    "type": "设备",
+    "id": 25800,
+    "rarity": 5
+  },
+  {
+    "name": "海喷火",
+    "tech": 3,
+    "type": "战斗机",
+    "id": 27000,
+    "rarity": 4
+  },
+  {
+    "name": "海喷火FR.47",
+    "tech": 0,
+    "type": "战斗机",
+    "id": 27060,
+    "rarity": 5
+  },
+  {
+    "name": "海毒牙",
+    "tech": 3,
+    "type": "战斗机",
+    "id": 27100,
+    "rarity": 5
+  },
+  {
+    "name": "海怒",
+    "tech": 0,
+    "type": "战斗机",
+    "id": 27300,
+    "rarity": 5
+  },
+  {
+    "name": "海大黄蜂",
+    "tech": 0,
+    "type": "战斗机",
+    "id": 27320,
+    "rarity": 5
+  },
+  {
+    "name": "剑鱼",
+    "tech": 3,
+    "type": "鱼雷机",
+    "id": 28000,
+    "rarity": 4
+  },
+  {
+    "name": "剑鱼(818中队)",
+    "tech": 0,
+    "type": "鱼雷机",
+    "id": 28060,
+    "rarity": 5
+  },
+  {
+    "name": "梭鱼",
+    "tech": 3,
+    "type": "鱼雷机",
+    "id": 28100,
+    "rarity": 5
+  },
+  {
+    "name": "火把",
+    "tech": 0,
+    "type": "鱼雷机",
+    "id": 28200,
+    "rarity": 5
+  },
+  {
+    "name": "火冠",
+    "tech": 0,
+    "type": "鱼雷机",
+    "id": 28220,
+    "rarity": 5
+  },
+  {
+    "name": "青花鱼",
+    "tech": 3,
+    "type": "鱼雷机",
+    "id": 28300,
+    "rarity": 4
+  },
+  {
+    "name": "飞龙",
+    "tech": 0,
+    "type": "鱼雷机",
+    "id": 28400,
+    "rarity": 6
+  },
+  {
+    "name": "海燕",
+    "tech": 3,
+    "type": "轰炸机",
+    "id": 29100,
+    "rarity": 4
+  },
+  {
+    "name": "萤火虫",
+    "tech": 0,
+    "type": "轰炸机",
+    "id": 29200,
+    "rarity": 5
+  },
+  {
+    "name": "梭鱼(831中队)",
+    "tech": 0,
+    "type": "轰炸机",
+    "id": 29300,
+    "rarity": 5
+  },
+  {
+    "name": "410mm连装炮",
+    "tech": 3,
+    "type": "舰炮(战列)",
+    "id": 34100,
+    "rarity": 4
+  },
+  {
+    "name": "410mm连装炮(三式弹)",
+    "tech": 0,
+    "type": "舰炮(战列)",
+    "id": 34100,
+    "rarity": 5
+  },
+  {
+    "name": "试作型410mm三连装炮",
+    "tech": 0,
+    "type": "舰炮(战列)",
+    "id": 34180,
+    "rarity": 5
+  },
+  {
+    "name": "410mm连装炮改",
+    "tech": 0,
+    "type": "舰炮(战列)",
+    "id": 34300,
+    "rarity": 4
+  },
+  {
+    "name": "零战二一型",
+    "tech": 3,
+    "type": "战斗机",
+    "id": 37100,
+    "rarity": 4
+  },
+  {
+    "name": "零战三二型",
+    "tech": 0,
+    "type": "战斗机",
+    "id": 37160,
+    "rarity": 4
+  },
+  {
+    "name": "零战五二型",
+    "tech": 3,
+    "type": "战斗机",
+    "id": 37200,
+    "rarity": 5
+  },
+  {
+    "name": "烈风",
+    "tech": 3,
+    "type": "战斗机",
+    "id": 37300,
+    "rarity": 5
+  },
+  {
+    "name": "紫电改二",
+    "tech": 0,
+    "type": "战斗机",
+    "id": 37400,
+    "rarity": 5
+  },
+  {
+    "name": "天山",
+    "tech": 3,
+    "type": "鱼雷机",
+    "id": 38100,
+    "rarity": 4
+  },
+  {
+    "name": "天山改",
+    "tech": 0,
+    "type": "鱼雷机",
+    "id": 38160,
+    "rarity": 4
+  },
+  {
+    "name": "流星",
+    "tech": 3,
+    "type": "鱼雷机",
+    "id": 38200,
+    "rarity": 5
+  },
+  {
+    "name": "试作型彩云(舰攻型)",
+    "tech": 0,
+    "type": "鱼雷机",
+    "id": 38300,
+    "rarity": 5
+  },
+  {
+    "name": "九九式舰爆",
+    "tech": 3,
+    "type": "轰炸机",
+    "id": 39000,
+    "rarity": 4
+  },
+  {
+    "name": "九九式舰爆改",
+    "tech": 0,
+    "type": "轰炸机",
+    "id": 39060,
+    "rarity": 4
+  },
+  {
+    "name": "彗星",
+    "tech": 3,
+    "type": "轰炸机",
+    "id": 39100,
+    "rarity": 5
+  },
+  {
+    "name": "彗星一二型甲",
+    "tech": 0,
+    "type": "轰炸机",
+    "id": 39160,
+    "rarity": 5
+  },
+  {
+    "name": "彗星二一型",
+    "tech": 0,
+    "type": "轰炸机",
+    "id": 39320,
+    "rarity": 5
+  },
+  {
+    "name": "试作舰载型天雷",
+    "tech": 0,
+    "type": "轰炸机",
+    "id": 39340,
+    "rarity": 6
+  },
+  {
+    "name": "三联283mmSKC34主炮",
+    "tech": 3,
+    "type": "舰炮(战列)",
+    "id": 44000,
+    "rarity": 4
+  },
+  {
+    "name": "双联380mmSKC主炮",
+    "tech": 3,
+    "type": "舰炮(战列)",
+    "id": 44100,
+    "rarity": 5
+  },
+  {
+    "name": "试作型双联装406mmSKC主炮",
+    "tech": 0,
+    "type": "舰炮(战列)",
+    "id": 44200,
+    "rarity": 5
+  },
+  {
+    "name": "试作型三联装305mmSKC39主炮",
+    "tech": 0,
+    "type": "舰炮(战列)",
+    "id": 44300,
+    "rarity": 5
+  },
+  {
+    "name": "BF-109T舰载战斗机",
+    "tech": 3,
+    "type": "战斗机",
+    "id": 47000,
+    "rarity": 4
+  },
+  {
+    "name": "试作型舰载FW-190 A-5",
+    "tech": 0,
+    "type": "战斗机",
+    "id": 47080,
+    "rarity": 4
+  },
+  {
+    "name": "Me-155A舰载战斗机",
+    "tech": 3,
+    "type": "战斗机",
+    "id": 47100,
+    "rarity": 5
+  },
+  {
+    "name": "试作舰载型BF-109G",
+    "tech": 0,
+    "type": "战斗机",
+    "id": 47160,
+    "rarity": 5
+  },
+  {
+    "name": "Fi-167舰载鱼雷机",
+    "tech": 0,
+    "type": "鱼雷机",
+    "id": 48020,
+    "rarity": 4
+  },
+  {
+    "name": "Ju-87 D-4",
+    "tech": 0,
+    "type": "鱼雷机",
+    "id": 48040,
+    "rarity": 5
+  },
+  {
+    "name": "Ju-87C俯冲轰炸机",
+    "tech": 3,
+    "type": "轰炸机",
+    "id": 49000,
+    "rarity": 4
+  },
+  {
+    "name": "B-37 三联装406mm主炮MK-1",
+    "tech": 2,
+    "type": "舰炮(战列)",
+    "id": 85300,
+    "rarity": 4
+  },
+  {
+    "name": "随机单词生成器",
+    "tech": 0,
+    "type": "设备",
+    "id": 89000,
+    "rarity": 5
+  },
+  {
+    "name": "晃悠悠",
+    "tech": 0,
+    "type": "设备",
+    "id": 89020,
+    "rarity": 5
+  },
+  {
+    "name": "智慧模块",
+    "tech": 0,
+    "type": "设备",
+    "id": 89040,
+    "rarity": 5
+  },
+  {
+    "name": "组徽",
+    "tech": 0,
+    "type": "设备",
+    "id": 89060,
+    "rarity": 5
+  },
+  {
+    "name": "Gamers的证明",
+    "tech": 0,
+    "type": "设备",
+    "id": 89080,
+    "rarity": 5
+  },
+  {
+    "name": "玉米灯笼",
+    "tech": 0,
+    "type": "设备",
+    "id": 89100,
+    "rarity": 5
+  },
+  {
+    "name": "鮟鱇肝",
+    "tech": 0,
+    "type": "设备",
+    "id": 89120,
+    "rarity": 5
+  },
+  {
+    "name": "炽烈之歌",
+    "tech": 0,
+    "type": "设备",
+    "id": 89140,
+    "rarity": 5
+  },
+  {
+    "name": "活力之歌",
+    "tech": 0,
+    "type": "设备",
+    "id": 89160,
+    "rarity": 5
+  },
+  {
+    "name": "闪耀之歌",
+    "tech": 0,
+    "type": "设备",
+    "id": 89180,
+    "rarity": 5
+  },
+  {
+    "name": "引力舞鞋",
+    "tech": 0,
+    "type": "设备",
+    "id": 89200,
+    "rarity": 5
+  },
+  {
+    "name": "星云舞裙",
+    "tech": 0,
+    "type": "设备",
+    "id": 89220,
+    "rarity": 5
+  },
+  {
+    "name": "觉醒宝珠",
+    "tech": 0,
+    "type": "设备",
+    "id": 89240,
+    "rarity": 5
+  },
+  {
+    "name": "心之钥匙",
+    "tech": 0,
+    "type": "设备",
+    "id": 89260,
+    "rarity": 5
+  },
+  {
+    "name": "四联装330mm主炮Mle1931",
+    "tech": 3,
+    "type": "舰炮(战列)",
+    "id": 50300,
+    "rarity": 4
+  },
+  {
+    "name": "四联装380mm主炮Mle1935",
+    "tech": 3,
+    "type": "舰炮(战列)",
+    "id": 90420,
+    "rarity": 5
+  },
+  {
+    "name": "试作型三联装406mm/50主炮",
+    "tech": 0,
+    "type": "舰炮(战列)",
+    "id": 51000,
+    "rarity": 5
+  },
+  {
+    "name": "三联装381mm主炮Model1934",
+    "tech": 3,
+    "type": "舰炮(战列)",
+    "id": 55000,
+    "rarity": 5
+  },
+  {
+    "name": "G.50箭式战斗机",
+    "tech": 3,
+    "type": "战斗机",
+    "id": 55720,
+    "rarity": 4
+  },
+  {
+    "name": "Re.2001公羊",
+    "tech": 3,
+    "type": "战斗机",
+    "id": 55800,
+    "rarity": 4
+  },
+  {
+    "name": "试作型三联装406mm主炮Model1940",
+    "tech": 0,
+    "type": "舰炮(战列)",
+    "id": 55900,
+    "rarity": 5
+  }
+]
