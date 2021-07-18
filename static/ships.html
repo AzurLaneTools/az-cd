@@ -205,12 +205,13 @@
     <script src="js/storage.js?v=3"></script>
     <script>
         let allShip = loadAllShips();
+        let curIdx = getCurrentShipIdx();
         function saveData() {
             console.log('saveAllShips');
             saveAllShips(allShip);
+            setCurrentShipIdx(curIdx);
         }
         window.addEventListener('beforeunload', saveData);
-        let curIdx = getCurrentShipIdx();
         let shipBasicData = {};
         function bindFilter(filter, target) {
             $(filter).keyup(function () {
@@ -360,12 +361,12 @@
                 $('input[name=mode]').prop('disabled', false);
                 // 模式
                 $('input[name=mode][value=' + ship.mode + ']').click();
+                // 好感度
+                $('input[name=love][value="' + ship.love + '"]').click();
             }
-            // 好感度
-            $('input[name=love][value="' + ship.love + '"]').click();
             // 装填
             if (ship.mode === 'auto') {
-                updateReload()
+                updateReload();
             } else {
                 $('#reload').val(ship.reload);
             }
