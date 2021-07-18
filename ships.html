@@ -201,6 +201,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
         integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
         crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uuid@latest/dist/umd/uuidv4.min.js"></script>
     <script src="js/storage.js?v=3"></script>
     <script>
         let allShip = loadAllShips();
@@ -324,6 +325,7 @@
             curIdx = allShip.length;
             var ship = {
                 id: id,
+                uuid: uuidv4(),
                 name: shipBasicData[id].名称,
                 type: shipBasicData[id].类型,
                 mode: 'auto',
@@ -332,8 +334,8 @@
             };
             allShip.push(ship);
             $('#ship-templates-modal').modal('hide');
-            $('#cur-ship-img').attr('src', 'images/headers/' + shipBasicData[ship.id].img);
             addShip(curIdx, ship);
+            selectShip(curIdx);
         }
 
         function selectShip(idx, hide = true) {
@@ -349,8 +351,16 @@
             $('#name').val(ship.name);
             // 等级
             $('#level').val(ship.level);
-            // 模式
-            $('input[name=mode][value=' + ship.mode + ']').click();
+            if (!shipBasicData[ship.id].args) {
+                // 无数据, 强制使用手动输入
+                ship.mode = 'manual';
+                $('input[name=mode][value=manual]').click();
+                $('input[name=mode]').prop('disabled', true);
+            } else {
+                $('input[name=mode]').prop('disabled', false);
+                // 模式
+                $('input[name=mode][value=' + ship.mode + ']').click();
+            }
             // 好感度
             $('input[name=love][value="' + ship.love + '"]').click();
             // 装填
@@ -407,7 +417,7 @@
 
         // In your Javascript (external .js resource or <script> tag)
         $(document).ready(async function () {
-            let resp = await fetch('data/ships-simple.json');
+            let resp = await fetch('data/ships-simple.json?v=2');
             let data = await resp.json();
             for (let ship of data) {
                 shipBasicData[ship.编号] = ship;
