@@ -9,7 +9,6 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
         integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <title>碧蓝航线CD计算器-舰娘配置</title>
     <style>
@@ -41,6 +40,10 @@
             left: 5%;
             width: 90%;
             z-index: 2000;
+        }
+
+        div.ship {
+            margin: 10px 0 10px 0;
         }
     </style>
 </head>
@@ -257,11 +260,12 @@
             $('#ships').append(`
                 <div class="col-sm-3 col-md-2 ship" data-match="${shipBasicData[ship.id].match}">
                     <div class="thumbnail text-center">
-                        <div class="caption click-target" onclick="selectShip(${idx})">
+                        <div class="click-target" onclick="selectShip(${idx})">
                             <img class="head" src="images/headers/${shipBasicData[ship.id].img}">
-                            <p>${ship.name}</p>
+                            <br>
+                            ${ship.name}
                         </div>
-                        <button type="button" class="btn btn-danger" onclick="deleteShip(${idx})">删除</button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="deleteShip(${idx})">删除</button>
                     </div>
                 </div>
             `);
@@ -279,7 +283,7 @@
             if (curIdx === idx) {
                 selectShip(0, false);
             }
-            return false;
+            // return false;
         }
 
         function selectShipTemplate(obj) {
@@ -289,6 +293,7 @@
             var ship = {
                 id: id,
                 name: shipBasicData[id].名称,
+                type: shipBasicData[id].类型,
                 mode: 'auto',
                 level: 120,
                 love: 1.06,
@@ -308,12 +313,12 @@
             }
             // 图片
             $('#cur-ship-img').attr('src', 'images/headers/' + shipBasicData[ship.id].img);
+            // 等级
+            $('#level').val(ship.level);
             // 模式
             $('input[name=mode][value=' + ship.mode + ']').click();
             // 好感度
             $('input[name=love][value="' + ship.love + '"]').click();
-            // 等级
-            $('#level').val(ship.level);
             // 装填
             if (ship.mode === 'auto') {
                 updateReload()
