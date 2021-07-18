@@ -20,7 +20,7 @@ REMAP = {
     }
 }
 
-GROUP_PREFIX = {'联动': 'Collab', '方案': 'Plan'}
+GROUP_PREFIX = {'联动': 'Collab', '方案': 'Plan', 'META': 'Meta'}
 
 re_int = re.compile(r'^\s*\d+$')
 re_float = re.compile(r'^\s*\d*\.\d+$')
@@ -172,6 +172,8 @@ def parse_ship_content(content: str):
 
     if raw_map.get('分组'):
         raw_map['编号'] = GROUP_PREFIX[raw_map['分组']] + raw_map['编号']
+    else:
+        raw_map['编号'] = 'N' + raw_map['编号']
 
     match = [raw_map['英文名'].lower(), *get_match_text(raw_map['名称'])]
     if raw_map.get('和谐名'):
@@ -195,7 +197,7 @@ def parse_ship_content(content: str):
 
 
 def get_ship_data():
-    for category in ['舰娘', '联动舰娘', '方案舰娘']:
+    for category in ['舰娘', '联动舰娘', '方案舰娘', 'META舰娘']:
         for ship in get_categorymember_details(category):
             page = ship['query']['pages'][0]
             try:

@@ -133,8 +133,11 @@ def try_parse_num(text):
 
 
 def get_attr(raw, key):
-    if key in ('耐久', '装填', '炮击', '雷击', '机动', '防空', '航空', '反潜',) and raw['编号'] in attrs:
-        data = attrs[raw['编号']]
+    code = raw['编号']
+    if code.isnumeric():
+        code = "N" + code
+    if key in ('耐久', '装填', '炮击', '雷击', '机动', '防空', '航空', '反潜',) and code in attrs:
+        data = attrs[code]
         lvl = 120
         val = (
             data[key + '基础']
