@@ -52,9 +52,12 @@ def setup_ship_data():
         if '战' not in sf['类型'] and '航' not in sf['类型']:
             continue
         ss = copy_dict(sf, ['编号', '名称', '类型', 'match'])
-        
-        data = attrs[sf['编号']]
-        ss['args'] = [int(data[k]) for k in ['装填基础', '装填成长', '装填额外', '可强化装填', '装填改造']]
+
+        if attrs.get(sf['编号']):
+            data = attrs[sf['编号']]
+            ss['args'] = [
+                int(data[k]) for k in ['装填基础', '装填成长', '装填额外', '可强化装填', '装填改造']
+            ]
         ss['img'] = sanitize_filename(sf['名称']) + '.jpg'
         if sf.get('和谐名'):
             ss['名称'] = '{}({})'.format(sf['名称'], sf['和谐名'])
