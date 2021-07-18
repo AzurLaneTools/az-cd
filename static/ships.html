@@ -201,6 +201,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
         integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
         crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uuid@latest/dist/umd/uuidv4.min.js"></script>
     <script src="js/storage.js?v=3"></script>
     <script>
         let allShip = loadAllShips();
@@ -324,6 +325,7 @@
             curIdx = allShip.length;
             var ship = {
                 id: id,
+                uuid: uuidv4(),
                 name: shipBasicData[id].名称,
                 type: shipBasicData[id].类型,
                 mode: 'auto',
