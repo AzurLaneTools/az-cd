@@ -103,10 +103,18 @@
                 </div>
             </div>
         </div>
+        <label class="mb-3 row">
+            <div class="col-sm-2">
+                名称
+            </div>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" name="ship-name" id="name">
+            </div>
+        </label>
         <div class="mb-3 row">
-            <span class="col-sm-2 col-form-label">
+            <div class="col-sm-2 col-form-label">
                 输入方式
-            </span>
+            </div>
             <div class="btn-group" data-toggle="buttons">
                 <label class="btn btn-secondary active">
                     <input type="radio" name="mode" value="auto">自动计算
@@ -260,8 +268,10 @@
             $('#ships').append(`
                 <div class="col-sm-3 col-md-2 ship" data-match="${shipBasicData[ship.id].match}">
                     <div class="thumbnail text-center">
-                        <div class="click-target" onclick="selectShip(${idx})">
-                            <img class="head" src="images/headers/${shipBasicData[ship.id].img}">
+                        <div class="click-target" onclick="selectShip(${idx})" 
+                            data-idx="${idx}" draggable="true" ondragstart="markDrag(event)">
+                            <img class="head" draggable="false" src="images/headers/${shipBasicData[ship.id].img}"
+                                data-idx="${idx}" ondragover="onDragOver(event)" ondrop="moveShip(event)">
                             <br>
                             ${ship.name}
                         </div>
@@ -269,6 +279,28 @@
                     </div>
                 </div>
             `);
+        }
+        function markDrag(ev) {
+            // Add the target element's id to the data transfer object
+            ev.dataTransfer.setData("text", $(ev.target).data('idx'));
+            console.log(ev, ev.target);
+        }
+        function onDragOver(ev) {
+            ev.preventDefault();
+            ev.dataTransfer.dropEffect = "move";
+        }
+        function moveShip(ev) {
+            ev.preventDefault();
+            window.ev = ev;
+            console.log(ev);
+            var idx = parseInt(ev.dataTransfer.getData("text")), newIdx = parseInt($(ev.target).data('idx'));
+            console.log('Move', idx, newIdx);
+            if (isNaN(idx) || isNaN(newIdx)) {
+                return;
+            }
+            var item = allShip.splice(idx, 1)[0];
+            allShip.splice(newIdx, 0, item);
+            reloadShip();
         }
         function deleteShip(idx) {
             if (allShip.length === 1) {
@@ -313,6 +345,8 @@
             }
             // 图片
             $('#cur-ship-img').attr('src', 'images/headers/' + shipBasicData[ship.id].img);
+            // 名称
+            $('#name').val(ship.name);
             // 等级
             $('#level').val(ship.level);
             // 模式
@@ -351,6 +385,10 @@
             $('div.ship-inputs-manual input').val(parseFloat(ship.reload.toFixed(6)));
         }
         $('div.ship-inputs-auto input').change(updateReload);
+        $('#name').change(function () {
+            allShip[curIdx].name = $(this).val();
+            reloadShip();
+        })
         function saveShip() {
             localStorage.setItem(STORE_KEYS.ship,);
         }
