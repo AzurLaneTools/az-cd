@@ -25,6 +25,8 @@ def get_ship_attrs():
         if blvl != '3':
             continue
         row = [float(i) for i in row.split(',')]
+        if sid.isnumeric():
+            sid = 'N' + sid
         ship_data[sid] = dict(zip(header, row))
     return ship_data
 
