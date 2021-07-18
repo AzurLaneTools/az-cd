@@ -313,12 +313,12 @@
             }
             // 图片
             $('#cur-ship-img').attr('src', 'images/headers/' + shipBasicData[ship.id].img);
+            // 等级
+            $('#level').val(ship.level);
             // 模式
             $('input[name=mode][value=' + ship.mode + ']').click();
             // 好感度
             $('input[name=love][value="' + ship.love + '"]').click();
-            // 等级
-            $('#level').val(ship.level);
             // 装填
             if (ship.mode === 'auto') {
                 updateReload()
