@@ -123,6 +123,9 @@
                         <input type="radio" name="love" value="1">失望/陌生
                     </label>
                     <label class="btn btn-secondary">
+                        <input type="radio" name="love" value="1.01">友好
+                    </label>
+                    <label class="btn btn-secondary">
                         <input type="radio" name="love" value="1.03">喜欢
                     </label>
                     <label class="btn btn-secondary">
@@ -225,8 +228,8 @@
         bindFilter('#ship-filter', '#ships > .ship');
         bindFilter('#ship-template-filter', '#ship-tempaltes > .ship-template');
 
-        $('#ship-templates-modal').on('shown.bs.modal', function (e) {
-            $('#ship-filter')[0].focus();
+        $('div.modal').on('shown.bs.modal', function (e) {
+            $(this).find('input')[0].focus();
             console.log('focus on', $(this).find('input')[0]);
         })
         var alertHandle;
@@ -286,7 +289,9 @@
             var ship = {
                 id: id,
                 name: shipBasicData[id].名称,
-                mode: 'manual',
+                mode: 'auto',
+                level: 120,
+                love: 1.06,
             };
             allShip.push(ship);
             $('#ship-templates-modal').modal('hide');
@@ -335,7 +340,9 @@
             var ship = allShip[curIdx];
             ship.level = parseFloat($('#level').val());
             ship.love = parseFloat($('input[name=love]:checked').val());
-            ship.reload = ship.level * ship.love;
+            var r = shipBasicData[ship.id].args;
+            // 装填白值 = (基础值 + 基础成长值 * (等级-1) / 1000 + 额外成长值 * (等级-100) / 1000 + 强化属性) * 好感度加成 + 改造属性
+            ship.reload = (r[0] + r[1] * (ship.level - 1) / 1000 + r[2] * (ship.level - 100) / 1000 + r[3]) * ship.love + r[4];
             $('div.ship-inputs-manual input').val(parseFloat(ship.reload.toFixed(6)));
         }
         $('div.ship-inputs-auto input').change(updateReload);
