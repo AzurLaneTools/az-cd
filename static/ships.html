@@ -17,7 +17,6 @@
             width: 80px;
             height: 80px;
             border-radius: 10px;
-            /* margin-top: 10px; */
         }
 
         .hide {
@@ -107,22 +106,12 @@
             </span>
             <div class="btn-group" data-toggle="buttons">
                 <label class="btn btn-secondary active">
-                    <input type="radio" name="mode" value="auto" checked>自动计算
+                    <input type="radio" name="mode" value="auto">自动计算
                 </label>
                 <label class="btn btn-secondary">
-                    <input type="radio" name="mode" value="manual">手动输入
+                    <input type="radio" name="mode" value="manual" checked>手动输入
                 </label>
             </div>
-            <!-- <span class="col-sm-3 col-form-label">
-                <label class="btn btn-secondary">
-                    <input class="form-check-input" type="radio" name="mode" value="auto" checked>
-                    自动计算
-                </label>
-                <label class="btn btn-secondary">
-                    <input class="form-check-input" type="radio" name="mode" value="manual">
-                    手动输入
-                </label>
-            </span> -->
         </div>
         <div class="ship-inputs ship-inputs-auto">
             <div class="mb-3 row">
@@ -312,7 +301,20 @@
             if (hide) {
                 $('#ship-modal').modal('hide');
             }
+            // 图片
             $('#cur-ship-img').attr('src', 'images/headers/' + shipBasicData[ship.id].img);
+            // 模式
+            $('input[name=mode][value=' + ship.mode + ']').click();
+            // 好感度
+            $('input[name=love][value="' + ship.love + '"]').click();
+            // 等级
+            $('#level').val(ship.level);
+            // 装填
+            if (ship.mode === 'auto') {
+                updateReload()
+            } else {
+                $('#reload').val(ship.reload);
+            }
         }
 
         $('input[name=mode]').change(function () {
@@ -330,9 +332,11 @@
         });
         // 根据属性计算装填值
         function updateReload() {
-            var lvl = parseFloat($('#level').val());
-            allShip[curIdx].reload = lvl * parseFloat($('input[name=love]:checked').val());
-            $('div.ship-inputs-manual input').val(parseFloat(allShip[curIdx].reload.toFixed(6)));
+            var ship = allShip[curIdx];
+            ship.level = parseFloat($('#level').val());
+            ship.love = parseFloat($('input[name=love]:checked').val());
+            ship.reload = ship.level * ship.love;
+            $('div.ship-inputs-manual input').val(parseFloat(ship.reload.toFixed(6)));
         }
         $('div.ship-inputs-auto input').change(updateReload);
         function saveShip() {
