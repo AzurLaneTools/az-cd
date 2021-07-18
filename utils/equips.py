@@ -1,38 +1,56 @@
 import re
-
+import json
+import os
+from pathlib import Path
+import logging
 import wikitextparser as wtp
+import lupa
 
-from utils.crawl import get_categorymember_details
+from utils.crawl import get_text, API_URL, sanitize_filename
+
+logger = logging.getLogger(__name__)
+
+
+EQUIP_SORT_MAP = {
+    '舰炮:絮库夫炮': 1,
+    '舰炮:轻巡': 1,
+    '舰炮:轻巡炮': 1,
+    '舰炮:大口径重巡炮': 1,
+    '舰炮:驱逐炮': 1,
+    '舰炮:战列炮': 1,
+    '舰炮:重巡炮': 1,
+    '舰炮': 101,
+    '鱼雷:水面鱼雷': 2,
+    '鱼雷:潜艇鱼雷': 2,
+    '鱼雷': 102,
+    '战斗机': 3,
+    '轰炸机': 3,
+    '鱼雷机': 3,
+    '舰载机': 103,
+    '防空炮': 104,
+    '反潜机': 5,
+    '水上机': 5,
+    '设备': 105,
+    '科研装备': 800,
+    '装备': 900,
+    '唯一装备': 901,
+}
 
 
 def get_category_priroty(c):
-    return {
-        '舰炮:絮库夫炮': 1,
-        '舰炮:轻巡': 1,
-        '舰炮:轻巡炮': 1,
-        '舰炮:大口径重巡炮': 1,
-        '舰炮:驱逐炮': 1,
-        '舰炮:战列炮': 1,
-        '舰炮:重巡炮': 1,
-        '舰炮:': 10,
-        '舰炮': 101,
-        '鱼雷:水面鱼雷': 2,
-        '鱼雷:潜艇鱼雷': 2,
-        '鱼雷': 102,
-        '战斗机': 3,
-        '轰炸机': 3,
-        '鱼雷机': 3,
-        '舰载机': 103,
-        '防空炮': 104,
-        '反潜机': 5,
-        '水上机': 5,
-        '设备': 105,
-        '科研装备': 800,
-        '装备': 900,
-        '唯一装备': 901,
-        '含有受损文件链接的页面': 999,
-        '调用重复模板参数的页面': 999,
-    }.get(c, 999)
+    return EQUIP_SORT_MAP.get(c, 999)
+
+
+def get_key_val(arg):
+    key = arg.name.strip()
+    val = arg.value
+    for a, b in [
+        (r'(?s)<!--.+?-->', ''),
+        (r'^[\s\r\n]+', ''),
+        (r'[\s\r\n]+$', ''),
+    ]:
+        val = re.sub(a, b, val)
+    return key, val
 
 
 def parse_equip_content(page):
@@ -43,24 +61,43 @@ def parse_equip_content(page):
         if '图鉴' not in t.name:
             continue
         for arg in t.arguments:
-            raw_map[arg.name] = arg.value.strip()
+            key, val = get_key_val(arg)
+            if not val:
+                continue
+            raw_map[key] = val
     raw_map['分类'] = [c['title'][3:] for c in page['categories']]
+    raw_map['分类'] = [c for c in raw_map['分类'] if c in EQUIP_SORT_MAP]
     raw_map['分类'].sort(key=get_category_priroty)
-    if '类型' not in raw_map:
-        raw_map.setdefault('类型', raw_map['分类'][0])
     return raw_map
 
 
-def get_equip_data():
-    equipments = {}
-    category = '装备'
-    for equip in get_categorymember_details(category):
-        info = parse_equip_content(equip['query']['pages'][0])
-        fullname = info['全名'] = info['名称']
-        name, tech = fullname[:-2], fullname[-2:]
-        if name in equipments and equipments[name]['tech'] > tech:
-            continue
-        info['名称'], info['tech'] = name, tech
-        equipments[name] = info
+def to_dict(val):
+    if isinstance(val, (str, int)):
+        return val
+    keys = list(val.keys())
+    if keys == list(range(1, len(keys) + 1)):
+        return [to_dict(v) for v in val.values()]
+    return {k: to_dict(v) for k, v in val.items()}
 
-    yield from equipments.values()
+
+def get_equip_data():
+    with open('resources/equip-list.json', 'r', -1, 'UTF8') as f:
+        data = json.load(f)
+
+    for equip in data:
+        name = "{}T{}".format(equip['name'], equip['tech'])
+        resp = get_text(
+            API_URL,
+            params={
+                "action": "query",
+                "formatversion": "2",
+                "prop": "revisions|categories",
+                "format": "json",
+                "rvprop": "timestamp|content",
+                "rvslots": "*",
+                "titles": name,
+            },
+            path="resources/cache/装备/%s.json" % sanitize_filename(name),
+        )
+        equip.update(parse_equip_content(json.loads(resp)['query']['pages'][0]))
+        yield equip
