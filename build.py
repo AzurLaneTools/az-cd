@@ -73,6 +73,20 @@ def setup_equip_data():
         json.dump(list(get_equip_data()), f, ensure_ascii=False, indent=2)
 
 
+def setup_cat_data():
+    from utils.cats import get_cat_talents, get_cats
+    from utils.images import crawl_cat_icon, crawl_cat_talent_icon
+
+    with open('resources/cats.json', 'w', -1, 'UTF8') as f:
+        json.dump(list(get_cats()), f, ensure_ascii=False, indent=2)
+    talents = get_cat_talents()
+    with open('resources/cat-talents.json', 'w', -1, 'UTF8') as f:
+        json.dump(talents, f, ensure_ascii=False, indent=2)
+
+    crawl_cat_icon()
+    crawl_cat_talent_icon()
+
+
 def copy_dict(d, keys=None):
     if d is None:
         return None
@@ -101,6 +115,7 @@ def main():
         setup_ship_data()
         crawl_all_ship_icon()
         setup_equip_data()
+        setup_cat_data()
     else:
         generate_files()
 
