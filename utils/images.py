@@ -1,5 +1,4 @@
 import json
-import os
 import shutil
 
 from utils.crawl import ensure_dir, get_data, sanitize_filename
@@ -50,3 +49,34 @@ def crawl_all_ship_icon():
     shutil.copytree(
         "resources/cache/images/舰娘头像", "static/images/headers", dirs_exist_ok=True
     )
+
+
+def crawl_cat_icon():
+    executor = ThreadPoolExecutor(10)
+    with open('resources/cats.json', 'r', -1, 'UTF8') as f:
+        items = json.load(f)
+    fs = []
+    for item in items:
+        name = item['name'] + '头像.png'
+        f = crawl_image(
+            executor, name, 'resources/cache/images/指挥喵头像/%s' % sanitize_filename(name),
+        )
+        fs.append(f)
+    for f in fs:
+        f.result()
+
+
+def crawl_cat_talent_icon():
+    executor = ThreadPoolExecutor(10)
+    with open('resources/cat-skills.json', 'r', -1, 'UTF8') as f:
+        skills = json.load(f)
+    fs = []
+    for skill in skills:
+        f = crawl_image(
+            executor,
+            skill['img'],
+            'resources/cache/images/指挥喵天赋/%s' % sanitize_filename(skill['img']),
+        )
+        fs.append(f)
+    for f in fs:
+        f.result()
