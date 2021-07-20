@@ -68,7 +68,7 @@ def crawl_cat_icon():
 
 def crawl_cat_talent_icon():
     executor = ThreadPoolExecutor(10)
-    with open('resources/cat-skills.json', 'r', -1, 'UTF8') as f:
+    with open('resources/cat-talents.json', 'r', -1, 'UTF8') as f:
         skills = json.load(f)
     fs = []
     for skill in skills:
