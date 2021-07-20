@@ -8,7 +8,7 @@ class EnumMap(object):
         self.inv_data = inv_data
 
     def __getitem__(self, key):
-        return self._data[key]
+        return self.data[key]
 
     def get(self, key):
         if key in self.data:
@@ -37,6 +37,7 @@ def build_map(name, text):
         for a in aliases:
             data[a] = idx
         inv_data[idx] = aliases[0]
+        idx += 1
     return EnumMap(name, data, inv_data)
 
 
