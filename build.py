@@ -87,7 +87,7 @@ def setup_ship_data():
         if '战' not in sf['类型'] and '航' not in sf['类型']:
             continue
         ss = copy_dict(sf, ['编号', '名称', 'match'])
-        ss['type'] = enums.SHIP_TYPES[sf['类型']]
+        ss['type'] = enums.SHIP_TYPE[sf['类型']]
 
         if attrs.get(sf['编号']):
             data = attrs[sf['编号']]
