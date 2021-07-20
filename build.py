@@ -4,9 +4,14 @@ import re
 import json
 import shutil
 import argparse
-from utils.images import crawl_all_ship_icon
 
+from utils.images import crawl_all_ship_icon
+from utils import enums
 from utils.crawl import ensure_dir, get_text, sanitize_filename
+
+CHECK_EQUIPS = [enums.EQUIP_TYPE[n] for n in "战列炮 战斗机 轰炸机 鱼雷机".split(' ')]
+
+SPECIAL_PRELOAD_MAP = {'英仙座': 2}
 
 
 def setup_ship_reload_info():
@@ -31,6 +36,36 @@ def setup_ship_reload_info():
         json.dump(ship_data, f, ensure_ascii=False, indent=2)
 
 
+def parse_equip_types(typ):
+    res = [enums.EQUIP_TYPE[e] for e in typ.split('、')]
+    res = [e for e in res if e in CHECK_EQUIPS]
+    return res
+
+
+def parse_slots(ship, reform=False):
+    slots = {}
+    remap = {
+        'type': ['改造{}号槽装备类型', '{}号槽装备类型'],
+        'cnt': ['{}号槽满改武器数', '{}号槽满破武器数'],
+    }
+    for i in '123':
+        slot = {}
+        for key, keys in remap.items():
+            if not reform:
+                keys = keys[1:]
+            for subkey in keys:
+                subkey = subkey.format(i)
+                if subkey in ship:
+                    slot[key] = ship[subkey]
+                    break
+        slot['type'] = parse_equip_types(slot['type'])
+        if not slot['type']:
+            continue
+        slot['cnt'] = int(slot['cnt'])
+        slots[i] = slot
+    return slots
+
+
 def setup_ship_data():
     from utils.ships import get_ship_data
     from utils.ship_trans import get_ship_data as get_ship_data_trans
@@ -51,7 +86,8 @@ def setup_ship_data():
     for sf in ships_all:
         if '战' not in sf['类型'] and '航' not in sf['类型']:
             continue
-        ss = copy_dict(sf, ['编号', '名称', '类型', 'match'])
+        ss = copy_dict(sf, ['编号', '名称', 'match'])
+        ss['type'] = enums.SHIP_TYPES[sf['类型']]
 
         if attrs.get(sf['编号']):
             data = attrs[sf['编号']]
@@ -61,6 +97,23 @@ def setup_ship_data():
         ss['img'] = sanitize_filename(sf['名称']) + '.jpg'
         if sf.get('和谐名'):
             ss['名称'] = '{}({})'.format(sf['名称'], sf['和谐名'])
+        ss['rarity'] = enums.RARITY[sf['稀有度']]
+        ss['slots'] = parse_slots(sf, False)
+        if ss['名称'] in SPECIAL_PRELOAD_MAP:
+            ss['preload'] = SPECIAL_PRELOAD_MAP[ss['名称']]
+        else:
+            ss['preload'] = int(sf.get('1号槽满破预装填数', 0))
+        # 如果需要分别考虑改造前后的舰娘, 应取消此处注释并修改 args 获取实现
+        # ships_simple.append(ss)
+        # ss = copy_dict(ss)
+        if '改造后稀有度' in sf:
+            ss['rarity'] = enums.RARITY[sf['改造后稀有度']]
+            ss['名称'] += '.改'
+            ss['slots'] = parse_slots(sf, True)
+            if ss['名称'] in SPECIAL_PRELOAD_MAP:
+                ss['preload'] = SPECIAL_PRELOAD_MAP[ss['名称']]
+            elif '1号槽满改预装填数' in sf:
+                ss['preload'] = int(sf['1号槽满改预装填数'])
         ships_simple.append(ss)
     with open('static/data/ships-simple.json', 'w', -1, 'UTF8') as f:
         json.dump(ships_simple, f, ensure_ascii=False, indent=2)
