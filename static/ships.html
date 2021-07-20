@@ -411,7 +411,8 @@
             var r = shipBasicData[ship.id].args;
             // 装填白值 = (基础值 + 基础成长值 * (等级-1) / 1000 + 额外成长值 * (等级-100) / 1000 + 强化属性) * 好感度加成 + 改造属性
             ship.reload = (r[0] + r[1] * (ship.level - 1) / 1000 + r[2] * (ship.level - 100) / 1000 + r[3]) * ship.love + r[4];
-            $('div.ship-inputs-manual input').val(parseFloat(ship.reload.toFixed(6)));
+            ship.reload = parseInt(ship.reload)
+            $('div.ship-inputs-manual input').val(parseFloat(ship.reload));
         }
         $('div.ship-inputs-auto input').change(updateReload);
         $('#name').change(function () {
