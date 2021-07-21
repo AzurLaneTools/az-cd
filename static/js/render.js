@@ -86,7 +86,7 @@
     };
 
     myChart.setOption(option);
-
+    window.chart = myChart;
     window.setChartOption = function (categories, data, setConfig, extra) {
         config.showTimeAsLeft = setConfig.showTimeAsLeft;
         config.maxDuration = setConfig.maxDuration;

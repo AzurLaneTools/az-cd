@@ -79,8 +79,8 @@
             left: 0;
             bottom: 0px;
             width: 100%;
-            height: 200px;
-            background: #fff;
+            height: 30%;
+            background: #fafafa;
             z-index: 9;
         }
 
@@ -289,7 +289,11 @@
         </div>
     </div>
     <div id="chart-container">
-        <div id="chart" style="height: 200px;"></div>
+        <div style="text-align: center; position: relative; top: 0;">
+            <div class="btn btn-primary btn-sm" onclick="toggleHeight()"
+                style="position: absolute; z-index: 10; width: 60px;">&#8593;</div>
+        </div>
+        <div id="chart" style="height: 100%;"></div>
     </div>
     <div id="results" class="container"></div>
 
@@ -320,7 +324,7 @@
 <script src="js/storage.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/cd.js"></script>
-<script src="js/render.js"></script>
+<script src="js/render.js?v=2"></script>
 <script>
     const STORE_KEY = 'AzurLaneCDTool-CacheData-CVHelper';
     let data;
@@ -331,6 +335,18 @@
         localStorage.setItem(STORE_KEY, JSON.stringify(data));
     }
     window.addEventListener('beforeunload', saveData);
+
+    function toggleHeight() {
+        var height = $('#chart-container')[0].style.height;
+        if (!height) {
+            $('#chart-container')[0].style.height = '80%';
+            $('#chart-container .btn').html('&#8595;');
+        } else {
+            $('#chart-container')[0].style.height = '';
+            $('#chart-container .btn').html('&#8593;');
+        }
+        window.chart.resize();
+    }
     function selectSlotOption(idx) {
         let slot = data.ship.slots[idx];
         targetSlot = idx;
