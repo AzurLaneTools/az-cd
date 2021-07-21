@@ -211,7 +211,7 @@
     <script src="https://cdn.jsdelivr.net/npm/uuid@latest/dist/umd/uuidv4.min.js"></script>
     <script src="js/storage.js?v=5"></script>
     <script>
-        const EQUIP_TYPE = { 1: '战列炮', 2: '重巡炮', 3: '轻巡炮', 4: '超巡炮', 5: '大口径重巡炮', 6: '驱逐炮', 7: '防空炮', 8: '战斗机', 9: '轰炸机', 10: '鱼雷机', 11: '水面鱼雷', 12: '潜艇鱼雷', 13: '水侦', 14: '货物', 15: '设备', 16: '反潜机' };
+        let enums = {};
         let allShip = loadAllShips();
         let curIdx = getCurrentShipIdx();
         function saveData() {
@@ -383,7 +383,7 @@
             for (var idx in slots) {
                 var types = [];
                 for (var t of slots[idx].type) {
-                    types.push(EQUIP_TYPE[t]);
+                    types.push(enums.EQUIP_TYPE[t]);
                 }
                 text.push(types.join('/') + '*' + slots[idx].cnt)
             }
@@ -434,11 +434,16 @@
                 addShip(idx, ship);
             }
         }
+        async function loadDataFromJson(url) {
+            let resp = await fetch(url);
+            let data = await resp.json();
+            return data;
+        }
 
         // In your Javascript (external .js resource or <script> tag)
         $(document).ready(async function () {
-            let resp = await fetch('data/ships-simple.json?v=2');
-            let data = await resp.json();
+            enums = await loadDataFromJson('data/enums.json');
+            let data = await loadDataFromJson('data/ships-simple.json?v=2');
             for (let ship of data) {
                 shipBasicData[ship.编号] = ship;
                 $('#ship-tempaltes').append(`
