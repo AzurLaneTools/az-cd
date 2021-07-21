@@ -140,6 +140,14 @@ def setup_cat_data():
     crawl_cat_talent_icon()
 
 
+def setup_enum_data():
+    data = {}
+    for m in enums.maps:
+        data[m.name] = m.inv_data
+    with open('resources/enums.json', 'w', -1, 'UTF8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
 def copy_dict(d, keys=None):
     if d is None:
         return None
@@ -169,6 +177,7 @@ def main():
         crawl_all_ship_icon()
         setup_equip_data()
         setup_cat_data()
+        setup_enum_data()
     else:
         generate_files()
 

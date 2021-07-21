@@ -1,3 +1,4 @@
+from typing import List
 import yaml
 
 
@@ -66,10 +67,15 @@ def build_map(name, text):
     return EnumMap(name, data, inv_data)
 
 
+maps: List[EnumMap] = []
+
+
 def build_maps(data):
     g = globals()
     for key, text in data.items():
-        g[key] = build_map(key, text)
+        m = build_map(key, text)
+        maps.append(m)
+        g[key] = m
 
 
 with open('resources/enum.yml', 'rb') as f:
