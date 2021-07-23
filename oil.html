@@ -354,8 +354,8 @@
                     ships: recs,
                 });
             }
-            $('#output').html('');
-            $('#output').append(`油耗: ${totalOil}<br><summary><details open></details></summary>`);
+            $('#output').html('<summary><details></details></summary>');
+            $('#output').append(`油耗: ${totalOil}<br>`);
             var details = $('#output details')
             let totalExp = [0, 0, 0];
             for (let record of fightRecords) {
@@ -390,6 +390,8 @@
                 $('#output').append(`加成后的总经验: ${totalExp[i]}<br>`);
                 $('#output').append(`经验/油耗: ${oilRatio[i]}<br>`);
             }
+            $('#output').append('<br>');
+            $('#output').append($('#output summary'));
         }
         onChange();
     </script>
