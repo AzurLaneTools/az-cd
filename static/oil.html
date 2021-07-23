@@ -5,152 +5,335 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>油耗计算工具</title>
+    <title>碧蓝航线辅助工具-经验油耗比计算器</title>
+    <link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />
+    <link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
+    <style>
+        .jexcel>tbody>tr>td.readonly {
+            color: black;
+        }
+
+        #records select {
+            width: 200px;
+        }
+    </style>
 </head>
 
 <body>
-    收益:
-    道中经验:
-    <input type="text" id="exp" value="3*639, 2*507">
+    <h1>碧蓝航线辅助工具-经验油耗比计算器</h1>
+    <div id="records"></div>
     <br>
-    BOSS经验:
-    <input type="text" id="exp-boss" value="695">
+    自定义名称:
     <br>
-    地图收益:
-    <input type="text" id="gain-other" value="PT*180"><br>
-    道中队伍
-    <textarea name="fleet1" id="fleet1" cols="30" rows="6">
-10 0 1
-1
-1
-1</textarea><br>
-    潜艇
-    <textarea name="submarine" id="submarine" cols="30" rows="3">
-7 0 2
-1</textarea><br>
-
-    Boss队伍
-    <textarea name="fleet2" id="fleet2" cols="30" rows="6">
-13 0 3
-1</textarea>
+    <div id="headers"></div>
+    <br>
+    自定义战斗内容:
+    <br>
+    <div id="fight"></div>
+    <br>
+    自定义其他收益:
+    <br>
+    <div id="other"></div>
+    <br>
+    自定义队伍和经验收益:
+    <br>
+    <div id="fleet"></div>
+    <br>
     <div id="output"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>
+    <script src="https://jsuites.net/v4/jsuites.js"></script>
+    <script src="js/storage.js?v=4"></script>
     <script>
-        function loadData() {
-            let data = JSON.parse(localStorage.getItem('OIL-INPUTS') || '[]');
-            for (let item of data) {
-                $('#' + item.id).val(item.val);
-            }
+        var manager, headerSheet, otherSheet, fleetSheet, fightSheet;
+        function onChange() {
+            let cur = manager.current();
+            cur.headers[0] = cur.name;
+            headerSheet.setData([cur.headers]);
+            otherSheet.setData(cur.other);
+            fleetSheet.setData(cur.fleet);
+            fleetSheet.resetSelection();
+            fightSheet.setData(cur.fight);
+            update();
         }
-        function saveData() {
-            let data = [];
-            $('input, textarea').each((idx, elem) => {
-                data.push({
-                    id: $(elem).attr('id'),
-                    val: $(elem).val(),
-                })
-            });
-            localStorage.setItem('OIL-INPUTS', JSON.stringify(data));
+        manager = initRecordsManager('SheetData', '#records', function () {
+            return {
+                name: '测试',
+                headers: ['测试', '计算经验1', '计算经验2', '计算经验3'],
+                fleet: [
+                    ['道中', '', '', '', '', ''],
+                    ['道中', '', '', '', '', ''],
+                    ['道中', '', '', '', '', ''],
+                    ['道中', '', '', '', '', ''],
+                    ['道中', '', '', '', '', ''],
+                    ['道中', '', '', '', '', ''],
+                    ['潜艇', '', '', '', '', ''],
+                    ['潜艇', '', '', '', '', ''],
+                    ['潜艇', '', '', '', '', ''],
+                    ['BOSS', '', '', '', '', ''],
+                    ['BOSS', '', '', '', '', ''],
+                    ['BOSS', '', '', '', '', ''],
+                    ['BOSS', '', '', '', '', ''],
+                    ['BOSS', '', '', '', '', ''],
+                    ['BOSS', '', '', '', '', ''],
+                ],
+                fight: [
+                    [3, 100, 1, 0],
+                    [3, 100, 1, 1],
+                ],
+                other: [],
+            }
+        }, onChange);
+        function cancel() {
+            return false;
         }
-        loadData();
-        window.addEventListener('beforeunload', saveData);
-        function loadShip(desc) {
-            desc = desc.trim();
-            if(!desc){
-                return null;
+        function callHideIndex(el, obj) {
+            obj.hideIndex();
+        }
+        var cur = manager.current();
+        headerSheet = $('#headers').jspreadsheet({
+            data: [cur.headers],
+            columns: [
+                {
+                    type: 'text',
+                    title: '名称',
+                    width: 200,
+                },
+                {
+                    type: 'text',
+                    title: '经验1名称',
+                },
+                {
+                    type: 'text',
+                    title: '经验2名称',
+                },
+                {
+                    type: 'text',
+                    title: '经验3名称',
+                },
+            ],
+            defaultColWidth: 100,
+            allowInsertRow: false,
+            allowDeleteRow: false,
+            // Allow new columns
+            allowInsertColumn: false,
+            // Allow column delete
+            allowDeleteColumn: false,
+            columnSorting: false,
+            onload: callHideIndex,
+            onafterchanges: function () {
+                var cur = manager.current();
+                cur.headers = headerSheet.getData()[0];
+                for (let i of [1, 2, 3]) {
+                    fleetSheet.setHeader(i + 2, cur.headers[i] || '-');
+                }
+                if (cur.headers[0] !== cur.name) {
+                    cur.name = cur.headers[0];
+                    manager.rebuildOptions();
+                }
+                update();
             }
-            let parts = desc.split(/\s+/);
-            let res = {
-                oil: parseFloat(parts[0]),
-                // 默认心情Buff 1.2
-                ratio: 1.2
-            };
-            // 不计算经验值
-            if (parts[1] === '0') {
-                res.ratio = 0;
+        });
+        otherSheet = $('#other').jspreadsheet({
+            data: cur.other,
+            columns: [
+                {
+                    type: 'numeric',
+                    title: '数值',
+                },
+                {
+                    type: 'text',
+                    title: '名称',
+                },
+            ],
+            defaultColWidth: 100,
+            allowInsertRow: true,
+            allowInsertRow: true,
+            // Allow new columns
+            allowInsertColumn: false,
+            // Allow column delete
+            allowDeleteColumn: false,
+            columnSorting: false,
+            onafterchanges: function () {
+                update();
+            },
+            minDimensions: [2, 2]
+        });
+
+        fleetSheet = $('#fleet').jspreadsheet({
+            data: cur.fleet,
+            columns: [
+                {
+                    type: 'text',
+                    title: '类型',
+                    readOnly: true,
+                    width: 120,
+                },
+                {
+                    type: 'numeric',
+                    title: '油耗',
+                    width: 80,
+                },
+                {
+                    type: 'numeric',
+                    title: 'MVP优先级',
+                    width: 100
+                },
+                {
+                    type: 'checkbox',
+                    title: '经验1',
+                    width: 80
+                },
+                {
+                    type: 'checkbox',
+                    title: '经验2',
+                    width: 80
+                },
+                {
+                    type: 'checkbox',
+                    title: '经验3',
+                    width: 80
+                },
+            ],
+            mergeCells: {
+                A1: [1, 6],
+                A7: [1, 3],
+                A10: [1, 6],
+            },
+            contextMenu: cancel,
+            allowInsertRow: false,
+            allowDeleteRow: false,
+            // Allow new columns
+            allowInsertColumn: false,
+            // Allow column delete
+            allowDeleteColumn: false,
+            columnSorting: false,
+            onload: callHideIndex,
+            onafterchanges: function () {
+                console.log('update');
+                update();
             }
-            if (parts[2]) {
-                res.mvp = parseInt(parts[2]);
-            } else {
-                res.mvp = 0;
+        });
+        headerSheet.onafterchanges();
+        fleetSheet.resetSelection()
+
+        fightSheet = $('#fight').jspreadsheet({
+            data: cur.fight,
+            columns: [
+                {
+                    type: 'numeric',
+                    title: '次数',
+                    width: 120,
+                },
+                {
+                    type: 'numeric',
+                    title: '经验',
+                    width: 80,
+                },
+                {
+                    type: 'numeric',
+                    title: '潜艇覆盖几率',
+                    width: 150
+                },
+                {
+                    type: 'checkbox',
+                    title: '使用Boss队',
+                    width: 100
+                },
+            ],
+            // Allow new columns
+            allowInsertColumn: false,
+            // Allow column delete
+            allowDeleteColumn: false,
+            columnSorting: false,
+            onafterchanges: function () {
+                console.log('update');
+                update();
             }
+        });
+        headerSheet.onafterchanges();
+
+        function loadFleet(rows) {
+            let res = [];
+            for (let row of rows) {
+                let oil = parseInt(row[1]);
+                if (!oil) {
+                    continue;
+                }
+                res.push({
+                    oil: oil,
+                    mvp: parseFloat(row[2]) || 0,
+                    gains: row.slice(3).map(Boolean),
+                });
+            }
+            console.log('loadFleet', res);
             return res;
         }
-        function loadFleet(fleetDesc) {
-            let ships = [];
-            for (let desc of fleetDesc.trim().split('\n')) {
-                let s = loadShip(desc);
-                if (s) {
-                    ships.push(s);
-                }
-            }
-            if (ships[0]) {
-                // 旗舰经验加成 1.5
-                ships[0].ratio = ships[0].ratio * 1.5;
-            }
-            console.log('加载队伍', ships);
-            return ships;
-        }
+
         function update() {
-            let exp = $('#exp').val();
-            let exps = [];
-            for (let part of exp.split(/,\s*/)) {
-                part = part.trim();
-                console.log(part);
-                let match = /^(?:(\d+)\*)?(\d+)$/.exec(part);
-                let cnt = match[1] ? parseInt(match[1]) : 1;
-                let gain = parseInt(match[2]);
-                console.log('gain', cnt, gain);
+            let cur = manager.current();
+            let bossInfo = null;
+            let fights = [];
+            for (let row of cur.fight) {
+                if (!row[1]) {
+                    continue;
+                }
+                let cnt = row[0] || 1;
+                let gain = parseInt(row[1]);
                 for (let i = 0; i < cnt; ++i) {
-                    exps.push(gain);
+                    fights.push({
+                        exp: gain,
+                        subChance: parseFloat(row[2]),
+                        useBoss: row[3] ? 1 : 0,
+                    });
                 }
             }
-            let bossExp = $('#exp-boss').val();
-            exps.push(parseFloat(bossExp));
 
-            let gainOther = $('#gain-other').val();
-            let fleet1 = loadFleet($('#fleet1').val());
-            let submarine = loadFleet($('#submarine').val());
-            let fleet2 = loadFleet($('#fleet2').val());
-
-            let fightCount1 = fleet2.length ? exps.length - 1 : exps.length;
+            let fleetRoute = loadFleet(cur.fleet.slice(0, 6));
+            let fleetSub = loadFleet(cur.fleet.slice(6, 9));
+            let fleetBoss = loadFleet(cur.fleet.slice(9));
 
 
             let subExp = [];
-            let submarineFightCount = Math.min(exps.length, submarine.length * 2);
+            let submarineFightCount = Math.min(fights.length, fleetSub.length * 2);
             console.log('潜艇战斗次数', submarineFightCount);
 
-            let totalExp = 0;
+            let totalExp = [0, 0, 0];
             let totalOil = 10;
-            for (let [idx, exp] of exps.entries()) {
-                console.log('fight', idx, exp);
-                let recs = [];
+            for (let [idx, f] of fights.entries()) {
+                console.log('fight', idx, f);
+                let recs = [[], [], []];
                 let mvpIdx = 0;
                 let mvpWeight = 0;
-                if (idx < fightCount1) {
-                    for (let s of fleet1) {
+                if (!f.useBoss) {
+                    for (let s of fleetRoute) {
                         if (mvpWeight < s.mvp) {
-                            mvpIdx = recs.length;
+                            mvpIdx = recs[0].length;
                             mvpWeight = s.mvp;
                             console.log('设置MVP-道中', mvpIdx);
                         }
                         totalOil += s.oil;
-                        recs.push(s.ratio * exp);
+                        for (let i of [0, 1, 2]) {
+                            recs[i].push(s.gains[i] * 1.2 * f.exp);
+                        }
                     }
                 } else {
-                    for (let s of fleet2) {
+                    for (let s of fleetBoss) {
                         if (mvpWeight < s.mvp) {
-                            mvpIdx = recs.length;
+                            mvpIdx = recs[0].length;
                             mvpWeight = s.mvp;
                             console.log('设置MVP-Boss', mvpIdx);
                         }
                         totalOil += s.oil;
-                        recs.push(s.ratio * exp);
+                        for (let i of [0, 1, 2]) {
+                            recs[i].push(s.gains[i] * 1.2 * f.exp);
+                        }
                     }
                 }
                 if (idx < submarineFightCount) {
-                    for (let s of submarine) {
+                    for (let s of fleetSub) {
                         console.log(mvpWeight, s);
                         if (mvpWeight < s.mvp) {
                             mvpIdx = recs.length;
@@ -158,24 +341,47 @@
                             console.log('设置MVP-潜艇', mvpIdx);
                         }
                         totalOil += s.oil;
-                        recs.push(s.ratio * exp);
+                        for (let i of [0, 1, 2]) {
+                            recs[i].push(s.gains[i] * 1.2 * f.exp);
+                        }
                     }
                 }
                 // MVP 2倍经验
-                recs[mvpIdx] = recs[mvpIdx] * 2;
-                console.log('经验获取', idx, recs);
-                for (let e of recs) {
-                    totalExp += e;
+                for (let i of [0, 1, 2]) {
+                    recs[i][mvpIdx] = recs[i][mvpIdx] * 2;
+                    for (let e of recs[i]) {
+                        totalExp[i] += e;
+                    }
                 }
+                console.log('经验获取', idx, recs);
             }
             $('#output').html('');
-            $('#output').append(`加成后的总经验: ${totalExp}<br>`);
             $('#output').append(`油耗: ${totalOil}<br>`);
-            $('#output').append(`经验/油耗: ${totalExp / totalOil}<br>`);
+            let extra = false;
+            for (let row of cur.other) {
+                let cnt = parseFloat(row[0]);
+                if (cnt) {
+                    $('#output').append(`<br>获取: ${row[0]} ${row[1]}, 油耗比${(cnt / totalOil).toFixed(3)}`)
+                    extra = true;
+                }
+            }
+            if (extra) {
+                $('#output').append('<br>');
+            }
+
+            let oilRatio = totalExp.map((v) => (v / totalOil).toFixed(3));
+            for (let i of [0, 1, 2]) {
+                if (!totalExp[i]) {
+                    continue;
+                }
+                $('#output').append('<br>' + cur.headers[i + 1] + '<br>');
+                $('#output').append(`加成后的总经验: ${totalExp[i]}<br>`);
+                $('#output').append(`经验/油耗: ${oilRatio[i]}<br>`);
+            }
         }
-        update();
-        $('input, textarea').change(update);
+        onChange();
     </script>
+
 </body>
 
 </html>

@@ -81,3 +81,80 @@ function deleteShip(idx) {
     }
     saveObject(prefix + '/AllShip', ships);
 }
+
+
+function initRecordsManager(storageKey, element, initFunc, onchange) {
+    let data = loadObject(storageKey, { curIdx: 0 });
+
+    window.addEventListener('beforeunload', function () {
+        saveObject(storageKey, data);
+    });
+    let el = $(element);
+    let select = document.createElement('select');
+    let btnAdd = document.createElement('button');
+    btnAdd.innerText = '添加';
+    let btnRemove = document.createElement('button');
+    btnRemove.innerText = '删除';
+
+    el.html('');
+    el.append(select);
+    el.append(btnAdd);
+    el.append(btnRemove);
+    if ((!data.records) || data.records.length === 0) {
+        data.records = [initFunc()];
+    }
+    if (!data.records[data.curIdx]) {
+        data.curIdx = 0;
+    }
+    function rebuildOptions() {
+        $(select).html('');
+        for (let [idx, item] of data.records.entries()) {
+            $(select).append(`<option value=${idx}>${item.name}</option>`);
+        }
+        $(select).val(data.curIdx);
+    }
+    rebuildOptions();
+    $(btnAdd).click(function () {
+        let newRec;
+        try {
+            newRec = JSON.parse(JSON.stringify(data.records[data.curIdx]));
+            newRec.name += ' New';
+        } catch (e) {
+            newRec = initFunc();
+        }
+        data.curIdx = data.records.length;
+        data.records.push(newRec);
+        rebuildOptions();
+        if (onchange) {
+            onchange();
+        }
+    });
+    $(btnRemove).click(function () {
+        data.records.splice(data.curIdx, 1);
+        if (data.records.length === 0) {
+            data.records.push(initFunc());
+        }
+        if (data.curIdx >= data.records.length) {
+            data.curIdx--;
+        }
+        rebuildOptions();
+        if (onchange) {
+            onchange();
+        }
+    });
+    function current() {
+        return data.records[data.curIdx];
+    }
+    $(select).change(function () {
+        data.curIdx = $(select).val();
+        if (onchange) {
+            onchange();
+        }
+    });
+    return {
+        data,
+        rebuildOptions,
+        current
+    }
+}
+
