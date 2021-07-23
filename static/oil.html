@@ -355,7 +355,6 @@
                 });
             }
             $('#output').html('<summary><details></details></summary>');
-            $('#output').append(`油耗: ${totalOil}<br>`);
             var details = $('#output details')
             let totalExp = [0, 0, 0];
             for (let record of fightRecords) {
@@ -368,12 +367,15 @@
                     }
                     details.append(`${(s.ratio * s.exp).toFixed(3)}<br>`);
                 }
+                details.append(`<br>`);
             }
+
+            $('#output').append(`油耗: ${totalOil}<br><br>`);
             let extra = false;
             for (let row of cur.other) {
                 let cnt = parseFloat(row[0]);
                 if (cnt) {
-                    $('#output').append(`<br>获取: ${row[0]} ${row[1]}, 油耗比${(cnt / totalOil).toFixed(3)}`)
+                    $('#output').append(`获取 ${row[0]} ${row[1]}, 油耗比 ${(cnt / totalOil).toFixed(3)}<br>`)
                     extra = true;
                 }
             }
@@ -386,9 +388,7 @@
                 if (!totalExp[i]) {
                     continue;
                 }
-                $('#output').append('<br>' + cur.headers[i + 1] + '<br>');
-                $('#output').append(`加成后的总经验: ${totalExp[i]}<br>`);
-                $('#output').append(`经验/油耗: ${oilRatio[i]}<br>`);
+                $('#output').append(`${cur.headers[i + 1]}: 经验${totalExp[i].toFixed(3)} 油耗比: ${oilRatio[i]}<br>`);
             }
             $('#output').append('<br>');
             $('#output').append($('#output summary'));
