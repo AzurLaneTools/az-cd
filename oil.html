@@ -242,6 +242,11 @@
                     title: '使用Boss队',
                     width: 100
                 },
+                {
+                    type: 'text',
+                    title: '备注',
+                    width: 100
+                },
             ],
             // Allow new columns
             allowInsertColumn: false,
@@ -255,18 +260,23 @@
         });
         headerSheet.onafterchanges();
 
-        function loadFleet(rows) {
+        function loadFleet(rows, name, flagShipBuff = true) {
             let res = [];
-            for (let row of rows) {
+            for (let [idx, row] of rows.entries()) {
                 let oil = parseInt(row[1]);
                 if (!oil) {
                     continue;
                 }
                 res.push({
+                    name: `${name}-${idx + 1}`,
                     oil: oil,
                     mvp: parseFloat(row[2]) || 0,
                     gains: row.slice(3).map(Boolean),
+                    ratio: 1.2,
                 });
+            }
+            if (flagShipBuff) {
+                res[0].ratio *= 1.5;
             }
             console.log('loadFleet', res);
             return res;
@@ -291,45 +301,38 @@
                 }
             }
 
-            let fleetRoute = loadFleet(cur.fleet.slice(0, 6));
-            let fleetSub = loadFleet(cur.fleet.slice(6, 9));
-            let fleetBoss = loadFleet(cur.fleet.slice(9));
+            let fleetRoute = loadFleet(cur.fleet.slice(0, 6), '道中');
+            let fleetSub = loadFleet(cur.fleet.slice(6, 9), '潜艇', false);
+            let fleetBoss = loadFleet(cur.fleet.slice(9), 'Boss');
 
 
             let subExp = [];
             let submarineFightCount = Math.min(fights.length, fleetSub.length * 2);
             console.log('潜艇战斗次数', submarineFightCount);
 
-            let totalExp = [0, 0, 0];
             let totalOil = 10;
+            let fightRecords = [];
             for (let [idx, f] of fights.entries()) {
-                console.log('fight', idx, f);
-                let recs = [[], [], []];
+                let recs = [];
                 let mvpIdx = 0;
-                let mvpWeight = 0;
+                let mvpWeight = -1;
                 if (!f.useBoss) {
                     for (let s of fleetRoute) {
                         if (mvpWeight < s.mvp) {
-                            mvpIdx = recs[0].length;
+                            mvpIdx = recs.length;
                             mvpWeight = s.mvp;
-                            console.log('设置MVP-道中', mvpIdx);
                         }
                         totalOil += s.oil;
-                        for (let i of [0, 1, 2]) {
-                            recs[i].push(s.gains[i] * 1.2 * f.exp);
-                        }
+                        recs.push({ ...s, exp: f.exp });
                     }
                 } else {
                     for (let s of fleetBoss) {
                         if (mvpWeight < s.mvp) {
-                            mvpIdx = recs[0].length;
+                            mvpIdx = recs.length;
                             mvpWeight = s.mvp;
-                            console.log('设置MVP-Boss', mvpIdx);
                         }
                         totalOil += s.oil;
-                        for (let i of [0, 1, 2]) {
-                            recs[i].push(s.gains[i] * 1.2 * f.exp);
-                        }
+                        recs.push({ ...s, exp: f.exp });
                     }
                 }
                 if (idx < submarineFightCount) {
@@ -338,25 +341,34 @@
                         if (mvpWeight < s.mvp) {
                             mvpIdx = recs.length;
                             mvpWeight = s.mvp;
-                            console.log('设置MVP-潜艇', mvpIdx);
                         }
                         totalOil += s.oil;
-                        for (let i of [0, 1, 2]) {
-                            recs[i].push(s.gains[i] * 1.2 * f.exp);
-                        }
+                        recs.push({ ...s, exp: f.exp });
                     }
                 }
                 // MVP 2倍经验
-                for (let i of [0, 1, 2]) {
-                    recs[i][mvpIdx] = recs[i][mvpIdx] * 2;
-                    for (let e of recs[i]) {
-                        totalExp[i] += e;
-                    }
-                }
-                console.log('经验获取', idx, recs);
+                recs[mvpIdx].ratio *= 2;
+                fightRecords.push({
+                    idx: idx + 1,
+                    mvp: mvpIdx,
+                    ships: recs,
+                });
             }
             $('#output').html('');
-            $('#output').append(`油耗: ${totalOil}<br>`);
+            $('#output').append(`油耗: ${totalOil}<br><summary><details open></details></summary>`);
+            var details = $('#output details')
+            let totalExp = [0, 0, 0];
+            for (let record of fightRecords) {
+                details.append(`战斗${record.idx}:<br>`)
+                for (let s of record.ships) {
+                    details.append(`${s.name}: `);
+                    for (let i of [0, 1, 2]) {
+                        details.append(`${s.gains[i] ? 1 : 0}, `);
+                        totalExp[i] += (s.gains[i] ? 1 : 0) * s.ratio * s.exp;
+                    }
+                    details.append(`${(s.ratio * s.exp).toFixed(3)}<br>`);
+                }
+            }
             let extra = false;
             for (let row of cur.other) {
                 let cnt = parseFloat(row[0]);
