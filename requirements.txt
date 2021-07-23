@@ -1,4 +1,4 @@
 requests
 wikitextparser
 pypinyin
-yaml
+pyyaml
