@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
     <title>碧蓝航线CD计算器-航母装备选择</title>
     <style>
         input[type=number] {
@@ -74,8 +79,8 @@
             left: 0;
             bottom: 0px;
             width: 100%;
-            height: 200px;
-            background: #fff;
+            height: 30%;
+            background: #fafafa;
             z-index: 9;
         }
 
@@ -207,7 +212,7 @@
                 <input class="ship-input reloadbuff affect-cd" type="number" name="reloadBuff" min="0">%
             </label>
             <label>
-                面标装填(含设备)
+                面板装填
                 <input class="ship-input reload affect-cd" type="number" name="reload" min="0">
             </label>
             <br>
@@ -284,7 +289,11 @@
         </div>
     </div>
     <div id="chart-container">
-        <div id="chart" style="height: 200px;"></div>
+        <div style="text-align: center; position: relative; top: 0;">
+            <div class="btn btn-primary btn-sm" onclick="toggleHeight()"
+                style="position: absolute; z-index: 10; width: 60px;">&#8593;</div>
+        </div>
+        <div id="chart" style="height: 100%;"></div>
     </div>
     <div id="results" class="container"></div>
 
@@ -307,11 +316,15 @@
 </body>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+    crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"
     integrity="sha256-TI0rIaxop+pDlHNVI6kDCFvmpxNYUnVH/SMjknZ/W0Y=" crossorigin="anonymous"></script>
+<script src="js/storage.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/cd.js"></script>
-<script src="js/render.js"></script>
+<script src="js/render.js?v=2"></script>
 <script>
     const STORE_KEY = 'AzurLaneCDTool-CacheData-CVHelper';
     let data;
@@ -322,6 +335,18 @@
         localStorage.setItem(STORE_KEY, JSON.stringify(data));
     }
     window.addEventListener('beforeunload', saveData);
+
+    function toggleHeight() {
+        var height = $('#chart-container')[0].style.height;
+        if (!height) {
+            $('#chart-container')[0].style.height = '80%';
+            $('#chart-container .btn').html('&#8595;');
+        } else {
+            $('#chart-container')[0].style.height = '';
+            $('#chart-container .btn').html('&#8593;');
+        }
+        window.chart.resize();
+    }
     function selectSlotOption(idx) {
         let slot = data.ship.slots[idx];
         targetSlot = idx;

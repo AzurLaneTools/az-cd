@@ -170,6 +170,13 @@
                 </div>
             </label>
         </div>
+        <label class="mb-3 row input-group input-group-sm">
+            <div class="col-sm-2 col-form-label">
+                装备
+            </div>
+            <div class="col-sm-10 col-form-label" id="slots">
+            </div>
+        </label>
 
     </div>
     <div id="alert" class="alert alert-danger" style="display: none;"></div>
@@ -202,8 +209,9 @@
         integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/uuid@latest/dist/umd/uuidv4.min.js"></script>
-    <script src="js/storage.js?v=3"></script>
+    <script src="js/storage.js?v=5"></script>
     <script>
+        let enums = {};
         let allShip = loadAllShips();
         let curIdx = getCurrentShipIdx();
         function saveData() {
@@ -328,7 +336,7 @@
                 id: id,
                 uuid: uuidv4(),
                 name: shipBasicData[id].名称,
-                type: shipBasicData[id].类型,
+                type: shipBasicData[id].type,
                 mode: 'auto',
                 level: 120,
                 love: 1.06,
@@ -370,6 +378,16 @@
             } else {
                 $('#reload').val(ship.reload);
             }
+            var slots = shipBasicData[ship.id].slots;
+            var text = [];
+            for (var idx in slots) {
+                var types = [];
+                for (var t of slots[idx].type) {
+                    types.push(enums.EQUIP_TYPE[t]);
+                }
+                text.push(types.join('/') + '*' + slots[idx].cnt)
+            }
+            $('#slots').text(text.join('; '));
         }
 
         $('input[name=mode]').change(function () {
@@ -393,7 +411,8 @@
             var r = shipBasicData[ship.id].args;
             // 装填白值 = (基础值 + 基础成长值 * (等级-1) / 1000 + 额外成长值 * (等级-100) / 1000 + 强化属性) * 好感度加成 + 改造属性
             ship.reload = (r[0] + r[1] * (ship.level - 1) / 1000 + r[2] * (ship.level - 100) / 1000 + r[3]) * ship.love + r[4];
-            $('div.ship-inputs-manual input').val(parseFloat(ship.reload.toFixed(6)));
+            ship.reload = parseInt(ship.reload)
+            $('div.ship-inputs-manual input').val(parseFloat(ship.reload));
         }
         $('div.ship-inputs-auto input').change(updateReload);
         $('#name').change(function () {
@@ -415,11 +434,16 @@
                 addShip(idx, ship);
             }
         }
+        async function loadDataFromJson(url) {
+            let resp = await fetch(url);
+            let data = await resp.json();
+            return data;
+        }
 
         // In your Javascript (external .js resource or <script> tag)
         $(document).ready(async function () {
-            let resp = await fetch('data/ships-simple.json?v=2');
-            let data = await resp.json();
+            enums = await loadDataFromJson('data/enums.json');
+            let data = await loadDataFromJson('data/ships-simple.json?v=2');
             for (let ship of data) {
                 shipBasicData[ship.编号] = ship;
                 $('#ship-tempaltes').append(`

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>油耗计算工具</title>
+</head>
+
+<body>
+    收益:
+    道中经验:
+    <input type="text" id="exp" value="3*639, 2*507">
+    <br>
+    BOSS经验:
+    <input type="text" id="exp-boss" value="695">
+    <br>
+    地图收益:
+    <input type="text" id="gain-other" value="PT*180"><br>
+    道中队伍
+    <textarea name="fleet1" id="fleet1" cols="30" rows="6">
+10 0 1
+1
+1
+1</textarea><br>
+    潜艇
+    <textarea name="submarine" id="submarine" cols="30" rows="3">
+7 0 2
+1</textarea><br>
+
+    Boss队伍
+    <textarea name="fleet2" id="fleet2" cols="30" rows="6">
+13 0 3
+1</textarea>
+    <div id="output"></div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+        function loadData() {
+            let data = JSON.parse(localStorage.getItem('OIL-INPUTS') || '[]');
+            for (let item of data) {
+                $('#' + item.id).val(item.val);
+            }
+        }
+        function saveData() {
+            let data = [];
+            $('input, textarea').each((idx, elem) => {
+                data.push({
+                    id: $(elem).attr('id'),
+                    val: $(elem).val(),
+                })
+            });
+            localStorage.setItem('OIL-INPUTS', JSON.stringify(data));
+        }
+        loadData();
+        window.addEventListener('beforeunload', saveData);
+        function loadShip(desc) {
+            desc = desc.trim();
+            if(!desc){
+                return null;
+            }
+            let parts = desc.split(/\s+/);
+            let res = {
+                oil: parseFloat(parts[0]),
+                // 默认心情Buff 1.2
+                ratio: 1.2
+            };
+            // 不计算经验值
+            if (parts[1] === '0') {
+                res.ratio = 0;
+            }
+            if (parts[2]) {
+                res.mvp = parseInt(parts[2]);
+            } else {
+                res.mvp = 0;
+            }
+            return res;
+        }
+        function loadFleet(fleetDesc) {
+            let ships = [];
+            for (let desc of fleetDesc.trim().split('\n')) {
+                let s = loadShip(desc);
+                if (s) {
+                    ships.push(s);
+                }
+            }
+            if (ships[0]) {
+                // 旗舰经验加成 1.5
+                ships[0].ratio = ships[0].ratio * 1.5;
+            }
+            console.log('加载队伍', ships);
+            return ships;
+        }
+        function update() {
+            let exp = $('#exp').val();
+            let exps = [];
+            for (let part of exp.split(/,\s*/)) {
+                part = part.trim();
+                console.log(part);
+                let match = /^(?:(\d+)\*)?(\d+)$/.exec(part);
+                let cnt = match[1] ? parseInt(match[1]) : 1;
+                let gain = parseInt(match[2]);
+                console.log('gain', cnt, gain);
+                for (let i = 0; i < cnt; ++i) {
+                    exps.push(gain);
+                }
+            }
+            let bossExp = $('#exp-boss').val();
+            exps.push(parseFloat(bossExp));
+
+            let gainOther = $('#gain-other').val();
+            let fleet1 = loadFleet($('#fleet1').val());
+            let submarine = loadFleet($('#submarine').val());
+            let fleet2 = loadFleet($('#fleet2').val());
+
+            let fightCount1 = fleet2.length ? exps.length - 1 : exps.length;
+
+
+            let subExp = [];
+            let submarineFightCount = Math.min(exps.length, submarine.length * 2);
+            console.log('潜艇战斗次数', submarineFightCount);
+
+            let totalExp = 0;
+            let totalOil = 10;
+            for (let [idx, exp] of exps.entries()) {
+                console.log('fight', idx, exp);
+                let recs = [];
+                let mvpIdx = 0;
+                let mvpWeight = 0;
+                if (idx < fightCount1) {
+                    for (let s of fleet1) {
+                        if (mvpWeight < s.mvp) {
+                            mvpIdx = recs.length;
+                            mvpWeight = s.mvp;
+                            console.log('设置MVP-道中', mvpIdx);
+                        }
+                        totalOil += s.oil;
+                        recs.push(s.ratio * exp);
+                    }
+                } else {
+                    for (let s of fleet2) {
+                        if (mvpWeight < s.mvp) {
+                            mvpIdx = recs.length;
+                            mvpWeight = s.mvp;
+                            console.log('设置MVP-Boss', mvpIdx);
+                        }
+                        totalOil += s.oil;
+                        recs.push(s.ratio * exp);
+                    }
+                }
+                if (idx < submarineFightCount) {
+                    for (let s of submarine) {
+                        console.log(mvpWeight, s);
+                        if (mvpWeight < s.mvp) {
+                            mvpIdx = recs.length;
+                            mvpWeight = s.mvp;
+                            console.log('设置MVP-潜艇', mvpIdx);
+                        }
+                        totalOil += s.oil;
+                        recs.push(s.ratio * exp);
+                    }
+                }
+                // MVP 2倍经验
+                recs[mvpIdx] = recs[mvpIdx] * 2;
+                console.log('经验获取', idx, recs);
+                for (let e of recs) {
+                    totalExp += e;
+                }
+            }
+            $('#output').html('');
+            $('#output').append(`加成后的总经验: ${totalExp}<br>`);
+            $('#output').append(`油耗: ${totalOil}<br>`);
+            $('#output').append(`经验/油耗: ${totalExp / totalOil}<br>`);
+        }
+        update();
+        $('input, textarea').change(update);
+    </script>
+</body>
+
+</html>
