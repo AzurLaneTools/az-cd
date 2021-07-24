@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />
     <link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
     <style>
-        .jexcel>tbody>tr>td.readonly {
+        #fleet .jexcel>tbody>tr>td.readonly {
             color: black;
         }
 
@@ -27,7 +27,7 @@
     <br>
     <div id="headers"></div>
     <br>
-    自定义战斗内容:
+    自定义战斗内容(暂时未实现潜艇覆盖几率计算逻辑, 请忽略该列):
     <br>
     <div id="fight"></div>
     <br>
@@ -63,26 +63,23 @@
                 name: '测试',
                 headers: ['测试', '计算经验1', '计算经验2', '计算经验3'],
                 fleet: [
-                    ['道中', '', '', '', '', ''],
-                    ['道中', '', '', '', '', ''],
-                    ['道中', '', '', '', '', ''],
-                    ['道中', '', '', '', '', ''],
-                    ['道中', '', '', '', '', ''],
-                    ['道中', '', '', '', '', ''],
-                    ['潜艇', '', '', '', '', ''],
-                    ['潜艇', '', '', '', '', ''],
-                    ['潜艇', '', '', '', '', ''],
-                    ['BOSS', '', '', '', '', ''],
-                    ['BOSS', '', '', '', '', ''],
-                    ['BOSS', '', '', '', '', ''],
-                    ['BOSS', '', '', '', '', ''],
-                    ['BOSS', '', '', '', '', ''],
-                    ['BOSS', '', '', '', '', ''],
+                    ['道中'],
+                    [''],
+                    [''],
+                    [''],
+                    [''],
+                    [''],
+                    ['潜艇'],
+                    [''],
+                    [''],
+                    ['BOSS'],
+                    [''],
+                    [''],
+                    [''],
+                    [''],
+                    [''],
                 ],
-                fight: [
-                    [3, 100, 1, 0],
-                    [3, 100, 1, 1],
-                ],
+                fight: [],
                 other: [],
             }
         }, onChange);
@@ -196,6 +193,16 @@
                     title: '经验3',
                     width: 80
                 },
+                {
+                    type: 'numeric',
+                    title: '额外经验(%)',
+                    width: 120
+                },
+                {
+                    type: 'text',
+                    title: '备注',
+                    width: 120
+                },
             ],
             mergeCells: {
                 A1: [1, 6],
@@ -235,17 +242,17 @@
                 {
                     type: 'numeric',
                     title: '潜艇覆盖几率',
-                    width: 150
+                    width: 150,
                 },
                 {
                     type: 'checkbox',
                     title: '使用Boss队',
-                    width: 100
+                    width: 100,
                 },
                 {
                     type: 'text',
                     title: '备注',
-                    width: 100
+                    width: 100,
                 },
             ],
             // Allow new columns
@@ -253,6 +260,7 @@
             // Allow column delete
             allowDeleteColumn: false,
             columnSorting: false,
+            minDimensions: [5, 2],
             onafterchanges: function () {
                 console.log('update');
                 update();
@@ -271,8 +279,8 @@
                     name: `${name}-${idx + 1}`,
                     oil: oil,
                     mvp: parseFloat(row[2]) || 0,
-                    gains: row.slice(3).map(Boolean),
-                    ratio: 1.2,
+                    gains: row.slice(3, 6).map(Boolean),
+                    ratio: 1.2 * (100 + (parseFloat(row[6]) || 0)) / 100,
                 });
             }
             if (flagShipBuff && res[0]) {
@@ -346,7 +354,7 @@
                         recs.push({ ...s, exp: f.exp });
                     }
                 }
-                if(!recs.length){
+                if (!recs.length) {
                     continue;
                 }
                 // MVP 2倍经验
