@@ -275,7 +275,7 @@
                     ratio: 1.2,
                 });
             }
-            if (flagShipBuff) {
+            if (flagShipBuff && res[0]) {
                 res[0].ratio *= 1.5;
             }
             console.log('loadFleet', res);
@@ -345,6 +345,9 @@
                         totalOil += s.oil;
                         recs.push({ ...s, exp: f.exp });
                     }
+                }
+                if(!recs.length){
+                    continue;
                 }
                 // MVP 2倍经验
                 recs[mvpIdx].ratio *= 2;
