@@ -82,6 +82,14 @@ function deleteShip(idx) {
     saveObject(prefix + '/AllShip', ships);
 }
 
+function createButton(text, onclick) {
+    let btn = document.createElement('button');
+    btn.innerText = text;
+    if (onclick) {
+        $(btn).click(onclick);
+    }
+    return btn;
+}
 
 function initRecordsManager(storageKey, element, initFunc, onchange) {
     let data = loadObject(storageKey, { curIdx: 0 });
@@ -91,18 +99,16 @@ function initRecordsManager(storageKey, element, initFunc, onchange) {
     });
     let el = $(element);
     let select = document.createElement('select');
-    let btnCopy = document.createElement('button');
-    btnCopy.innerText = '复制';
-    let btnAdd = document.createElement('button');
-    btnAdd.innerText = '添加';
-    let btnRemove = document.createElement('button');
-    btnRemove.innerText = '删除';
+    let btnCopy = createButton('复制');
+    let btnAdd = createButton('添加');
+    let btnRemove = createButton('删除');
 
     el.html('');
     el.append(select);
     el.append(btnCopy);
     el.append(btnAdd);
     el.append(btnRemove);
+
     if ((!data.records) || data.records.length === 0) {
         data.records = [initFunc()];
     }
