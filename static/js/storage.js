@@ -91,6 +91,8 @@ function initRecordsManager(storageKey, element, initFunc, onchange) {
     });
     let el = $(element);
     let select = document.createElement('select');
+    let btnCopy = document.createElement('button');
+    btnCopy.innerText = '复制';
     let btnAdd = document.createElement('button');
     btnAdd.innerText = '添加';
     let btnRemove = document.createElement('button');
@@ -98,6 +100,7 @@ function initRecordsManager(storageKey, element, initFunc, onchange) {
 
     el.html('');
     el.append(select);
+    el.append(btnCopy);
     el.append(btnAdd);
     el.append(btnRemove);
     if ((!data.records) || data.records.length === 0) {
@@ -114,7 +117,7 @@ function initRecordsManager(storageKey, element, initFunc, onchange) {
         $(select).val(data.curIdx);
     }
     rebuildOptions();
-    $(btnAdd).click(function () {
+    $(btnCopy).click(function () {
         let newRec;
         try {
             newRec = JSON.parse(JSON.stringify(data.records[data.curIdx]));
@@ -122,6 +125,15 @@ function initRecordsManager(storageKey, element, initFunc, onchange) {
         } catch (e) {
             newRec = initFunc();
         }
+        data.curIdx = data.records.length;
+        data.records.push(newRec);
+        rebuildOptions();
+        if (onchange) {
+            onchange();
+        }
+    });
+    $(btnAdd).click(function () {
+        let newRec = initFunc();
         data.curIdx = data.records.length;
         data.records.push(newRec);
         rebuildOptions();
