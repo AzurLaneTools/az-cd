@@ -45,7 +45,8 @@
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>
     <script src="https://jsuites.net/v4/jsuites.js"></script>
-    <script src="js/storage.js?v=5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js"></script>
+    <script src="js/storage.js?v=7"></script>
     <script>
         var manager, headerSheet, otherSheet, fleetSheet, fightSheet;
         function onChange() {
@@ -83,6 +84,56 @@
                 other: [],
             }
         }, onChange);
+
+        function initClipBoard() {
+            let btnClipboard = createButton('复制全部记录');
+            $(btnClipboard).addClass('button-clipboard').attr('data-target', 'all');
+            $('#records').append(btnClipboard);
+
+            btnClipboard = createButton('复制当前记录');
+            $(btnClipboard).addClass('button-clipboard').attr('data-target', 'cur');
+            $('#records').append(btnClipboard);
+
+
+            let btnImport = createButton('导入记录');
+            $('#records').append(btnImport);
+            $(btnImport).click(function () {
+                let text = prompt('请粘贴导入的记录');
+                if (!text) {
+                    return;
+                }
+                try {
+                    let records = JSON.parse(text);
+                    let idx = manager.data.records.length;
+                    manager.data.records.push(...records);
+                    manager.data.curIdx = idx;
+                    manager.rebuildOptions();
+                    onChange();
+                    alert(`成功导入${records.length}条记录!`)
+                } catch (e) {
+                    console.warn(e);
+                }
+            });
+
+            var clipboard = new ClipboardJS('.button-clipboard', {
+                text: function (trigger) {
+                    var target = $(trigger).data('target'), data;
+                    if (target === 'all') {
+                        data = manager.data.records;
+                    } else {
+                        data = [manager.current()];
+                    }
+                    return JSON.stringify(data);
+                }
+            });
+            clipboard.on('success', function (e) {
+                console.info('clipboard action success:', e.action);
+                alert('复制成功');
+                e.clearSelection();
+            });
+        }
+        initClipBoard();
+
         function cancel() {
             return false;
         }
