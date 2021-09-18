@@ -682,7 +682,7 @@
     async function initAll() {
         let resp = await fetch('data/ships.json');
         shipData = await resp.json();
-        let resp2 = await fetch('data/aricrafts.json?v=2');
+        let resp2 = await fetch('data/aricrafts.json?v=3');
         aircraftData = await resp2.json();
         for (let key in aircraftData) {
             let target = $('#modal div.slot-options div.slot-option.' + key);
