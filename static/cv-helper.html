@@ -478,6 +478,8 @@
         if (!isNaN(parseFloat(idx))) {
             data.chartIdx = idx;
         }
+        $(`#results table tr`).css('background', '')
+        $('#results table tbody tr').eq(data.chartIdx).css("background-color", "#6cf")
         console.log('chartIdx', data.chartIdx, cdResults)
         let item = cdResults[data.chartIdx];
         if (!item) {
