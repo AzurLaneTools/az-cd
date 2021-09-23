@@ -18,6 +18,7 @@ const store: {
     addFleet: () => Fleet,
     removeFleet: (idx: number) => void,
     setup: () => void,
+    persist: () => void,
 } = {
     state: reactive({
         shipTemplates: {},
@@ -77,10 +78,23 @@ const store: {
         console.log('add Fleet', this.state.fleetIdx);
         return this.state.fleets[this.state.fleetIdx];
     },
+    persist() {
+        localStorage.setItem('STORE', JSON.stringify(this.state));
+    },
     setup() {
-        this.addFleet();
-        this.state.shipTemplates = {}
-        this.state.equips = [{ id: 1, img: '', name: 'test', lvl: 10, type: 7, rarity: 4, cd: 10, }];
+        let storedJson: string | null;
+        try {
+            storedJson = localStorage.getItem('STORE');
+            let storedData = JSON.parse(storedJson || '');
+            for (let key in storedData) {
+                // @ts-ignore
+                this.state[key] = storedData[key];
+            }
+        } catch (e) {
+            console.log('Load failed', e);
+            storedJson = null;
+            this.addFleet();
+        }
         axios.get('/ships-simple.json').then((resp) => {
             console.log('axios', resp);
             const TYPE_MAP = {
@@ -88,6 +102,7 @@ const store: {
                 2: ShipType.CVL,
                 3: ShipType.BB,
             }
+            let templ: { [key: string]: ShipTemplate } = {};
             for (let item of resp.data) {
                 // @ts-ignore
                 if (!TYPE_MAP[item.type]) {
@@ -108,7 +123,7 @@ const store: {
                         })
                     }
                 }
-                this.state.shipTemplates[item.编号] = {
+                templ[item.编号] = {
                     type: ShipType.CV,
                     name: item.名称,
                     growth: item.args,
@@ -117,12 +132,16 @@ const store: {
                     match: item.match
                 }
             }
-            this.addShip('N231');
-            this.addShip('N377');
+            this.state.shipTemplates = templ;
+            if (!storedJson) {
+                console.log('shipTemplates updated', this.state.shipTemplates);
+                this.addShip('N231');
+                this.addShip('N377');
+            }
         })
     }
 }
 
 store.setup()
-
+window.addEventListener('beforeunload', () => { store.persist() })
 export default store;
