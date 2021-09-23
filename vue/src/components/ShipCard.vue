@@ -1,10 +1,9 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import store from '../utils/store';
-import { ShipTemplate } from '../utils/types'
 
 const props = defineProps<{
-    template: string | ShipTemplate,
+    template: string,
     name?: string,
 }>();
 

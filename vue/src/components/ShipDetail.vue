@@ -16,12 +16,9 @@ const props = defineProps<{
 }>();
 
 const refShip = computed(() => {
-    for (let s of store.state.ships) {
-        if (s.id === props.ship.id) {
-            return s;
-        }
+    if (props.ship.id) {
+        return store.state.ships[props.ship.id];
     }
-    return null;
 })
 
 const emit = defineEmits<{

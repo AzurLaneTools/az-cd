@@ -104,7 +104,7 @@ function equipFilter(equip: EquipTemplate) {
     if (!shipId) {
         return true;
     }
-    let ship = store.getShip(shipId);
+    let ship = store.state.ships[shipId];
     if (!ship) {
         return true;
     }
@@ -119,9 +119,6 @@ function equipFilter(equip: EquipTemplate) {
     return true;
 }
 
-function getShip(sid: string) {
-    return store.getShip(sid)
-}
 </script>
 
 <template>

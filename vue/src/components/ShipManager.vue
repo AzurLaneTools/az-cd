@@ -1,11 +1,9 @@
 <template>
     <n-list cols="2 500:3 750:4 1000:6">
-        <n-list-item v-for="ship, idx in ships">
-            <ShipBasicInfo :ship="ship" @update:model-value="ships[idx] = $event"></ShipBasicInfo>
+        <n-list-item v-for="ship in ships">
+            <ShipBasicInfo :ship="ship" @update:model-value="ships[ship.id] = $event"></ShipBasicInfo>
             <template #suffix>
-                <n-button @click="swapShip(idx - 1, idx)" :disabled="idx === 0">上移</n-button>
-                <n-button @click="removeShip(idx)" type="error">删除</n-button>
-                <n-button @click="swapShip(idx + 1, idx)" :disabled="idx === ships.length - 1">下移</n-button>
+                <n-button @click="removeShip(ship.id)" type="error">删除</n-button>
             </template>
         </n-list-item>
     </n-list>
@@ -30,7 +28,7 @@
                     v-show="customFilter(templ)"
                     @click="addShip(templ.key)"
                 >
-                    <ship-card :template="templ"></ship-card>
+                    <ship-card :template="templ.key"></ship-card>
                 </n-grid-item>
             </n-grid>
             <n-empty v-if="options.length == 0"></n-empty>
@@ -51,13 +49,14 @@ table {
 import { ref, computed } from "vue";
 import { NButton, NModal, NCard, NGrid, NSpace, NGridItem, NEmpty, NFormItem, NInput, NList, NListItem } from 'naive-ui'
 import { InputInst } from "naive-ui/lib/input/src/interface";
-import { Ship, ShipTemplate } from "../utils/types";
+import { ShipTemplate } from "../utils/types";
 import ShipBasicInfo from './ShipBasicInfo.vue'
 import ShipCard from './ShipCard.vue'
 import store from '../utils/store'
 
 const showModal = ref(false);
-const ships = ref<Ship[]>(store.state.ships);
+const ships = ref(store.state.ships);
+
 const pattern = ref<string>('');
 
 function customFilter(option: ShipTemplate) {
@@ -83,11 +82,8 @@ function addShip(templateId: string) {
     store.addShip(templateId);
     showModal.value = false;
 }
-function removeShip(idx: number) {
+function removeShip(idx: string) {
     store.removeShip(idx);
-}
-function swapShip(idx0: number, idx1: number) {
-    store.swapShip(idx0, idx1);
 }
 
 const searchRef = ref<InputInst | null>(null);
