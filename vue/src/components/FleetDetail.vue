@@ -119,6 +119,12 @@ function equipFilter(equip: EquipTemplate) {
     return true;
 }
 
+function moveUp(idx: number) {
+    let cur = fleet.value.ships[idx];
+    fleet.value.ships[idx] = fleet.value.ships[idx - 1];
+    fleet.value.ships[idx - 1] = cur;
+}
+
 </script>
 
 <template>
@@ -139,7 +145,9 @@ function equipFilter(equip: EquipTemplate) {
                     :buffs="allBuffs"
                     @ship-click="chooseShipStart(idx)"
                     @equip-click="changeEquipStart(idx, $event)"
-                />
+                >
+                    <n-button v-if="idx > 0" @click="moveUp(idx)">上移</n-button>
+                </ship-detail>
             </n-col>
         </n-row>
         <n-form-item label="舰队Buff列表" label-placement="left">
