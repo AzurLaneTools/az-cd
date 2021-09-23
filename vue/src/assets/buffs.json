@@ -1,0 +1,7 @@
+{
+    "1": {
+        "type": "ReloadAttrRatio",
+        "name": "装填+{value}",
+        "value": true
+    }
+}
