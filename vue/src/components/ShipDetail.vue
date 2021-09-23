@@ -97,6 +97,7 @@ const formRef = ref(null);
             <equip-info :equip="equip" :marker="markers[idx]"></equip-info>
         </span>
         <n-button @click="showModal = true">调整装备</n-button>
+        <slot></slot>
     </n-space>
     <n-modal v-if="refShip && shipTemplate" v-model:show="showModal" :mask-closable="false">
         <n-card style="width: 90%;" title="调整装备">
