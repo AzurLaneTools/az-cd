@@ -8,10 +8,9 @@ import ShipDetail from './ShipDetail.vue';
 import ShipCard from './ShipCard.vue';
 
 const message = useMessage();
-const fleetIdx = ref(store.state.fleetIdx);
 const fleet = computed<Fleet>(() => {
-    console.log('选择舰队', fleetIdx.value);
-    return store.state.fleets[fleetIdx.value];
+    console.log('选择舰队', store.state.fleetIdx);
+    return store.state.fleets[store.state.fleetIdx];
 });
 const fleets = ref(store.state.fleets);
 const fleetOptions = computed(() => {
@@ -36,14 +35,12 @@ watchEffect(() => {
 })
 function addFleet() {
     store.addFleet();
-    console.log('addFleet', store.state.fleetIdx, fleetIdx.value);
-    fleetIdx.value = store.state.fleetIdx;
+    console.log('addFleet', store.state.fleetIdx);
     message.success('已添加舰队 ' + fleet.value.name);
 }
 function removeFleet() {
-    store.removeFleet(fleetIdx.value);
-    console.log('removeFleet', store.state.fleetIdx, fleetIdx.value);
-    fleetIdx.value = store.state.fleetIdx;
+    store.removeFleet(store.state.fleetIdx);
+    console.log('removeFleet', store.state.fleetIdx);
     message.success('已删除');
 }
 const fleetBuffs = ref(fleet.value.buffs);
@@ -132,7 +129,7 @@ function moveUp(idx: number) {
         <n-form-item label-placement="left" path="fleet.name">
             <n-button @click="addFleet()">添加</n-button>
             <n-button @click="removeFleet()">删除</n-button>
-            <n-popselect v-model:value="fleetIdx" :options="fleetOptions" trigger="click">
+            <n-popselect v-model:value="store.state.fleetIdx" :options="fleetOptions" trigger="click">
                 <n-button>选择</n-button>
             </n-popselect>
             <n-input v-model:value="fleet.name"></n-input>
