@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, h } from 'vue'
-import { NMessageProvider, NDialogProvider, NMenu, MenuOption, NLayout, NSpace, NLayoutSider } from 'naive-ui'
+import { NMessageProvider, NDialogProvider, NMenu, MenuOption, NLayout, NLayoutHeader } from 'naive-ui'
 import { RouterLink } from 'vue-router'
 function renderMenuLabel(option: MenuOption) {
   // @ts-ignore
@@ -23,15 +23,16 @@ const collapsed = ref(false);
 <template>
   <n-dialog-provider>
     <n-message-provider>
-      <n-layout has-sider style="height: 100%;">
-        <n-layout-sider bordered :width="240" collapse-mode="width">
+      <n-layout style="height: 100%;">
+        <n-layout-header bordered>
           <n-menu
             v-model:value="activeKey"
+            mode="horizontal"
             :collapsed="collapsed"
             :options="menuOptions"
             :render-label="renderMenuLabel"
           />
-        </n-layout-sider>
+        </n-layout-header>
         <n-layout content-style="padding: 20px 20px 20px 20px">
           <router-view></router-view>
         </n-layout>
