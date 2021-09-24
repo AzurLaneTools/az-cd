@@ -1,12 +1,13 @@
 <template>
-    <n-list cols="2 500:3 750:4 1000:6">
-        <n-list-item v-for="ship in ships">
-            <ShipBasicInfo :ship="ship" @update:model-value="ships[ship.id] = $event"></ShipBasicInfo>
-            <template #suffix>
-                <n-button @click="removeShip(ship.id)" type="error">删除</n-button>
-            </template>
-        </n-list-item>
-    </n-list>
+    <n-row v-for="ship, idx in ships">
+        <n-col :span="21">
+            <ship-basic-info :ship="ship" @update:model-value="ships[ship.id] = $event"></ship-basic-info>
+        </n-col>
+        <n-col :span="3">
+            <n-button @click="removeShip(ship.id)" type="error">删除</n-button>
+        </n-col>
+        <hr />
+    </n-row>
     <n-space justify="center">
         <n-button @click="startAddShip()">添加舰娘</n-button>
     </n-space>
@@ -47,7 +48,7 @@ table {
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { NButton, NModal, NCard, NGrid, NSpace, NGridItem, NEmpty, NFormItem, NInput, NList, NListItem } from 'naive-ui'
+import { NButton, NModal, NCard, NGrid, NSpace, NGridItem, NEmpty, NFormItem, NInput, NRow, NCol } from 'naive-ui'
 import { InputInst } from "naive-ui/lib/input/src/interface";
 import { ShipTemplate } from "../utils/types";
 import ShipBasicInfo from './ShipBasicInfo.vue'

@@ -1,92 +1,101 @@
 <template>
-    <n-form :model="ship" :label-width="80" class="ship-info-form" label-placement="left">
-        <table>
-            <tr>
-                <td rowspan="3">
-                    <img
-                        :src="'/img/' + template.img"
-                        :alt="template.name"
-                        style="border-radius: 10px;"
-                    />
-                </td>
-                <td colspan="2">
-                    <n-form-item label="名称" path="name" :show-feedback="false">
-                        <n-input v-model:value="ship.name" />
-                    </n-form-item>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <n-form-item label="装填" path="reload" :show-feedback="false">
-                        <n-input-number
-                            v-model:value="ship.reload"
-                            :show-button="false"
-                            :disabled="ship.mode == 'auto'"
-                        />
-                    </n-form-item>
-                </td>
-                <td>
-                    <n-form-item path="mode" :show-feedback="false">
-                        <n-radio-group v-model:value="ship.mode">
-                            <n-radio-button size="small" value="input">手动输入</n-radio-button>
-                            <n-radio-button size="small" value="auto">自动计算</n-radio-button>
-                        </n-radio-group>
-                    </n-form-item>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <n-form-item label="Lv." path="lvl" :show-feedback="false">
-                        <n-input-number
-                            v-model:value="ship.lvl"
-                            :show-button="false"
-                            :disabled="ship.mode != 'auto'"
-                        />
-                    </n-form-item>
-                </td>
-                <td>
-                    <n-form-item path="intimacy" :show-feedback="false">
-                        <n-radio-group
-                            v-model:value="ship.intimacy"
-                            :disabled="ship.mode != 'auto'"
-                        >
-                            <n-radio-button size="small" value="陌生">失望/陌生</n-radio-button>
-                            <n-radio-button size="small" value="友好">友好</n-radio-button>
-                            <n-radio-button size="small" value="喜欢">喜欢</n-radio-button>
-                            <n-radio-button size="small" value="爱">爱</n-radio-button>
-                            <n-radio-button size="small" value="誓约">誓约</n-radio-button>
-                            <n-radio-button size="small" value="誓约200">誓约200</n-radio-button>
-                        </n-radio-group>
-                    </n-form-item>
-                </td>
-            </tr>
-        </table>
-    </n-form>
+    <n-space>
+        <img
+            :src="'/img/' + template.img"
+            :alt="template.name"
+            style="border-radius: 10px; width: 80px; height: 80px;"
+        />
+        <n-space>
+            <n-form-item
+                path="name"
+                :show-feedback="false"
+                label-placement="left"
+                style="min-width: 120px;"
+            >
+                <n-input v-model:value="shipRef.name" />
+            </n-form-item>
+            <n-form-item path="mode" :show-feedback="false" label-placement="left">
+                <n-radio-group v-model:value="shipRef.mode">
+                    <n-radio-button size="small" value="input">输入</n-radio-button>
+                    <n-radio-button size="small" value="auto">计算</n-radio-button>
+                </n-radio-group>
+            </n-form-item>
+            <n-form-item label="装填" path="reload" :show-feedback="false" label-placement="left">
+                <n-input-number
+                    v-model:value="shipRef.reload"
+                    :disabled="shipRef.mode == 'auto'"
+                    class="short-num-input"
+                    style="width: 200px;"
+                />
+            </n-form-item>
+        </n-space>
+        <n-space v-if="shipRef.mode === 'auto'">
+            <n-form-item label="等级" path="lvl" :show-feedback="false" label-placement="left">
+                <n-input-number
+                    :min="100"
+                    :max="120"
+                    v-model:value="shipRef.lvl"
+                    :disabled="shipRef.mode != 'auto'"
+                    class="short-num-input"
+                    style="width: 200px;"
+                />&nbsp;
+                <n-slider
+                    v-model:value="shipRef.lvl"
+                    :min="100"
+                    :max="120"
+                    :disabled="shipRef.mode != 'auto'"
+                    style="width: 200px;"
+                    :tooltip="false"
+                />
+            </n-form-item>
+            <n-form-item path="intimacy" :show-feedback="false" label-placement="left">
+                <n-radio-group v-model:value="shipRef.intimacy" :disabled="shipRef.mode != 'auto'">
+                    <n-radio-button class="intimacy-option" size="small" value="陌生">陌生</n-radio-button>
+                    <n-radio-button class="intimacy-option" size="small" value="友好">友好</n-radio-button>
+                    <n-radio-button class="intimacy-option" size="small" value="喜欢">喜欢</n-radio-button>
+                    <n-radio-button class="intimacy-option" size="small" value="爱">爱</n-radio-button>
+                    <n-radio-button class="intimacy-option" size="small" value="誓约">誓约</n-radio-button>
+                    <n-radio-button class="intimacy-option" size="small" value="誓约200">200</n-radio-button>
+                </n-radio-group>
+            </n-form-item>
+        </n-space>
+    </n-space>
 </template>
 
-
 <script setup lang="ts">
-import { watch, computed } from "vue";
-import { NForm, NFormItem, NInput, NInputNumber, NRadioButton, NRadioGroup } from 'naive-ui'
+import { watch, computed, ref } from "vue";
+import { NFormItem, NInput, NSpace, NInputNumber, NSlider, NRadioButton, NRadioGroup } from 'naive-ui'
 import { Ship } from "../utils/types";
 import store from "../utils/store";
 import { getRawReload } from "../utils/formulas";
 
-
 const props = defineProps<{
     ship: Ship,
+}>();
+
+const emit = defineEmits<{
+    (event: 'update:value', data: Ship): void
 }>();
 
 const template = computed(() => {
     return store.state.shipTemplates[props.ship.templateId]
 })
 
-watch([props.ship], () => {
-    if (props.ship.mode === 'auto') {
-        let r = getRawReload(props.ship);
-        props.ship.reload = r;
+const shipRef = ref(props.ship);
+
+watch([shipRef.value], () => {
+    if (shipRef.value.mode === 'auto') {
+        let r = getRawReload(shipRef.value);
+        shipRef.value.reload = r;
     }
-    console.log('update ship', props.ship);
+    console.log('update ship', shipRef.value);
+    emit('update:value', shipRef.value);
 }, { immediate: true })
 
 </script>
+
+<style>
+.short-num-input {
+    max-width: 90px;
+}
+</style>
