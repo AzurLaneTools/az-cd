@@ -9,7 +9,6 @@
   "dependencies": {
     "axios": "^0.21.4",
     "naive-ui": "^2.19.1",
-    "protobufjs": "^6.11.2",
     "uuid": "^8.3.2",
     "vfonts": "^0.1.0",
     "vue": "^3.2.6",
