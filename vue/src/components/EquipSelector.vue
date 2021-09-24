@@ -2,7 +2,7 @@
 import { computed, ref, watchEffect } from 'vue'
 import { NTreeSelect, TreeOption } from 'naive-ui'
 
-import { EquipType, FleetShip, ShipType } from '../utils/types'
+import { BuffType, EquipType, FleetShip, ShipType, TriggerType } from '../utils/types'
 import store from '../utils/store';
 import { getRealCD } from '../utils/formulas';
 const CALCU_LIMIT = 10000;
@@ -60,14 +60,34 @@ const equipChoices: number[][] = [];
 
 const result = ref<{ total?: number, [key: string]: any }>({});
 
+let TechAddReload = 0;
 function getStatsForChoice(equipIds: number[]) {
     let choiceResult: { [k: string]: any } = {
         ids: equipIds,
         cd: 0,
     }
+    let EquipAddReload = 0;
+    for (let i = 3; i < 5; ++i) {
+        let eid = equipIds[i];
+        if (eid === 0) {
+            continue;
+        }
+        let eqp = store.state.equips[eid];
+        console.log('checkbuffs', eqp.buffs)
+        for (let buff of (eqp.buffs?.length ? eqp.buffs : [])) {
+            console.log('checkbuff', buff);
+            if (buff.type === BuffType.ReloadAdd && buff.trigger === TriggerType.Equip) {
+                EquipAddReload += parseInt(buff.value || "0");
+            }
+        }
+    }
+    let dispReload = shipInfo.reload + EquipAddReload + TechAddReload;
     if (shipTemplate.type === ShipType.BB || shipTemplate.type === ShipType.BC) {
+        if(equipIds[0] === 0){
+            return choiceResult;
+        }
         let eqp = store.state.equips[equipIds[0]];
-        choiceResult.cd = getRealCD(eqp.cd || 0, shipInfo.reload)
+        choiceResult.cd = getRealCD(eqp.cd || 0, dispReload)
     } else {
         let cnt = 0;
         let sumCd = 0;
@@ -79,8 +99,10 @@ function getStatsForChoice(equipIds: number[]) {
             cnt += shipTemplate.equipCnt[i];
             sumCd += shipTemplate.equipCnt[i] * (store.state.equips[eid].cd || 100);
         }
-        choiceResult.cd = getRealCD(2.2 * sumCd / cnt, shipInfo.reload)
+        choiceResult.cd = getRealCD(2.2 * sumCd / cnt, dispReload)
     }
+    // 面板CD
+    choiceResult.dispCd = choiceResult.cd.toFixed(2);
     return choiceResult;
 }
 
