@@ -9,7 +9,7 @@ import ShipCard from './ShipCard.vue';
 
 const message = useMessage();
 const fleet = computed<Fleet>(() => {
-    console.log('选择舰队', store.state.fleetIdx);
+    console.log('选择舰队', store.state.fleetIdx, store.state.fleets[store.state.fleetIdx]);
     return store.state.fleets[store.state.fleetIdx];
 });
 const fleets = ref(store.state.fleets);
@@ -129,7 +129,11 @@ function moveUp(idx: number) {
         <n-form-item label-placement="left" path="fleet.name">
             <n-button @click="addFleet()">添加</n-button>
             <n-button @click="removeFleet()">删除</n-button>
-            <n-popselect v-model:value="store.state.fleetIdx" :options="fleetOptions" trigger="click">
+            <n-popselect
+                v-model:value="store.state.fleetIdx"
+                :options="fleetOptions"
+                trigger="click"
+            >
                 <n-button>选择</n-button>
             </n-popselect>
             <n-input v-model:value="fleet.name"></n-input>

@@ -72,6 +72,10 @@ const shipType = computed(() => {
 const showModal = ref(false);
 const changeAttr = ref(false);
 const formRef = ref(null);
+
+const CALCULATE_LIMIT = 1000;
+const SHOW_LIMIT = 100;
+
 </script>
 
 <template>
@@ -99,16 +103,14 @@ const formRef = ref(null);
         <n-button @click="showModal = true">调整装备</n-button>
         <slot></slot>
     </n-space>
-    <n-modal v-if="refShip && shipTemplate" v-model:show="showModal" :mask-closable="false">
+    <n-modal v-if="refShip && shipTemplate" v-model:show="showModal" display-directive="show">
         <n-card style="width: 90%;" title="调整装备">
             <template #header-extra>
                 <n-button @click="showModal = false">取消</n-button>
             </template>
             <equip-selector
-                v-for="equip in shipTemplate.equips"
-                :allow="equip.allow"
-                :shipType="shipTemplate.type"
-            ></equip-selector>装备结果
+                :ship="ship"
+            ></equip-selector>
         </n-card>
     </n-modal>
 </template>

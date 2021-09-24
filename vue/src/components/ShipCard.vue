@@ -3,15 +3,12 @@ import { computed } from 'vue'
 import store from '../utils/store';
 
 const props = defineProps<{
-    template: string,
+    template: number,
     name?: string,
 }>();
 
 const templ = computed(() => {
-    if (typeof props.template === 'string') {
-        return store.state.shipTemplates[props.template];
-    }
-    return props.template;
+    return store.state.shipTemplates[props.template];
 })
 
 const dispName = computed(() => {

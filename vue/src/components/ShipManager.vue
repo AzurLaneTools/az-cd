@@ -23,13 +23,13 @@
             <br />
             <n-grid x-gap="2" cols="2 400:3 600:4 800:5 1000:6 1200:12">
                 <n-grid-item
-                    v-for="templ in options"
+                    v-for="option in options"
                     :bordered="false"
                     class="ship-card"
-                    v-show="customFilter(templ)"
-                    @click="addShip(templ.key)"
+                    v-show="customFilter(option)"
+                    @click="addShip(option.key)"
                 >
-                    <ship-card :template="templ.key"></ship-card>
+                    <ship-card :template="option.key"></ship-card>
                 </n-grid-item>
             </n-grid>
             <n-empty v-if="options.length == 0"></n-empty>
@@ -72,15 +72,18 @@ function customFilter(option: ShipTemplate) {
 
 const options = computed(() => {
     let res = [];
+    console.log('store.state.shipTemplates', store.state.shipTemplates);
     for (let key in store.state.shipTemplates) {
-        let info = { key: key, ...store.state.shipTemplates[key] }
+        let info = { ...store.state.shipTemplates[key] }
+        info.key = info.id;
         res.push(info)
     }
     return res;
 })
 
-function addShip(templateId: string) {
+function addShip(templateId: number) {
     store.addShip(templateId);
+    ships.value = store.state.ships;
     showModal.value = false;
 }
 function removeShip(idx: string) {

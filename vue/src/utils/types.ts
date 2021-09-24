@@ -1,30 +1,25 @@
 enum BuffType {
     // 添加装填值
-    ReloadAdd,
+    ReloadAdd = 'ReloadAdd',
     // 按百分比添加装填值
-    ReloadAddRatio,
+    ReloadAddRatio = 'ReloadAddRatio',
     // 直接修改CD
-    CDAddRatio,
-    // 预装填
-    Preload,
-    // 取消指定Buff
-    CancelBuff,
+    CDAddRatio = 'CDAddRatio',
 }
 
-enum EventType {
+enum TriggerType {
     // 装备
-    Equip,
+    Equip = 'Equip',
     // 科技
-    Tech,
+    Tech = 'Tech',
     // 战斗开始时
-    BattleStart,
+    BattleStart = 'BattleStart',
+    // 武器(舰炮/舰载机)装填完毕
+    WeaponReady = 'WeaponReady',
     // 使用武器(舰炮/舰载机)
-    WeaponReady,
-    // 使用武器(舰炮/舰载机)
-    UseWeapon,
+    UseWeapon = 'UseWeapon',
     // 固定间隔
-    Scheduled,
-    Hit,
+    Scheduled = 'UseWeapon',
 }
 
 enum ShipType {
@@ -35,12 +30,12 @@ enum ShipType {
     CV = 7,
 }
 
-enum BuffTarget {
-    SELF,
-    B,
-    C,
-    CV,
-    CVL,
+enum TargetSelector {
+    Self = "Self",
+    ByType = "Type",
+    ByCamp = "ByCamp",
+    And = "And",
+    Or = "Or",
 }
 
 enum EquipType {
@@ -53,26 +48,36 @@ enum EquipType {
     // Dive Bomber 轰炸机
     dive_bomber = 9,
     // Auxiliary 设备
-    auxiliary = 10,
+    auxiliaryCV = 101,
+    auxiliaryBB = 102,
 }
 
 
-interface Buff {
-    id?: number,
+interface BuffTemplate {
+    id: number | string,
     name?: string,
+    desc?: string,
     type: BuffType,
-    args?: any[],
+    needToggle?: boolean,
+    value?: any[],
     toggle?: { [lvl: string]: { args: any[] } | null },
-    trigger: { type: EventType, args?: any[] },
-    removeTrigger?: { type: EventType, args?: any[] },
-    target: BuffTarget | ((fleet: Fleet, shipIdx: number) => boolean),
+    trigger?: TriggerType | { type: TriggerType, args?: any[] },
+    removeTrigger?: TriggerType | { type: TriggerType, args?: any },
+    target?: TargetSelector | { type: TargetSelector, args?: any },
+}
+
+interface Buff {
+    id: number | string,
+    on: boolean,
 }
 
 interface ShipTemplate {
+    id: number,
     type: ShipType,
     name: string,
-    growth: number[],
-    equips: { allow?: EquipType[], cnt?: number }[],
+    reload: number[],
+    equipSlots: EquipType[][],
+    equipCnt: number[],
     img: string,
     match: string,
     [key: string]: any
@@ -87,12 +92,12 @@ interface EquipTemplate {
     cd?: number,
     allowShipTypes?: ShipType[],
     lvl?: number,
-    buffs?: Buff[],
+    buffs?: BuffTemplate[],
 }
 
 interface Ship {
     id: string,
-    templateId: string,  // ref ShipTemplate.id
+    templateId: number,  // ref ShipTemplate.id
     name: string,
     lvl: number,
     intimacy: string,
@@ -121,5 +126,6 @@ export {
     FleetShip,
     Fleet,
     Buff,
-    BuffTarget,
+    BuffTemplate,
+    TargetSelector,
 }
