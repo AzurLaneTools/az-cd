@@ -17,7 +17,7 @@ const menuOptions = [
     key: '/ships'
   },
 ];
-const activeKey = ref('/');
+const activeKey = ref(location.hash.substring(1));
 const collapsed = ref(false);
 </script>
 <template>
