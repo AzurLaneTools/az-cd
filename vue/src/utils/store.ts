@@ -1,19 +1,33 @@
 import { reactive } from "vue"
 import { v4 as uuid } from 'uuid';
-import { EquipTemplate, Fleet, Ship, ShipTemplate, ShipType } from "./types";
+import { TreeOption } from 'naive-ui'
+import { EquipTemplate, EquipType, Fleet, Ship, ShipTemplate, ShipType } from "./types";
 import axios from "axios";
+import { getRawReload } from "./formulas";
 
+
+async function loadShipTemplates() {
+    let resp = await axios.get('/ships.json')
+    console.log('axios', resp);
+    return resp.data;
+}
+
+async function loadEquips() {
+    let resp = await axios.get('/equips.json');
+    return resp.data;
+}
 
 const store: {
     state: {
-        shipTemplates: { [key: string]: ShipTemplate },
+        shipTemplates: { [key: number]: ShipTemplate },
         equips: { [key: number]: EquipTemplate },
+        equipOptions: TreeOption[],
         ships: { [key: string]: Ship },
         fleets: Fleet[],
         fleetIdx: number,
     },
     chooseFleet: (id: number) => void,
-    addShip: (templateId: string) => Ship,
+    addShip: (templateId: number) => Ship,
     removeShip: (shipId: string) => void,
     addFleet: () => Fleet,
     removeFleet: (idx: number) => void,
@@ -23,6 +37,7 @@ const store: {
     state: reactive({
         shipTemplates: {},
         equips: {},
+        equipOptions: [],
         ships: {},
         shipId: '',
         fleets: [],
@@ -31,20 +46,21 @@ const store: {
     chooseFleet(id: number) {
         this.state.fleetIdx = id;
     },
-    addShip(templateId: string) {
+    addShip(templateId: number) {
         const template = this.state.shipTemplates[templateId];
         console.log('addShip', templateId, template);
-        let newid = uuid()
-        this.state.ships[newid] = {
-            id: newid,
+        let newShip: Ship = {
+            id: uuid(),
             templateId: templateId,
             name: template.name,
             lvl: 120,
             mode: 'auto',
             intimacy: '爱',
             reload: 0,
-        };
-        return this.state.ships[newid];
+        }
+        newShip.reload = getRawReload(newShip)
+        this.state.ships[newShip.id] = newShip;
+        return newShip;
     },
     removeShip(shipId: string) {
         delete this.state.ships[shipId];
@@ -82,61 +98,78 @@ const store: {
         localStorage.setItem('STORE', JSON.stringify(this.state));
     },
     setup() {
-        let storedJson: string | null;
-        try {
-            storedJson = localStorage.getItem('STORE');
-            let storedData = JSON.parse(storedJson || '');
-            for (let key in storedData) {
-                // @ts-ignore
-                this.state[key] = storedData[key];
-            }
-        } catch (e) {
-            console.log('Load failed', e);
-            storedJson = null;
+        if (this.state.fleets.length === 0) {
             this.addFleet();
         }
-        axios.get('/ships-simple.json').then((resp) => {
-            console.log('axios', resp);
-            const TYPE_MAP = {
-                1: ShipType.CV,
-                2: ShipType.CVL,
-                3: ShipType.BB,
+        loadShipTemplates().then((data) => {
+            let storedJson: string | null;
+            try {
+                storedJson = localStorage.getItem('STORE');
+                let storedData = JSON.parse(storedJson || '');
+                storedData.shipTemplates = data;
+                for (let key in storedData) {
+                    // @ts-ignore
+                    this.state[key] = storedData[key];
+                }
+            } catch (e) {
+                console.log('Load failed', e);
+                storedJson = null;
+                this.addFleet();
             }
-            let templ: { [key: string]: ShipTemplate } = {};
-            for (let item of resp.data) {
-                // @ts-ignore
-                if (!TYPE_MAP[item.type]) {
-                    continue
-                }
-                let equips = [];
-                for (let k = 1; k <= 5; ++k) {
-                    let slot = item.slots[k];
-                    if (slot) {
-                        equips.push({
-                            cnt: item.slots[k].cnt,
-                            allow: item.slots[k].type,
-                        })
-                    } else {
-                        equips.push({
-                            cnt: 0,
-                            allow: [],
-                        })
-                    }
-                }
-                templ[item.编号] = {
-                    type: ShipType.CV,
-                    name: item.名称,
-                    growth: item.args,
-                    img: item.img,
-                    equips: equips,
-                    match: item.match
-                }
-            }
-            this.state.shipTemplates = templ;
+            this.state.shipTemplates = data;
             if (!storedJson) {
                 console.log('shipTemplates updated', this.state.shipTemplates);
-                this.addShip('N231');
-                this.addShip('N377');
+                this.addShip(30708);
+            }
+        });
+        loadEquips().then((data) => {
+            this.state.equips = data;
+            this.state.equipOptions = [];
+            let typeMap: { [idx: string]: TreeOption } = {
+                [EquipType.artillery]: {
+                    key: EquipType.artillery,
+                    label: '战列炮',
+                    children: [],
+                },
+                [EquipType.fighter]: {
+                    key: EquipType.fighter,
+                    label: '战斗机',
+                    children: [],
+                },
+                [EquipType.torpedo_bomber]: {
+                    key: EquipType.torpedo_bomber,
+                    label: '鱼雷机',
+                    children: [],
+                },
+                [EquipType.dive_bomber]: {
+                    key: EquipType.dive_bomber,
+                    label: '轰炸机',
+                    children: [],
+                },
+                [EquipType.auxiliaryCV]: {
+                    key: EquipType.auxiliaryCV,
+                    label: '航母设备',
+                    children: [],
+                },
+                [EquipType.auxiliaryBB]: {
+                    key: EquipType.auxiliaryBB,
+                    label: '战列设备',
+                    children: [],
+                },
+            };
+            for (let key in this.state.equips) {
+                let equip = this.state.equips[key];
+                // @ts-ignore
+                typeMap[equip.type].children.push({
+                    key: equip.id,
+                    label: equip.name
+                })
+            }
+            for (let key in typeMap) {
+                typeMap[key].children?.sort((a, b) => {
+                    return this.state.equips[a.key].cd - this.state.equips[b.key].cd;
+                })
+                this.state.equipOptions.push(typeMap[key]);
             }
         })
     }

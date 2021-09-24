@@ -1,7 +1,10 @@
 import store from "./store";
 import { Ship } from "./types";
 
-function getRealCD() { }
+function getRealCD(rawCd: number, reload: number) {
+    // slot0 / uv0.K1 / math.sqrt((slot1 + uv0.K2) * uv0.K3)
+    return rawCd / 6 / Math.sqrt((reload + 100) * 3.14)
+}
 
 function getIntimacyBuffRatio(intimacy: string) {
     switch (intimacy) {
@@ -22,16 +25,22 @@ function getIntimacyBuffRatio(intimacy: string) {
 }
 
 function getRawReload(ship: Ship) {
-    let growth = store.state.shipTemplates[ship.templateId].growth;
+    let templ = store.state.shipTemplates[ship.templateId]
+    if (!templ) {
+        return 0
+    }
+    console.log('getRawReload', ship, templ)
+    let r = templ.reload;
     // 实际强化提升
-    let strengthen = Math.floor(growth[3] * (Math.min(ship.lvl, 100) / 100 * 0.7 + 0.3));
-    // 好感度增幅
-    let incRatio = getIntimacyBuffRatio(ship.intimacy);
-    let result = (growth[0] + growth[1] * (ship.lvl - 1) / 1000 + strengthen + growth[2] * (Math.max(ship.lvl, 100) - 100) / 1000) * incRatio + growth[4]
-    return Math.floor(result);
+    let lvl = ship.lvl
+    let inc_ratio = getIntimacyBuffRatio(ship.intimacy)
+    let real_reload = (
+        r[0] + (lvl - 1) * r[1] / 1000 + (lvl - 100) * r[2] / 1000 + r[3]
+    ) * inc_ratio + r[4]
+    return Math.floor(real_reload);
 }
 
 function getRealReload() { }
 
 
-export { getRawReload }
+export { getRawReload, getRealCD }
