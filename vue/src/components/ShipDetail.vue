@@ -2,13 +2,13 @@
 import { ref, computed } from 'vue'
 import EquipInfo from './EquipInfo.vue'
 import EquipSelector from './EquipSelector.vue'
-import { Buff, BuffTemplate, FleetShip, Ship, ShipTemplate, ShipType, Tech } from '../utils/types'
+import { Buff, BuffTemplate, FleetShip, BuffType, ShipTemplate, ShipType, Tech } from '../utils/types'
 import { ShipTypeName } from '../utils/namemap'
 
 import { NModal, NButton, NCard, NForm, NFormItem, NInputNumber, NSpace } from 'naive-ui'
 import store from '../utils/store'
 import ShipCard from './ShipCard.vue'
-import { getEquipReload, getTechReload } from '../utils/formulas'
+import { getEquipReload, getFixedBuffs, getTechReload } from '../utils/formulas'
 
 
 const props = defineProps<{
@@ -44,6 +44,13 @@ const dispReload = computed(() => {
     return refShip.value.reload + equipReload.value + techReload.value;
 })
 
+const extraBuffStats = computed(() => {
+    if (refShip.value && shipTemplate.value) {
+        return getFixedBuffs(props.fleetBuffs, shipTemplate.value);
+    }
+    return {}
+})
+
 
 const reloadHint = computed(() => {
     if (!refShip.value) {
@@ -71,11 +78,6 @@ const shipType = computed(() => {
     return ShipTypeName[shipTemplate.value.type]
 })
 const showModal = ref(false);
-const changeAttr = ref(false);
-const formRef = ref(null);
-
-const CALCULATE_LIMIT = 1000;
-const SHOW_LIMIT = 100;
 
 </script>
 
@@ -110,7 +112,9 @@ const SHOW_LIMIT = 100;
             </template>
             <equip-selector
                 :ship="ship"
-                :dispReload="dispReload"
+                :baseReload="refShip.reload"
+                :techReload="techReload"
+                :extraBuffStats="extraBuffStats"
                 @select="emit('set-equips', $event); showModal = false"
             ></equip-selector>
         </n-card>

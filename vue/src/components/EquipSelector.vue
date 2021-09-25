@@ -2,9 +2,9 @@
 import { computed, ref, watch, watchEffect } from 'vue'
 import { NTreeSelect, TreeOption, NRow, NCol, NButton, useMessage } from 'naive-ui'
 
-import { BuffType, EquipType, FleetShip, ShipType, TriggerType } from '../utils/types'
+import { BuffType, CdBuffData, EquipType, FleetShip, ShipType, TriggerType } from '../utils/types'
 import store from '../utils/store';
-import { contains, getEquipReload, getRealCD } from '../utils/formulas';
+import { contains, getEquipReload, getFixedBuffs, getRealCD } from '../utils/formulas';
 import EquipInfo from './EquipInfo.vue'
 
 const CALCU_LIMIT = 1000;
@@ -12,7 +12,9 @@ const DISP_LIMIT = 100;
 
 const props = defineProps<{
     ship: FleetShip,
-    dispReload: number,
+    baseReload: number,
+    techReload: number,
+    extraBuffStats: CdBuffData,
 }>();
 
 const emit = defineEmits<{
@@ -69,18 +71,47 @@ const equipChoices: number[][] = [];
 const resultInfo = ref<{ total?: number, desc?: string, updated?: boolean }>({});
 const results = ref<{ [key: string]: any }[]>([]);
 
-let TechAddReload = 0;
+function getAllStatsData(equipIds: number[]) {
+    let res: CdBuffData = {};
+    for (let key in props.extraBuffStats) {
+        // @ts-ignore
+        res[key] = props.extraBuffStats[key];
+    }
+    for (let eid of equipIds) {
+        if (eid === 0) {
+            continue
+        }
+        let equip = store.state.equips[eid];
+        if (!equip || !equip.buffs) {
+            continue
+        }
+        let extra = getFixedBuffs(equip.buffs, shipTemplate);
+        for (let key in extra) {
+            // @ts-ignore
+            res[key] = (res[key] || 0) + extra[key];
+        }
+    }
+    return res;
+}
+
 function getStatsForChoice(equipIds: number[]) {
     let choiceResult: { [k: string]: any } = {
-        ids: equipIds,
-        cd: 0,
+        ids: equipIds
     }
+    let equipReload = getEquipReload(equipIds);
+    let stats = getAllStatsData(equipIds)
+    let dispReload = props.baseReload + equipReload + props.techReload;
+    let realReload = dispReload + (stats.ReloadAdd || 0)
+    realReload = realReload * (1 + ((stats.ReloadAddRatio || 0) / 100));
+    choiceResult.reload = { base: props.baseReload, equip: equipReload, tech: props.techReload }
+    choiceResult.stats = stats;
+    let equipCd = 0;
     if (shipTemplate.type === ShipType.BB || shipTemplate.type === ShipType.BC) {
         if (equipIds[0] === 0) {
             return choiceResult;
         }
         let eqp = store.state.equips[equipIds[0]];
-        choiceResult.cd = getRealCD(eqp.cd || 0, props.dispReload)
+        equipCd = eqp.cd || 0;
     } else {
         let cnt = 0;
         let sumCd = 0;
@@ -92,11 +123,12 @@ function getStatsForChoice(equipIds: number[]) {
             cnt += shipTemplate.equipCnt[i];
             sumCd += shipTemplate.equipCnt[i] * (store.state.equips[eid].cd || 100);
         }
-        choiceResult.cd = getRealCD(2.2 * sumCd / cnt, props.dispReload)
+        equipCd = 2.2 * sumCd / cnt;
     }
+
     // 面板CD
-    choiceResult.dispCd = choiceResult.cd.toFixed(2);
-    choiceResult.realCD = choiceResult.cd;
+    choiceResult.dispCD = getRealCD(equipCd, dispReload).toFixed(2);
+    choiceResult.realCD = getRealCD(equipCd, realReload) * (1 + (stats.CDAddRatio || 0) / 100);
     return choiceResult;
 }
 
@@ -159,6 +191,7 @@ function calculateChoices() {
     }
     results.value = loadAllResults();
     resultInfo.value.updated = true;
+    console.log('CD计算结果', results.value);
 }
 
 for (let idx = 0; idx < 5; ++idx) {
@@ -172,7 +205,7 @@ for (let idx = 0; idx < 5; ++idx) {
 updateChoices(0, equipChoices[0]);
 console.log('equipChoices', equipChoices);
 
-watch(() => props.dispReload, () => {
+watch(() => [props.techReload, props.baseReload], () => {
     // 更新舰娘装填信息后, 清除当前列表
     results.value = [];
 })
@@ -204,8 +237,8 @@ watch(() => props.dispReload, () => {
                     <td v-for="equip in c.ids">
                         <equip-info :equip="equip"></equip-info>
                     </td>
-                    <td>面板CD:{{ c.dispCd }}</td>
-                    <td>实际CD:{{ c.realCd }}</td>
+                    <td>面板CD:{{ c.dispCD }}</td>
+                    <td>实际CD:{{ c.realCD }}</td>
                 </tr>
             </tbody>
         </table>

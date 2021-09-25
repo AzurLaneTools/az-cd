@@ -52,18 +52,38 @@ enum EquipType {
     auxiliaryBB = 102,
 }
 
+type TriggerDef = {
+    type: TriggerType,
+    args?: number[]
+}
+
+type TargetDef = {
+    type: TargetSelector.Self,
+    args: string | number,
+} | {
+    type: TargetSelector.And | TargetSelector.Or,
+    args: TargetDef[],
+} | {
+    type: TargetSelector.ByType | TargetSelector.ByCamp,
+    args: number[],
+}
+
+type CdBuffData = {
+    ReloadAdd?: number,
+    ReloadAddRatio?: number,
+    CDAddRatio?: number,
+}
 
 interface BuffTemplate {
     id: number | string,
     name?: string,
     desc?: string,
     type: BuffType,
-    needToggle?: boolean,
-    value?: any,
-    toggle?: { [lvl: string]: { args: any[] } | null },
-    trigger?: TriggerType | { type: TriggerType, args?: any[] },
-    removeTrigger?: TriggerType | { type: TriggerType, args?: any },
-    target?: TargetSelector | { type: TargetSelector, args?: any },
+    value: number,
+    off?: boolean,
+    trigger: TriggerDef,
+    removeTrigger?: TriggerDef,
+    target?: TargetDef,
 }
 
 interface Buff {
@@ -73,6 +93,7 @@ interface Buff {
 
 interface ShipTemplate {
     id: number,
+    camp: number,
     type: ShipType,
     name: string,
     reload: number[],
@@ -134,8 +155,10 @@ export {
     Fleet,
     Tech,
     BuffType,
+    TargetDef,
     TriggerType,
     Buff,
     BuffTemplate,
     TargetSelector,
+    CdBuffData,
 }
