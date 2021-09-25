@@ -89,6 +89,7 @@ const store: {
             name: '舰队配置-' + fid.substr(0, 4),
             ships: [{ id: null, equips: [] }, { id: null, equips: [] }, { id: null, equips: [] }],
             buffs: [],
+            tech: { BB: 0, CV: 0, CVL: 0 }
         });
         this.state.fleetIdx = this.state.fleets.length - 1;
         console.log('add Fleet', this.state.fleetIdx);
@@ -167,6 +168,7 @@ const store: {
             }
             for (let key in typeMap) {
                 typeMap[key].children?.sort((a, b) => {
+                    // @ts-ignore
                     return this.state.equips[a.key].cd - this.state.equips[b.key].cd;
                 })
                 this.state.equipOptions.push(typeMap[key]);

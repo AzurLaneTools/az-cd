@@ -75,23 +75,17 @@ function contains(arr: any[], target: any) {
 }
 
 
-function getTechReload(buffs: BuffTemplate[], shipType?: ShipType | null) {
-    let delta = 0;
-    for (let buff of buffs) {
-        if (buff.trigger !== TriggerType.Tech) {
-            continue;
-        }
-        if (buff.target && shipType) {
-            if (typeof buff.target === 'string') {
-                continue;
-            }
-            if (!contains(buff.target.args, shipType)) {
-                continue;
-            }
-        }
-        delta += parseInt(buff.value);
+function getTechReload(tech: { BB: number, CV: number, CVL: number }, shipType?: ShipType) {
+    if (shipType === ShipType.BB || shipType === ShipType.BC) {
+        return tech.BB
     }
-    return delta;
+    if (shipType === ShipType.CV) {
+        return tech.CV
+    }
+    if (shipType === ShipType.CVL) {
+        return tech.CVL
+    }
+    return 0;
 }
 
 export { getRawReload, contains, getEquipReload, getRealCD, getTechReload }

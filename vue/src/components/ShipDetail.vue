@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 import EquipInfo from './EquipInfo.vue'
 import EquipSelector from './EquipSelector.vue'
-import { Buff, BuffTemplate, FleetShip, Ship, ShipTemplate, ShipType } from '../utils/types'
+import { Buff, BuffTemplate, FleetShip, Ship, ShipTemplate, ShipType, Tech } from '../utils/types'
 import { ShipTypeName } from '../utils/namemap'
 
 import { NModal, NButton, NCard, NForm, NFormItem, NInputNumber, NSpace } from 'naive-ui'
@@ -14,6 +14,7 @@ import { getEquipReload, getTechReload } from '../utils/formulas'
 const props = defineProps<{
     ship: FleetShip,
     fleetBuffs: BuffTemplate[],
+    tech: Tech,
 }>();
 
 const emit = defineEmits<{
@@ -26,16 +27,23 @@ const refShip = computed(() => {
         return store.state.ships[props.ship.id];
     }
 })
-
 const equipReload = computed(() => {
     console.log('来自装备的装填值', props.ship.equips)
     return getEquipReload(props.ship.equips);
 })
 
 const techReload = computed(() => {
-    console.log('来自科技的装填值', props.fleetBuffs)
-    return getTechReload(props.fleetBuffs, shipTemplate.value?.type);
+    console.log('来自科技的装填值', props.tech)
+    return getTechReload(props.tech, shipTemplate.value?.type);
 })
+
+const dispReload = computed(() => {
+    if (!refShip.value) {
+        return 0;
+    }
+    return refShip.value.reload + equipReload.value + techReload.value;
+})
+
 
 const reloadHint = computed(() => {
     if (!refShip.value) {
@@ -47,15 +55,6 @@ const reloadHint = computed(() => {
     return 'Lv' + refShip.value.lvl + ' ' + refShip.value.intimacy;
 })
 
-const reloadValue = computed(() => {
-    if (!refShip.value) {
-        return 0;
-    }
-    let ratio = (refShip.value.reload + 100) / 200;
-    return refShip.value.lvl * ratio;
-})
-
-
 const shipTemplate = computed<ShipTemplate | null>(() => {
     if (!refShip.value) {
         return null;
@@ -64,10 +63,6 @@ const shipTemplate = computed<ShipTemplate | null>(() => {
 })
 
 console.log('shipTemplate', shipTemplate.value);
-
-const realReload = computed<number>(() => {
-    return reloadValue.value;
-})
 
 const shipType = computed(() => {
     if (!shipTemplate.value) {
@@ -92,7 +87,8 @@ const SHOW_LIMIT = 100;
         <ship-card :template="refShip.templateId" :name="refShip.name" @click="emit('ship-click')"></ship-card>
         {{ shipType }}
         <span :title="reloadHint">
-            装填=<span class="white">{{ refShip.reload }}</span>
+            装填=
+            <span class="white">{{ refShip.reload }}</span>
             <span class="green" v-if="equipReload > 0">+{{ equipReload }}</span>
             <span class="blue" v-if="techReload > 0">+{{ techReload }}</span>
         </span>
@@ -102,12 +98,21 @@ const SHOW_LIMIT = 100;
         <n-button @click="showModal = true">调整装备</n-button>
         <slot></slot>
     </n-space>
-    <n-modal v-if="refShip && shipTemplate" v-model:show="showModal" display-directive="show" :mask-closable="false">
+    <n-modal
+        v-if="refShip && shipTemplate"
+        v-model:show="showModal"
+        display-directive="show"
+        :mask-closable="false"
+    >
         <n-card style="width: 90%;" title="调整装备">
             <template #header-extra>
                 <n-button @click="showModal = false">取消</n-button>
             </template>
-            <equip-selector :ship="ship" @select="emit('set-equips', $event); showModal = false"></equip-selector>
+            <equip-selector
+                :ship="ship"
+                :dispReload="dispReload"
+                @select="emit('set-equips', $event); showModal = false"
+            ></equip-selector>
         </n-card>
     </n-modal>
 </template>

@@ -1,23 +1,25 @@
 <script lang="ts" setup>
-import { computed, ref, watchEffect } from 'vue'
-import { NTreeSelect, TreeOption, NRow, NCol } from 'naive-ui'
+import { computed, ref, watch, watchEffect } from 'vue'
+import { NTreeSelect, TreeOption, NRow, NCol, NButton, useMessage } from 'naive-ui'
 
 import { BuffType, EquipType, FleetShip, ShipType, TriggerType } from '../utils/types'
 import store from '../utils/store';
 import { contains, getEquipReload, getRealCD } from '../utils/formulas';
 import EquipInfo from './EquipInfo.vue'
 
-const CALCU_LIMIT = 10000;
-const DISP_LIMIT = 200;
+const CALCU_LIMIT = 1000;
+const DISP_LIMIT = 100;
 
 const props = defineProps<{
     ship: FleetShip,
+    dispReload: number,
 }>();
 
 const emit = defineEmits<{
     (event: 'select', equips: number[]): void
 }>();
 
+const message = useMessage();
 // @ts-ignore
 const shipInfo = store.state.ships[props.ship.id];
 console.log('shipInfo', shipInfo);
@@ -64,7 +66,8 @@ console.log('filteredOptions', shipTemplate.equipSlots, filteredOptions);
 
 const equipChoices: number[][] = [];
 
-const result = ref<{ total?: number, [key: string]: any }>({});
+const resultInfo = ref<{ total?: number, desc?: string, updated?: boolean }>({});
+const results = ref<{ [key: string]: any }[]>([]);
 
 let TechAddReload = 0;
 function getStatsForChoice(equipIds: number[]) {
@@ -72,14 +75,12 @@ function getStatsForChoice(equipIds: number[]) {
         ids: equipIds,
         cd: 0,
     }
-    let EquipAddReload = getEquipReload(equipIds);
-    let dispReload = shipInfo.reload + EquipAddReload + TechAddReload;
     if (shipTemplate.type === ShipType.BB || shipTemplate.type === ShipType.BC) {
         if (equipIds[0] === 0) {
             return choiceResult;
         }
         let eqp = store.state.equips[equipIds[0]];
-        choiceResult.cd = getRealCD(eqp.cd || 0, dispReload)
+        choiceResult.cd = getRealCD(eqp.cd || 0, props.dispReload)
     } else {
         let cnt = 0;
         let sumCd = 0;
@@ -91,7 +92,7 @@ function getStatsForChoice(equipIds: number[]) {
             cnt += shipTemplate.equipCnt[i];
             sumCd += shipTemplate.equipCnt[i] * (store.state.equips[eid].cd || 100);
         }
-        choiceResult.cd = getRealCD(2.2 * sumCd / cnt, dispReload)
+        choiceResult.cd = getRealCD(2.2 * sumCd / cnt, props.dispReload)
     }
     // 面板CD
     choiceResult.dispCd = choiceResult.cd.toFixed(2);
@@ -99,22 +100,30 @@ function getStatsForChoice(equipIds: number[]) {
     return choiceResult;
 }
 
-function loadAllResults() {
-    let allResults = [];
-    for (let e0 of (equipChoices[0].length ? equipChoices[0] : [0])) {
-        for (let e1 of (equipChoices[1].length ? equipChoices[1] : [0])) {
-            for (let e2 of (equipChoices[2].length ? equipChoices[2] : [0])) {
-                for (let e3 of (equipChoices[3].length ? equipChoices[3] : [0])) {
-                    for (let e4 of (equipChoices[4].length ? equipChoices[4] : [0])) {
-                        allResults.push(getStatsForChoice([e0, e1, e2, e3, e4]))
-                        if (allResults.length >= CALCU_LIMIT) {
-                            return allResults;
-                        }
-                    }
-                }
+function product<T>(nestArr: T[][], nullVal: T) {
+    function prod(current: T[][], next: T[]) {
+        let ret: T[][] = [];
+        if (!next || next.length === 0) {
+            next = [nullVal]
+        }
+        for (let a of current) {
+            for (let b of next) {
+                let item = a.slice();
+                item.push(b);
+                ret.push(item);
             }
         }
+        return ret;
     }
+    let data: T[][] = [[]];
+    for (let sub of nestArr) {
+        data = prod(data, sub);
+    }
+    return data;
+}
+
+function loadAllResults() {
+    let allResults = product(equipChoices, 0).map(getStatsForChoice);
     allResults.sort((a, b) => {
         return a.realCD - b.realCD;
     })
@@ -135,11 +144,23 @@ function updateChoices(idx: number, data: number[]) {
         cnt = cnt * cnti;
     }
     console.log('总选项数量', text, cnt);
-    let value = { total: cnt, desc: text.join('*'), results: loadAllResults() };
-    result.value = value;
-    console.log('results', result.value)
-
+    resultInfo.value = { total: cnt, desc: text.join('*') };
+    if (cnt < 50) {
+        calculateChoices();
+    }
+    console.log('results', resultInfo.value)
 }
+
+function calculateChoices() {
+    console.log('计算CD', resultInfo.value.total, CALCU_LIMIT)
+    if (resultInfo.value.total && resultInfo.value.total > CALCU_LIMIT) {
+        message.warning('选项数量过多!')
+        return;
+    }
+    results.value = loadAllResults();
+    resultInfo.value.updated = true;
+}
+
 for (let idx = 0; idx < 5; ++idx) {
     let e = props.ship.equips[idx];
     if (!e) {
@@ -151,8 +172,10 @@ for (let idx = 0; idx < 5; ++idx) {
 updateChoices(0, equipChoices[0]);
 console.log('equipChoices', equipChoices);
 
-const selectOptions: TreeOption[][] = [];
-
+watch(() => props.dispReload, () => {
+    // 更新舰娘装填信息后, 清除当前列表
+    results.value = [];
+})
 
 </script>
 
@@ -173,10 +196,11 @@ const selectOptions: TreeOption[][] = [];
             max-tag-count="responsive"
             :disabled="filteredOptions[idx].length === 0"
         />
-        总选项数量: {{ result.desc }}={{ result.total }}
+        总选项数量: {{ resultInfo.desc }}={{ resultInfo.total }}
+        <n-button type="primary" @click="calculateChoices()">计算CD</n-button>
         <table>
             <tbody>
-                <tr v-for="c in result.results" @click="emit('select', c.ids)">
+                <tr v-for="c in results?.slice(0, DISP_LIMIT)" @click="emit('select', c.ids)">
                     <td v-for="equip in c.ids">
                         <equip-info :equip="equip"></equip-info>
                     </td>

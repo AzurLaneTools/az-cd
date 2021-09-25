@@ -110,10 +110,17 @@ interface FleetShip {
     equips: number[], // ref EquipTemplate.id
 }
 
+interface Tech {
+    BB: number,
+    CV: number,
+    CVL: number,
+}
+
 interface Fleet {
     id: string,
     name: string,
     buffs: BuffTemplate[],
+    tech: Tech,
     ships: FleetShip[],
 }
 
@@ -125,6 +132,7 @@ export {
     Ship,
     FleetShip,
     Fleet,
+    Tech,
     BuffType,
     TriggerType,
     Buff,
