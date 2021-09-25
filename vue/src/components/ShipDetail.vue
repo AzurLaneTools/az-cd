@@ -92,24 +92,22 @@ const SHOW_LIMIT = 100;
         <ship-card :template="refShip.templateId" :name="refShip.name" @click="emit('ship-click')"></ship-card>
         {{ shipType }}
         <span :title="reloadHint">
-            装填:
-            <span class="white">{{ refShip.reload }}</span>
+            装填=<span class="white">{{ refShip.reload }}</span>
             <span class="green" v-if="equipReload > 0">+{{ equipReload }}</span>
             <span class="blue" v-if="techReload > 0">+{{ techReload }}</span>
         </span>
-        {{ realReload }}
         <span v-for="equip, idx in ship.equips">
             <equip-info :equip="equip" :cnt="shipTemplate && shipTemplate.equipCnt[idx]"></equip-info>
         </span>
         <n-button @click="showModal = true">调整装备</n-button>
         <slot></slot>
     </n-space>
-    <n-modal v-if="refShip && shipTemplate" v-model:show="showModal" display-directive="show">
+    <n-modal v-if="refShip && shipTemplate" v-model:show="showModal" display-directive="show" :mask-closable="false">
         <n-card style="width: 90%;" title="调整装备">
             <template #header-extra>
                 <n-button @click="showModal = false">取消</n-button>
             </template>
-            <equip-selector :ship="ship" @select="emit('set-equips', $event)"></equip-selector>
+            <equip-selector :ship="ship" @select="emit('set-equips', $event); showModal = false"></equip-selector>
         </n-card>
     </n-modal>
 </template>
