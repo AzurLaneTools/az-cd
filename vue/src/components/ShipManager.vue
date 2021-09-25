@@ -88,6 +88,7 @@ function addShip(templateId: number) {
 }
 function removeShip(idx: string) {
     store.removeShip(idx);
+    ships.value = store.state.ships;
 }
 
 const searchRef = ref<InputInst | null>(null);

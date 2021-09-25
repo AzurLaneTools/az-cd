@@ -1,7 +1,7 @@
 <template>
     <n-space>
         <img
-            :src="'/img/' + template.img"
+            :src="template.img"
             :alt="template.name"
             style="border-radius: 10px; width: 80px; height: 80px;"
         />

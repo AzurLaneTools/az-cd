@@ -1,5 +1,5 @@
 import store from "./store";
-import { Ship } from "./types";
+import { Buff, BuffTemplate, BuffType, Ship, ShipType, TargetSelector, TriggerType } from "./types";
 
 function getRealCD(rawCd: number, reload: number) {
     // slot0 / uv0.K1 / math.sqrt((slot1 + uv0.K2) * uv0.K3)
@@ -42,5 +42,56 @@ function getRawReload(ship: Ship) {
 
 function getRealReload() { }
 
+function getEquipReload(equips: number[]) {
+    let delta = 0
+    for (let i = 3; i < 5; ++i) {
+        let eid = equips[i];
+        if (eid === 0) {
+            continue;
+        }
+        let eqp = store.state.equips[eid];
+        if (!eqp) {
+            continue;
+        }
+        for (let buff of (eqp.buffs?.length ? eqp.buffs : [])) {
+            if (buff.type === BuffType.ReloadAdd && buff.trigger === TriggerType.Equip) {
+                if (!buff.value) {
+                    continue;
+                }
+                delta += parseInt(buff.value);
+            }
+        }
+    }
+    return delta;
+}
 
-export { getRawReload, getRealCD }
+function contains(arr: any[], target: any) {
+    for (let item of arr) {
+        if (item === target) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+function getTechReload(buffs: BuffTemplate[], shipType?: ShipType | null) {
+    let delta = 0;
+    for (let buff of buffs) {
+        if (buff.trigger !== TriggerType.Tech) {
+            continue;
+        }
+        if (buff.target && shipType) {
+            if (typeof buff.target === 'string') {
+                continue;
+            }
+            if (!contains(buff.target.args, shipType)) {
+                continue;
+            }
+        }
+        delta += parseInt(buff.value);
+    }
+    return delta;
+}
+
+export { getRawReload, contains, getEquipReload, getRealCD, getTechReload }

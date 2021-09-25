@@ -1,23 +1,24 @@
-<template>{{ equipName }}{{ mark }}  </template>
+<template>{{ equipName }}</template>
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { EquipInfo } from '../utils/types'
+import store from '../utils/store';
 
 const props = defineProps<{
-    equip: EquipInfo,
-    marker?: string,
+    equip: number,
+    cnt?: number | null,
 }>();
 
 const equipName = computed(() => {
-    return '装备' + props.equip.id;
-});
-
-const mark = computed(() => {
-    if (props.marker) {
-        return props.marker
+    let eqp = store.state.equips[props.equip];
+    if (!eqp) {
+        return '-';
     }
-    return '';
+    let name = eqp.name;
+    if (props.cnt) {
+        name = '(' + props.cnt + '*)' + name;
+    }
+    return name;
 });
 
 </script>
