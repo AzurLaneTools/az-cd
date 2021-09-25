@@ -3,10 +3,12 @@ import App from './App.vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import FleetDetail from './components/FleetDetail.vue'
 import ShipManager from './components/ShipManager.vue'
+import ConfigManager from './components/ConfigManager.vue'
 
 const routes = [
     { path: '/', component: FleetDetail },
     { path: '/ships', component: ShipManager },
+    { path: '/config', component: ConfigManager },
 ]
 
 const router = createRouter({

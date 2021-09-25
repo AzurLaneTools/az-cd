@@ -47,6 +47,13 @@ function getOptions(idx: number) {
                 (shipTemplate.type === ShipType.BB || shipTemplate.type === ShipType.BC)
             )
         ) {
+            option = { ...option };
+            if (store.state.ignoreCommonEquips) {
+                option.children = option.children?.filter((equip) => {
+                    // @ts-ignore
+                    return store.state.equips[equip.key].rarity > 3;
+                })
+            }
             result.push(option);
         }
     }

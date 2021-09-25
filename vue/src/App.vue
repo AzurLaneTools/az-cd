@@ -16,6 +16,10 @@ const menuOptions = [
     label: '舰娘管理',
     key: '/ships'
   },
+  {
+    label: '全局设置',
+    key: '/config'
+  },
 ];
 const activeKey = ref(location.hash.substring(1));
 const collapsed = ref(false);

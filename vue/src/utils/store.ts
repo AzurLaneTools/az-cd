@@ -25,6 +25,7 @@ const store: {
         ships: { [key: string]: Ship },
         fleets: Fleet[],
         fleetIdx: number,
+        ignoreCommonEquips: boolean,
     },
     chooseFleet: (id: number) => void,
     addShip: (templateId: number) => Ship,
@@ -42,6 +43,7 @@ const store: {
         shipId: '',
         fleets: [],
         fleetIdx: 0,
+        ignoreCommonEquips: true,
     }),
     chooseFleet(id: number) {
         this.state.fleetIdx = id;
