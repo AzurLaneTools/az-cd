@@ -129,6 +129,7 @@ interface Ship {
 interface FleetShip {
     id: string | null, // ref Ship.id
     equips: number[], // ref EquipTemplate.id
+    buffs?: BuffTemplate[],
 }
 
 interface Tech {

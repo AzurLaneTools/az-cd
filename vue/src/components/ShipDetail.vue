@@ -8,7 +8,7 @@ import { ShipTypeName } from '../utils/namemap'
 import { NModal, NButton, NCard, NForm, NFormItem, NInputNumber, NSpace } from 'naive-ui'
 import store from '../utils/store'
 import ShipCard from './ShipCard.vue'
-import { getEquipReload, getFixedBuffs, getTechReload } from '../utils/formulas'
+import { getEquipReload, getFixedBuffs, getShipCdStats, getTechReload } from '../utils/formulas'
 
 
 const props = defineProps<{
@@ -44,9 +44,14 @@ const dispReload = computed(() => {
     return refShip.value.reload + equipReload.value + techReload.value;
 })
 
+const cdStats = computed(() => {
+    return getShipCdStats(props.ship, extraBuffStats.value)
+})
 const extraBuffStats = computed(() => {
     if (refShip.value && shipTemplate.value) {
-        return getFixedBuffs(props.fleetBuffs, shipTemplate.value);
+        let data = getFixedBuffs(props.fleetBuffs, shipTemplate.value);
+        data.ReloadAdd = (data.ReloadAdd || 0) + getTechReload(props.tech, shipTemplate.value?.type);
+        return data;
     }
     return {}
 })
@@ -97,6 +102,8 @@ const showModal = ref(false);
         <span v-for="equip, idx in ship.equips">
             <equip-info :equip="equip" :cnt="shipTemplate && shipTemplate.equipCnt[idx]"></equip-info>
         </span>
+        面板CD: {{ cdStats.dispCD }}
+        实际CD: {{ cdStats.realCD }}
         <n-button @click="showModal = true">调整装备</n-button>
         <slot></slot>
     </n-space>
