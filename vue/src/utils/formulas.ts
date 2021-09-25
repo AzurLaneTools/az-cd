@@ -1,5 +1,5 @@
 import store from "./store";
-import { Buff, BuffTemplate, BuffType, CdBuffData, Ship, ShipTemplate, ShipType, TargetDef, TargetSelector, TriggerType } from "./types";
+import { Buff, BuffTemplate, BuffType, CdBuffData, FleetShip, Ship, ShipTemplate, ShipType, TargetDef, TargetSelector, TriggerType } from "./types";
 
 function getRealCD(rawCd: number, reload: number) {
     // slot0 / uv0.K1 / math.sqrt((slot1 + uv0.K2) * uv0.K3)
@@ -124,6 +124,77 @@ function getEquipReload(equips: number[]) {
     return delta;
 }
 
+
+function getAllStatsData(equipIds: number[], buffStats: CdBuffData, ship: ShipTemplate) {
+    let res: CdBuffData = {};
+    for (let key in buffStats) {
+        // @ts-ignore
+        res[key] = buffStats[key];
+    }
+    for (let eid of equipIds) {
+        if (eid === 0) {
+            continue
+        }
+        let equip = store.state.equips[eid];
+        if (!equip || !equip.buffs) {
+            continue
+        }
+        let extra = getFixedBuffs(equip.buffs, ship);
+        for (let key in extra) {
+            // @ts-ignore
+            res[key] = (res[key] || 0) + extra[key];
+        }
+    }
+    return res;
+}
+
+function getShipCdStats(fShip: FleetShip, extraBuffStats: CdBuffData) {
+    if(!fShip.id){
+        return {};
+    }
+    let stats: { [k: string]: any } = {
+        ids: fShip.equips
+    }
+    let shipInfo = store.state.ships[fShip.id];
+    let shipTempl = store.state.shipTemplates[shipInfo.templateId];
+    // 装备效果的额外装填值
+    let equipReload = getEquipReload(fShip.equips);
+    // 技能效果的额外装填Buff数据
+    let addReload = getAllStatsData(fShip.equips, extraBuffStats, shipTempl)
+
+    let dispReload = shipInfo.reload + equipReload + (addReload.ReloadAdd || 0);
+    let realReload = dispReload + (stats.ReloadAdd || 0)
+    realReload = realReload * (1 + ((stats.ReloadAddRatio || 0) / 100));
+    stats.reload = { base: shipInfo.reload, equip: equipReload, extra: addReload }
+    stats.stats = stats;
+    let equipCd = 0;
+    if (shipTempl.type === ShipType.BB || shipTempl.type === ShipType.BC) {
+        if (fShip.equips[0] === 0) {
+            return stats;
+        }
+        let eqp = store.state.equips[fShip.equips[0]];
+        equipCd = eqp.cd || 0;
+    } else {
+        let cnt = 0;
+        let sumCd = 0;
+        for (let i = 0; i < 3; ++i) {
+            let eid = fShip.equips[i];
+            if (eid === 0) {
+                continue;
+            }
+            cnt += shipTempl.equipCnt[i];
+            sumCd += shipTempl.equipCnt[i] * (store.state.equips[eid].cd || 100);
+        }
+        equipCd = 2.2 * sumCd / cnt;
+    }
+    stats.rawEquipCD = equipCd;
+    // 面板CD
+    stats.dispCD = getRealCD(equipCd, dispReload).toFixed(2);
+    stats.realCD = getRealCD(equipCd, realReload) * (1 + (addReload.CDAddRatio || 0) / 100);
+    return stats;
+}
+
+
 function contains(arr: any[], target: any) {
     for (let item of arr) {
         if (item === target) {
@@ -147,4 +218,4 @@ function getTechReload(tech: { BB: number, CV: number, CVL: number }, shipType?:
     return 0;
 }
 
-export { getRawReload, contains, getEquipReload, getRealCD, getTechReload, getFixedBuffs }
+export { getRawReload, contains, getEquipReload, getRealCD, getTechReload, getFixedBuffs, getShipCdStats }

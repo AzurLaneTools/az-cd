@@ -4,7 +4,7 @@ import { NTreeSelect, TreeOption, NRow, NCol, NButton, useMessage } from 'naive-
 
 import { BuffType, CdBuffData, EquipType, FleetShip, ShipType, TriggerType } from '../utils/types'
 import store from '../utils/store';
-import { contains, getEquipReload, getFixedBuffs, getRealCD } from '../utils/formulas';
+import { contains, getEquipReload, getFixedBuffs, getRealCD, getShipCdStats } from '../utils/formulas';
 import EquipInfo from './EquipInfo.vue'
 
 const CALCU_LIMIT = 1000;
@@ -78,65 +78,8 @@ const equipChoices: number[][] = [];
 const resultInfo = ref<{ total?: number, desc?: string, updated?: boolean }>({});
 const results = ref<{ [key: string]: any }[]>([]);
 
-function getAllStatsData(equipIds: number[]) {
-    let res: CdBuffData = {};
-    for (let key in props.extraBuffStats) {
-        // @ts-ignore
-        res[key] = props.extraBuffStats[key];
-    }
-    for (let eid of equipIds) {
-        if (eid === 0) {
-            continue
-        }
-        let equip = store.state.equips[eid];
-        if (!equip || !equip.buffs) {
-            continue
-        }
-        let extra = getFixedBuffs(equip.buffs, shipTemplate);
-        for (let key in extra) {
-            // @ts-ignore
-            res[key] = (res[key] || 0) + extra[key];
-        }
-    }
-    return res;
-}
-
 function getStatsForChoice(equipIds: number[]) {
-    let choiceResult: { [k: string]: any } = {
-        ids: equipIds
-    }
-    let equipReload = getEquipReload(equipIds);
-    let stats = getAllStatsData(equipIds)
-    let dispReload = props.baseReload + equipReload + props.techReload;
-    let realReload = dispReload + (stats.ReloadAdd || 0)
-    realReload = realReload * (1 + ((stats.ReloadAddRatio || 0) / 100));
-    choiceResult.reload = { base: props.baseReload, equip: equipReload, tech: props.techReload }
-    choiceResult.stats = stats;
-    let equipCd = 0;
-    if (shipTemplate.type === ShipType.BB || shipTemplate.type === ShipType.BC) {
-        if (equipIds[0] === 0) {
-            return choiceResult;
-        }
-        let eqp = store.state.equips[equipIds[0]];
-        equipCd = eqp.cd || 0;
-    } else {
-        let cnt = 0;
-        let sumCd = 0;
-        for (let i = 0; i < 3; ++i) {
-            let eid = equipIds[i];
-            if (eid === 0) {
-                continue;
-            }
-            cnt += shipTemplate.equipCnt[i];
-            sumCd += shipTemplate.equipCnt[i] * (store.state.equips[eid].cd || 100);
-        }
-        equipCd = 2.2 * sumCd / cnt;
-    }
-
-    // 面板CD
-    choiceResult.dispCD = getRealCD(equipCd, dispReload).toFixed(2);
-    choiceResult.realCD = getRealCD(equipCd, realReload) * (1 + (stats.CDAddRatio || 0) / 100);
-    return choiceResult;
+    return getShipCdStats({ id: props.ship.id, equips: equipIds }, props.extraBuffStats);
 }
 
 function product<T>(nestArr: T[][], nullVal: T) {
