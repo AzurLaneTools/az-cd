@@ -17,7 +17,7 @@
             <n-form-item path="mode" :show-feedback="false" label-placement="left">
                 <n-radio-group v-model:value="shipRef.mode">
                     <n-radio-button size="small" value="input">输入</n-radio-button>
-                    <n-radio-button size="small" value="auto">计算</n-radio-button>
+                    <n-radio-button size="small" value="auto">自动</n-radio-button>
                 </n-radio-group>
             </n-form-item>
             <n-form-item label="装填" path="reload" :show-feedback="false" label-placement="left">
