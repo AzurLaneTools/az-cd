@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import { ref, computed, watchEffect } from 'vue'
-import { NButton, NModal, NCard, NSelect, NSpace, NForm, NList, NPopselect, NInput, NGrid, NGridItem, NRow, NCol, NFormItem, useMessage } from 'naive-ui'
+import { NButton, NModal, NCard, NInputNumber, NPopselect, NInput, NGrid, NGridItem, NRow, NCol, NFormItem, useMessage, useDialog } from 'naive-ui'
 
-import { EquipTemplate, Fleet, Ship } from '../utils/types'
+import { Fleet, Ship } from '../utils/types'
 import store from '../utils/store'
 import ShipDetail from './ShipDetail.vue';
 import ShipCard from './ShipCard.vue';
-import EquipSelector from './EquipSelector.vue';
 
 const message = useMessage();
+const dialog = useDialog()
 const fleet = computed<Fleet>(() => {
     console.log('选择舰队', store.state.fleetIdx, store.state.fleets[store.state.fleetIdx]);
     return store.state.fleets[store.state.fleetIdx];
@@ -20,17 +20,10 @@ const fleetOptions = computed(() => {
     });
 })
 
-const equips = ref(store.state.equips);
-
 const showShipSelector = ref(false);
 let shipTarget = ref(0);
 
-const showEquipSelector = ref(false);
-let equipTarget = 0;
-
-const showEquipHelper = ref(false);
 const showBuffAdder = ref(false);
-const addBuff = ref(false);
 watchEffect(() => {
     console.log('fleetOptions', fleetOptions.value)
 })
@@ -40,9 +33,17 @@ function addFleet() {
     message.success('已添加舰队 ' + fleet.value.name);
 }
 function removeFleet() {
-    store.removeFleet(store.state.fleetIdx);
-    console.log('removeFleet', store.state.fleetIdx);
-    message.success('已删除');
+    dialog.warning({
+        title: '警告',
+        content: '确定删除当前舰队配置?',
+        positiveText: '确定',
+        negativeText: '取消',
+        onPositiveClick: () => {
+            store.removeFleet(store.state.fleetIdx);
+            console.log('removeFleet', store.state.fleetIdx);
+            message.success('已删除');
+        },
+    })
 }
 const fleetBuffs = ref(fleet.value.buffs);
 const skillBuffs = ref([]);
@@ -93,8 +94,6 @@ function updateEquips(idx: number, equips: number[]) {
 <template>
     <div>
         <n-form-item label-placement="left" path="fleet.name">
-            <n-button @click="addFleet()">添加</n-button>
-            <n-button @click="removeFleet()">删除</n-button>
             <n-popselect
                 v-model:value="store.state.fleetIdx"
                 :options="fleetOptions"
@@ -103,6 +102,8 @@ function updateEquips(idx: number, equips: number[]) {
                 <n-button>选择</n-button>
             </n-popselect>
             <n-input v-model:value="fleet.name"></n-input>
+            <n-button @click="addFleet()">添加</n-button>
+            <n-button type="error" @click="removeFleet()">删除</n-button>
         </n-form-item>
 
         <n-row v-for="ship, idx in fleet.ships">
@@ -118,7 +119,7 @@ function updateEquips(idx: number, equips: number[]) {
             </n-col>
         </n-row>
         <n-form-item label="舰队Buff列表" label-placement="left">
-            <n-button @click="addBuff = true">添加Buff</n-button>
+            <n-button @click="showBuffAdder = true">添加Buff</n-button>
         </n-form-item>
     </div>
     <!-- 切换舰娘界面 -->
