@@ -113,7 +113,7 @@ interface FleetShip {
 interface Fleet {
     id: string,
     name: string,
-    buffs: Buff[],
+    buffs: BuffTemplate[],
     ships: FleetShip[],
 }
 

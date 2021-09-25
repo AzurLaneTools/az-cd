@@ -1,15 +1,21 @@
 <script lang="ts" setup>
 import { computed, ref, watchEffect } from 'vue'
-import { NTreeSelect, TreeOption } from 'naive-ui'
+import { NTreeSelect, TreeOption, NRow, NCol } from 'naive-ui'
 
 import { BuffType, EquipType, FleetShip, ShipType, TriggerType } from '../utils/types'
 import store from '../utils/store';
-import { getRealCD } from '../utils/formulas';
+import { contains, getEquipReload, getRealCD } from '../utils/formulas';
+import EquipInfo from './EquipInfo.vue'
+
 const CALCU_LIMIT = 10000;
 const DISP_LIMIT = 200;
 
 const props = defineProps<{
     ship: FleetShip,
+}>();
+
+const emit = defineEmits<{
+    (event: 'select', equips: number[]): void
 }>();
 
 // @ts-ignore
@@ -66,24 +72,10 @@ function getStatsForChoice(equipIds: number[]) {
         ids: equipIds,
         cd: 0,
     }
-    let EquipAddReload = 0;
-    for (let i = 3; i < 5; ++i) {
-        let eid = equipIds[i];
-        if (eid === 0) {
-            continue;
-        }
-        let eqp = store.state.equips[eid];
-        console.log('checkbuffs', eqp.buffs)
-        for (let buff of (eqp.buffs?.length ? eqp.buffs : [])) {
-            console.log('checkbuff', buff);
-            if (buff.type === BuffType.ReloadAdd && buff.trigger === TriggerType.Equip) {
-                EquipAddReload += parseInt(buff.value || "0");
-            }
-        }
-    }
+    let EquipAddReload = getEquipReload(equipIds);
     let dispReload = shipInfo.reload + EquipAddReload + TechAddReload;
     if (shipTemplate.type === ShipType.BB || shipTemplate.type === ShipType.BC) {
-        if(equipIds[0] === 0){
+        if (equipIds[0] === 0) {
             return choiceResult;
         }
         let eqp = store.state.equips[equipIds[0]];
@@ -103,6 +95,7 @@ function getStatsForChoice(equipIds: number[]) {
     }
     // 面板CD
     choiceResult.dispCd = choiceResult.cd.toFixed(2);
+    choiceResult.realCD = choiceResult.cd;
     return choiceResult;
 }
 
@@ -160,34 +153,37 @@ console.log('equipChoices', equipChoices);
 
 const selectOptions: TreeOption[][] = [];
 
-function contains(arr: any[], target: any) {
-    for (let item of arr) {
-        if (item === target) {
-            return true;
-        }
-    }
-    return false;
-}
-
-
 
 </script>
 
 
 <template>
-    <NTreeSelect
-        v-for="idx in [0, 1, 2, 3, 4]"
-        multiple
-        cascade
-        checkable
-        default-expand-all
-        check-strategy="child"
-        :default-value="equipChoices[idx]"
-        @update:value="updateChoices(idx, $event)"
-        :options="filteredOptions[idx]"
-        max-tag-count="responsive"
-        :disabled="filteredOptions[idx].length === 0"
-    />
-    总选项数量: {{ result.desc }}={{ result.total }}
-    <div v-for="c in result.results">{{ c }}</div>
+    <div>
+        <n-tree-select
+            v-for="idx in [0, 1, 2, 3, 4]"
+            multiple
+            cascade
+            checkable
+            filterable
+            default-expand-all
+            check-strategy="child"
+            :default-value="equipChoices[idx]"
+            @update:value="updateChoices(idx, $event)"
+            :options="filteredOptions[idx]"
+            max-tag-count="responsive"
+            :disabled="filteredOptions[idx].length === 0"
+        />
+        总选项数量: {{ result.desc }}={{ result.total }}
+        <table>
+            <tbody>
+                <tr v-for="c in result.results" @click="emit('select', c.ids)">
+                    <td v-for="equip in c.ids">
+                        <equip-info :equip="equip"></equip-info>
+                    </td>
+                    <td>面板CD:{{ c.dispCd }}</td>
+                    <td>实际CD:{{ c.realCd }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </template>

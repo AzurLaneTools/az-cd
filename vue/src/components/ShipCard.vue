@@ -20,7 +20,7 @@ const dispName = computed(() => {
 
 <template>
     <div class="ship-card">
-        <img :src="'/img/' + templ.img" :alt="templ.name" />
+        <img :src="templ.img" :alt="templ.name" />
         <br />
         {{ dispName }}
     </div>
