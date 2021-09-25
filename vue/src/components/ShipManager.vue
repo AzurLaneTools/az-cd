@@ -56,8 +56,7 @@ import ShipCard from './ShipCard.vue'
 import store from '../utils/store'
 
 const showModal = ref(false);
-const ships = ref(store.state.ships);
-
+const ships = computed(() => store.state.ships);
 const pattern = ref<string>('');
 
 function customFilter(option: ShipTemplate) {
@@ -83,12 +82,10 @@ const options = computed(() => {
 
 function addShip(templateId: number) {
     store.addShip(templateId);
-    ships.value = store.state.ships;
     showModal.value = false;
 }
 function removeShip(idx: string) {
     store.removeShip(idx);
-    ships.value = store.state.ships;
 }
 
 const searchRef = ref<InputInst | null>(null);
