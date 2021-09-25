@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, computed, watchEffect } from 'vue'
-import { NButton, NModal, NCard, NInputNumber, NPopselect, NInput, NGrid, NGridItem, NRow, NCol, NFormItem, useMessage, useDialog } from 'naive-ui'
+import { NButton, NModal, NCard, NInputNumber, NPopselect, NInput, NGrid, NGridItem, NRow, NCol, NFormItem, NSpace, useMessage, useDialog } from 'naive-ui'
 
 import { Fleet, Ship } from '../utils/types'
 import store from '../utils/store'
@@ -13,15 +13,16 @@ const fleet = computed<Fleet>(() => {
     console.log('选择舰队', store.state.fleetIdx, store.state.fleets[store.state.fleetIdx]);
     return store.state.fleets[store.state.fleetIdx];
 });
-const fleets = ref(store.state.fleets);
 const fleetOptions = computed(() => {
-    return fleets.value.map((f: Fleet, idx: number) => {
+    return store.state.fleets.map((f: Fleet, idx: number) => {
         return { value: idx, label: f.name }
     });
 })
 
 const showShipSelector = ref(false);
-let shipTarget = ref(0);
+let targetShipIdx = ref(0);
+
+const tech = ref(fleet.value.tech);
 
 const showBuffAdder = ref(false);
 watchEffect(() => {
@@ -53,7 +54,7 @@ const allBuffs = computed(() => {
 
 const ships = ref(store.state.ships);
 
-const targetShip = computed(() => fleet.value.ships[shipTarget.value]);
+const targetShip = computed(() => fleet.value.ships[targetShipIdx.value]);
 
 function fleetShipFilter(ship: Ship) {
     for (let curShip of fleet.value.ships) {
@@ -66,15 +67,15 @@ function fleetShipFilter(ship: Ship) {
 
 function setShip(ship: Ship | null) {
     if (ship) {
-        fleet.value.ships[shipTarget.value].id = ship.id;
+        fleet.value.ships[targetShipIdx.value].id = ship.id;
     } else {
-        fleet.value.ships[shipTarget.value].id = null;
+        fleet.value.ships[targetShipIdx.value].id = null;
     }
-    fleet.value.ships[shipTarget.value].equips = [0, 0, 0, 0, 0]
+    fleet.value.ships[targetShipIdx.value].equips = [0, 0, 0, 0, 0]
     showShipSelector.value = false;
 }
 function chooseShipStart(idx: number) {
-    shipTarget.value = idx;
+    targetShipIdx.value = idx;
     showShipSelector.value = true
 }
 
@@ -111,16 +112,25 @@ function updateEquips(idx: number, equips: number[]) {
                 <ship-detail
                     :ship="ship"
                     :fleetBuffs="fleetBuffs"
+                    :tech="fleet.tech"
                     @ship-click="chooseShipStart(idx)"
                     @set-equips="updateEquips(idx, $event)"
                 >
                     <n-button v-if="idx > 0" @click="moveUp(idx)">上移</n-button>
                 </ship-detail>
             </n-col>
-        </n-row>
-        <n-form-item label="舰队Buff列表" label-placement="left">
-            <n-button @click="showBuffAdder = true">添加Buff</n-button>
-        </n-form-item>
+        </n-row>舰队Buff列表：
+        <n-space>
+            <n-form-item label="轻航装填" label-placement="left" :show-feedback="false">
+                <n-input-number v-model:value="fleet.tech.CVL"></n-input-number>
+            </n-form-item>
+            <n-form-item label="正航装填" label-placement="left" :show-feedback="false">
+                <n-input-number v-model:value="fleet.tech.CV"></n-input-number>
+            </n-form-item>
+            <n-form-item label="战列装填" label-placement="left" :show-feedback="false">
+                <n-input-number v-model:value="fleet.tech.BB"></n-input-number>
+            </n-form-item>
+        </n-space>
     </div>
     <!-- 切换舰娘界面 -->
     <n-modal v-model:show="showShipSelector" display-directive="show">
