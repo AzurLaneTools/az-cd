@@ -22,8 +22,6 @@ const fleetOptions = computed(() => {
 const showShipSelector = ref(false);
 let targetShipIdx = ref(0);
 
-const tech = ref(fleet.value.tech);
-
 const showBuffAdder = ref(false);
 watchEffect(() => {
     console.log('fleetOptions', fleetOptions.value)
@@ -32,6 +30,11 @@ function addFleet() {
     store.addFleet();
     console.log('addFleet', store.state.fleetIdx);
     message.success('已添加舰队 ' + fleet.value.name);
+}
+
+function copyFleet() {
+    store.copyFleet();
+    message.success('已复制舰队 ' + fleet.value.name);
 }
 function removeFleet() {
     dialog.warning({
@@ -52,7 +55,7 @@ const allBuffs = computed(() => {
     return [...fleetBuffs.value, ...skillBuffs.value];
 })
 
-const ships = ref(store.state.ships);
+const ships = computed(() => store.state.ships);
 
 const targetShip = computed(() => fleet.value.ships[targetShipIdx.value]);
 
@@ -104,6 +107,7 @@ function updateEquips(idx: number, equips: number[]) {
             </n-popselect>
             <n-input v-model:value="fleet.name"></n-input>
             <n-button @click="addFleet()">添加</n-button>
+            <n-button @click="copyFleet()">复制</n-button>
             <n-button type="error" @click="removeFleet()">删除</n-button>
         </n-form-item>
 
@@ -140,8 +144,7 @@ function updateEquips(idx: number, equips: number[]) {
             </template>
             <n-grid x-gap="2" cols="2 400:3 600:4 800:5 1000:6 1200:12">
                 <n-grid-item :bordered="false" class="ship-card" @click="setShip(null)">
-                    <img src="/img/empty.jpg" alt="取消选择" />
-                    <br />取消选择
+                    <ship-card :template="0" name="取消选择"></ship-card>
                 </n-grid-item>
                 <n-grid-item
                     v-for="ship in ships"
