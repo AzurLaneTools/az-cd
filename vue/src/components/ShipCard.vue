@@ -20,8 +20,11 @@ const dispName = computed(() => {
 
 <template>
     <div class="ship-card">
-        <img :src="templ.img" :alt="templ.name" />
-        <br />
+        <div v-if="template > 0">
+            <img class="ship-card-image" :src="templ.img" :alt="templ.name" />
+            <br />
+        </div>
+        <div class="ship-card-image" v-else style="background: #333;"></div>
         {{ dispName }}
     </div>
 </template>
@@ -33,7 +36,8 @@ const dispName = computed(() => {
     text-align: center;
 }
 
-.ship-card img {
+.ship-card .ship-card-image {
+    display: inline-block;
     width: 80px;
     height: 80px;
     border-radius: 10px;
