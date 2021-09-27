@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import EquipInfo from './EquipInfo.vue'
 import EquipSelector from './EquipSelector.vue'
 import { Buff, BuffTemplate, FleetShip, BuffType, ShipTemplate, ShipType, Tech } from '../utils/types'
@@ -83,7 +83,9 @@ const shipType = computed(() => {
     return ShipTypeName[shipTemplate.value.type]
 })
 const showModal = ref(false);
-
+const selectorKey = computed(()=>{
+    return 'ES-'+ props.ship.id;
+})
 </script>
 
 <template>
@@ -118,6 +120,7 @@ const showModal = ref(false);
                 <n-button @click="showModal = false">取消</n-button>
             </template>
             <equip-selector
+                :key="selectorKey"
                 :ship="ship"
                 :baseReload="refShip.reload"
                 :techReload="techReload"
