@@ -31,6 +31,7 @@ const store: {
     addShip: (templateId: number) => Ship,
     removeShip: (shipId: string) => void,
     addFleet: () => Fleet,
+    copyFleet: () => Fleet,
     removeFleet: (idx: number) => void,
     setup: () => void,
     persist: () => void,
@@ -95,6 +96,14 @@ const store: {
         });
         this.state.fleetIdx = this.state.fleets.length - 1;
         console.log('add Fleet', this.state.fleetIdx);
+        return this.state.fleets[this.state.fleetIdx];
+    },
+    copyFleet() {
+        let newFleet = JSON.parse(JSON.stringify(this.state.fleets[this.state.fleetIdx]));
+        newFleet.id = uuid();
+        newFleet.name = newFleet.name + ' 复制'
+        this.state.fleets.push(newFleet);
+        this.state.fleetIdx = this.state.fleets.length - 1;
         return this.state.fleets[this.state.fleetIdx];
     },
     persist() {
