@@ -4,5 +4,4 @@ dist
 dist-ssr
 *.local
 
-public/img
 yarn-error.log
