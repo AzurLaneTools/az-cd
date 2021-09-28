@@ -101,6 +101,7 @@ function updateEquips(idx: number, equips: number[]) {
             <n-popselect
                 v-model:value="store.state.fleetIdx"
                 :options="fleetOptions"
+                placement="bottom-start"
                 trigger="click"
             >
                 <n-button>选择</n-button>
