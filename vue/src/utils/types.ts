@@ -108,6 +108,7 @@ interface EquipTemplate {
     name: string,
     type: EquipType,
     rarity: number,
+    tech: number,
     img: string,
     cd?: number,
     allowShipTypes?: ShipType[],
