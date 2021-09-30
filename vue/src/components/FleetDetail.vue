@@ -19,6 +19,8 @@ const fleetOptions = computed(() => {
     });
 })
 
+
+
 const showShipSelector = ref(false);
 let targetShipIdx = ref(0);
 
@@ -111,7 +113,7 @@ function updateEquips(idx: number, equips: number[]) {
             <n-button @click="copyFleet()">复制</n-button>
             <n-button type="error" @click="removeFleet()">删除</n-button>
         </n-form-item>
-
+        <!-- 舰娘列表 -->
         <n-row v-for="ship, idx in fleet.ships">
             <n-col :span="24">
                 <ship-detail

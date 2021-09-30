@@ -23,7 +23,6 @@ enum TriggerType {
 }
 
 enum ShipType {
-    DD = 1,
     BC = 4,
     BB = 5,
     CVL = 6,
@@ -130,6 +129,7 @@ interface FleetShip {
     id: string | null, // ref Ship.id
     equips: number[], // ref EquipTemplate.id
     buffs?: BuffTemplate[],
+    extraBuff: CdBuffData,
 }
 
 interface Tech {
