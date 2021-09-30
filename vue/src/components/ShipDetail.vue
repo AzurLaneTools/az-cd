@@ -26,7 +26,8 @@ const refShip = computed(() => {
     if (props.ship.id) {
         return store.state.ships[props.ship.id];
     }
-})
+});
+
 const equipReload = computed(() => {
     console.log('来自装备的装填值', props.ship.equips)
     return getEquipReload(props.ship.equips);
@@ -45,12 +46,17 @@ const dispReload = computed(() => {
 })
 
 const cdStats = computed(() => {
-    return getShipCdStats(props.ship, extraBuffStats.value)
+    let res = getShipCdStats(props.ship, extraBuffStats.value);
+    console.debug('重新计算cdStats', res)
+    return res;
 })
 const extraBuffStats = computed(() => {
     if (refShip.value && shipTemplate.value) {
         let data = getFixedBuffs(props.fleetBuffs, shipTemplate.value);
         data.ReloadAdd = (data.ReloadAdd || 0) + getTechReload(props.tech, shipTemplate.value?.type);
+        data.CDAddRatio = (data.CDAddRatio || 0) - (props.ship.extraBuff.CDAddRatio || 0);
+        data.ReloadAddRatio = (data.ReloadAddRatio || 0) + (props.ship.extraBuff.ReloadAddRatio || 0);
+        console.debug('重新计算extraBuffStats', data)
         return data;
     }
     return {}
@@ -118,15 +124,12 @@ const selectorKey = computed(() => {
                     ></n-input-number>%
                 </n-form-item>
                 <n-form-item label="射速+" label-placement="left" :show-feedback="false">
-                    <n-input-number
-                        v-model:value="ship.extraBuff.CDAddRatio"
-                        style="width: 100px;"
-                    ></n-input-number>%
+                    <n-input-number v-model:value="ship.extraBuff.CDAddRatio" style="width: 100px;"></n-input-number>%
                 </n-form-item>
             </div>
             <div>实际CD: {{ cdStats.realCD && cdStats.realCD.toFixed(4) }}</div>
             <div @click="showModal = true" style="cursor: pointer;">
-                <span v-for="equip, idx in ship.equips" >
+                <span v-for="equip, idx in ship.equips">
                     <equip-info :equip="equip" :cnt="shipTemplate && shipTemplate.equipCnt[idx]"></equip-info>
                 </span>
             </div>

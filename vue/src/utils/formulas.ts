@@ -149,7 +149,7 @@ function getAllStatsData(equipIds: number[], buffStats: CdBuffData, ship: ShipTe
 }
 
 function getShipCdStats(fShip: FleetShip, extraBuffStats: CdBuffData) {
-    if(!fShip.id){
+    if (!fShip.id) {
         return {};
     }
     let stats: { [k: string]: any } = {
@@ -163,10 +163,8 @@ function getShipCdStats(fShip: FleetShip, extraBuffStats: CdBuffData) {
     let addReload = getAllStatsData(fShip.equips, extraBuffStats, shipTempl)
 
     let dispReload = shipInfo.reload + equipReload + (addReload.ReloadAdd || 0);
-    let realReload = dispReload + (stats.ReloadAdd || 0)
-    realReload = realReload * (1 + ((stats.ReloadAddRatio || 0) / 100));
-    stats.reload = { base: shipInfo.reload, equip: equipReload, extra: addReload }
-    stats.stats = stats;
+    let realReload = dispReload * (1 + ((addReload.ReloadAddRatio || 0) / 100));
+    stats.reload = { base: shipInfo.reload, equip: equipReload, extra: addReload, real: realReload };
     let equipCd = 0;
     if (shipTempl.type === ShipType.BB || shipTempl.type === ShipType.BC) {
         if (fShip.equips[0] === 0) {
