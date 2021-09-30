@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-import { computed, ref, watch, watchEffect } from 'vue'
-import { NTreeSelect, TreeOption, NRow, NCol, NButton, useMessage } from 'naive-ui'
+import { computed, h, ref, watch, watchEffect } from 'vue'
+import { NSelect, NTreeSelect, TreeOption, NRow, NCol, NButton, useMessage, SelectOption } from 'naive-ui'
 
-import { BuffType, CdBuffData, EquipType, FleetShip, ShipType, TriggerType } from '../utils/types'
+import { BuffType, CdBuffData, EquipTemplate, EquipType, FleetShip, ShipType, TriggerType } from '../utils/types'
 import store from '../utils/store';
 import { contains, getEquipReload, getFixedBuffs, getRealCD, getShipCdStats } from '../utils/formulas';
 import EquipInfo from './EquipInfo.vue'
+import { RequipTypeName } from '../utils/namemap';
 
 const CALCU_LIMIT = 1000;
 const DISP_LIMIT = 100;
@@ -28,45 +29,55 @@ console.log('shipInfo', shipInfo);
 const shipTemplate = store.state.shipTemplates[shipInfo.templateId];
 console.log('shipTemplate', shipTemplate);
 
-const options = store.state.equipOptions;
-console.log('options', options);
 function getOptions(idx: number) {
     let result = [];
     let allow = shipTemplate.equipSlots[idx];
-    for (let option of options) {
+    for (let equipId in store.state.equips) {
+        let equip = store.state.equips[equipId];
+        if (store.state.ignoreCommonEquips && equip.rarity <= 3) {
+            continue
+        }
         if (
-            contains(allow, option.key) ||
+            contains(allow, equip.type) ||
             (
                 idx === 3 &&
-                option.key === EquipType.auxiliaryCV &&
+                equip.type === EquipType.auxiliaryCV &&
                 (shipTemplate.type === ShipType.CV || shipTemplate.type === ShipType.CVL)
             ) ||
             (
                 idx >= 3 &&
-                option.key === EquipType.auxiliaryBB &&
+                equip.type === EquipType.auxiliaryBB &&
                 (shipTemplate.type === ShipType.BB || shipTemplate.type === ShipType.BC)
             )
         ) {
-            option = { ...option };
-            if (store.state.ignoreCommonEquips) {
-                option.children = option.children?.filter((equip) => {
-                    // @ts-ignore
-                    return store.state.equips[equip.key].rarity > 3;
-                })
+            let name = equip.name + ' T' + equip.tech;
+            if (allow.length > 1) {
+                name = '(' + RequipTypeName[equip.type] + ')' + name;
             }
-            result.push(option);
+            result.push({
+                value: equip.id,
+                label: name,
+                data: equip,
+            });
         }
     }
+    result.sort((a, b) => {
+        if (a.data.type != b.data.type) {
+            return a.data.type - b.data.type;
+        }
+        return (a.data.cd || 0) - (b.data.cd || 0);
+    })
     if (result.length > 0 && idx >= 3) {
         result.push({
-            key: 0,
-            label: '无'
+            value: 0,
+            label: '无',
+            data: {}
         })
     }
     return result;
 }
 
-const filteredOptions: TreeOption[][] = [];
+const filteredOptions: SelectOption[][] = [];
 for (let i = 0; i < 5; ++i) {
     filteredOptions.push(getOptions(i));
 }
@@ -160,12 +171,17 @@ watch(() => [props.techReload, props.baseReload], () => {
     results.value = [];
 })
 
+function renderLabel(option: SelectOption & { data: EquipTemplate }, selected: boolean) {
+    console.log('render', option);
+    return h('div', { 'class': 'equip rarity-' + option.data.rarity, }, { default: () => option.label })
+}
+
 </script>
 
 
 <template>
     <div>
-        <n-tree-select
+        <n-select
             v-for="idx in [0, 1, 2, 3, 4]"
             multiple
             cascade
@@ -178,6 +194,7 @@ watch(() => [props.techReload, props.baseReload], () => {
             :options="filteredOptions[idx]"
             max-tag-count="responsive"
             :disabled="filteredOptions[idx].length === 0"
+            :render-label="renderLabel"
         />
         总选项数量: {{ resultInfo.desc }}={{ resultInfo.total }}
         <n-button type="primary" @click="calculateChoices()">计算CD</n-button>
@@ -188,7 +205,7 @@ watch(() => [props.techReload, props.baseReload], () => {
                         <equip-info :equip="equip"></equip-info>
                     </td>
                     <td>面板CD:{{ c.dispCD }}</td>
-                    <td>实际CD:{{ c.realCD }}</td>
+                    <td>实际CD:{{ c.realCD && c.realCD.toFixed(4) }}</td>
                 </tr>
             </tbody>
         </table>

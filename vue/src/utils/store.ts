@@ -21,7 +21,6 @@ const store: {
     state: {
         shipTemplates: { [key: number]: ShipTemplate },
         equips: { [key: number]: EquipTemplate },
-        equipOptions: TreeOption[],
         ships: { [key: string]: Ship },
         fleets: Fleet[],
         fleetIdx: number,
@@ -141,54 +140,6 @@ const store: {
         });
         loadEquips().then((data) => {
             this.state.equips = data;
-            this.state.equipOptions = [];
-            let typeMap: { [idx: string]: TreeOption } = {
-                [EquipType.artillery]: {
-                    key: EquipType.artillery,
-                    label: '战列炮',
-                    children: [],
-                },
-                [EquipType.fighter]: {
-                    key: EquipType.fighter,
-                    label: '战斗机',
-                    children: [],
-                },
-                [EquipType.torpedo_bomber]: {
-                    key: EquipType.torpedo_bomber,
-                    label: '鱼雷机',
-                    children: [],
-                },
-                [EquipType.dive_bomber]: {
-                    key: EquipType.dive_bomber,
-                    label: '轰炸机',
-                    children: [],
-                },
-                [EquipType.auxiliaryCV]: {
-                    key: EquipType.auxiliaryCV,
-                    label: '航母设备',
-                    children: [],
-                },
-                [EquipType.auxiliaryBB]: {
-                    key: EquipType.auxiliaryBB,
-                    label: '战列设备',
-                    children: [],
-                },
-            };
-            for (let key in this.state.equips) {
-                let equip = this.state.equips[key];
-                // @ts-ignore
-                typeMap[equip.type].children.push({
-                    key: equip.id,
-                    label: equip.name
-                })
-            }
-            for (let key in typeMap) {
-                typeMap[key].children?.sort((a, b) => {
-                    // @ts-ignore
-                    return this.state.equips[a.key].cd - this.state.equips[b.key].cd;
-                })
-                this.state.equipOptions.push(typeMap[key]);
-            }
         })
     }
 }
