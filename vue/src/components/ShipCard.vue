@@ -32,7 +32,7 @@ const dispName = computed(() => {
 <style>
 .ship-card {
     width: 90px;
-    height: 130px;
+    min-height: 110px;
     text-align: center;
 }
 

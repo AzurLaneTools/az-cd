@@ -204,8 +204,8 @@ function renderLabel(option: SelectOption & { data: EquipTemplate }, selected: b
                     <td v-for="equip in c.ids">
                         <equip-info :equip="equip"></equip-info>
                     </td>
-                    <td>面板CD:{{ c.dispCD }}</td>
-                    <td>实际CD:{{ c.realCD && c.realCD.toFixed(4) }}</td>
+                    <td>面板CD {{ c.dispCD }}</td>
+                    <td>实际CD {{ c.realCD && c.realCD.toFixed(4) }}</td>
                 </tr>
             </tbody>
         </table>
