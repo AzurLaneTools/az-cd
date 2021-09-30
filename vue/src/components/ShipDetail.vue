@@ -5,7 +5,7 @@ import EquipSelector from './EquipSelector.vue'
 import { Buff, BuffTemplate, FleetShip, BuffType, ShipTemplate, ShipType, Tech } from '../utils/types'
 import { ShipTypeName } from '../utils/namemap'
 
-import { NModal, NButton, NCard, NForm, NFormItem, NInputNumber, NSpace } from 'naive-ui'
+import { NModal, NButton, NCard, NForm, NRow, NCol, NFormItem, NInputNumber, NSpace } from 'naive-ui'
 import store from '../utils/store'
 import ShipCard from './ShipCard.vue'
 import { getEquipReload, getFixedBuffs, getShipCdStats, getTechReload } from '../utils/formulas'
@@ -80,11 +80,11 @@ const shipType = computed(() => {
     if (!shipTemplate.value) {
         return '未选择';
     }
-    return ShipTypeName[shipTemplate.value.type]
+    return ShipTypeName[shipTemplate.value.type];
 })
 const showModal = ref(false);
-const selectorKey = computed(()=>{
-    return 'ES-'+ props.ship.id;
+const selectorKey = computed(() => {
+    return 'ES-' + props.ship.id;
 })
 </script>
 
@@ -92,23 +92,47 @@ const selectorKey = computed(()=>{
     <n-space v-if="!refShip">
         <n-button @click="emit('ship-click')">选择舰娘</n-button>
     </n-space>
-    <n-space v-if="refShip">
-        <ship-card :template="refShip.templateId" :name="refShip.name" @click="emit('ship-click')"></ship-card>
-        {{ shipType }}
-        <span :title="reloadHint">
-            装填=
-            <span class="white">{{ refShip.reload }}</span>
-            <span class="green" v-if="equipReload > 0">+{{ equipReload }}</span>
-            <span class="blue" v-if="techReload > 0">+{{ techReload }}</span>
-        </span>
-        <span v-for="equip, idx in ship.equips">
-            <equip-info :equip="equip" :cnt="shipTemplate && shipTemplate.equipCnt[idx]"></equip-info>
-        </span>
-        面板CD: {{ cdStats.dispCD }}
-        实际CD: {{ cdStats.realCD }}
-        <n-button @click="showModal = true">调整装备</n-button>
-        <slot></slot>
-    </n-space>
+    <div v-if="refShip">
+        <n-space align="center">
+            <ship-card
+                :template="refShip.templateId"
+                :name="refShip.name"
+                @click="emit('ship-click')"
+            ></ship-card>
+            <div style="text-align: center;">
+                面板CD {{ cdStats.dispCD }}
+                <br />
+                <span :title="reloadHint">
+                    装填
+                    <span class="white">{{ refShip.reload }}</span>
+                    <span class="green" v-if="equipReload > 0">+{{ equipReload }}</span>
+                    <span class="blue" v-if="techReload > 0">+{{ techReload }}</span>
+                </span>
+                <br />
+            </div>
+            <div title="技能Buff(将自动计算装备Buff, 无需手动添加)">
+                <n-form-item label="装填+" label-placement="left" :show-feedback="false">
+                    <n-input-number
+                        v-model:value="ship.extraBuff.ReloadAddRatio"
+                        style="width: 100px;"
+                    ></n-input-number>%
+                </n-form-item>
+                <n-form-item label="射速+" label-placement="left" :show-feedback="false">
+                    <n-input-number
+                        v-model:value="ship.extraBuff.CDAddRatio"
+                        style="width: 100px;"
+                    ></n-input-number>%
+                </n-form-item>
+            </div>
+            <div>实际CD: {{ cdStats.realCD && cdStats.realCD.toFixed(4) }}</div>
+            <div @click="showModal = true" style="cursor: pointer;">
+                <span v-for="equip, idx in ship.equips" >
+                    <equip-info :equip="equip" :cnt="shipTemplate && shipTemplate.equipCnt[idx]"></equip-info>
+                </span>
+            </div>
+            <slot></slot>
+        </n-space>
+    </div>
     <n-modal
         v-if="refShip && shipTemplate"
         v-model:show="showModal"

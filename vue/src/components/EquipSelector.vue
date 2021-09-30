@@ -79,7 +79,7 @@ const resultInfo = ref<{ total?: number, desc?: string, updated?: boolean }>({})
 const results = ref<{ [key: string]: any }[]>([]);
 
 function getStatsForChoice(equipIds: number[]) {
-    return getShipCdStats({ id: props.ship.id, equips: equipIds }, props.extraBuffStats);
+    return getShipCdStats({ id: props.ship.id, equips: equipIds, extraBuff: {} }, props.extraBuffStats);
 }
 
 function product<T>(nestArr: T[][], nullVal: T) {

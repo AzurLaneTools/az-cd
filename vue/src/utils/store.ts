@@ -1,7 +1,7 @@
 import { reactive } from "vue"
 import { v4 as uuid } from 'uuid';
 import { TreeOption } from 'naive-ui'
-import { EquipTemplate, EquipType, Fleet, Ship, ShipTemplate, ShipType } from "./types";
+import { EquipTemplate, EquipType, Fleet, FleetShip, Ship, ShipTemplate, ShipType } from "./types";
 import axios from "axios";
 import { getRawReload } from "./formulas";
 
@@ -87,13 +87,18 @@ const store: {
     },
     addFleet() {
         let fid = uuid();
-        this.state.fleets.push({
-            id: fid,
+        let newShip = () => { return { id: null, equips: [], extraBuff: { ReloadAddRatio: 0, CDAddRatio: 0 } } };
+        let fleet: Fleet = {
+            id: uuid(),
             name: '舰队配置-' + fid.substr(0, 4),
-            ships: [{ id: null, equips: [] }, { id: null, equips: [] }, { id: null, equips: [] }],
+            ships: [],
             buffs: [],
             tech: { BB: 0, CV: 0, CVL: 0 }
-        });
+        }
+        for (let i = 0; i < 3; ++i) {
+            fleet.ships.push(newShip());
+        }
+        this.state.fleets.push(fleet);
         this.state.fleetIdx = this.state.fleets.length - 1;
         console.log('add Fleet', this.state.fleetIdx);
         return this.state.fleets[this.state.fleetIdx];
