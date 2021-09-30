@@ -15,7 +15,7 @@ const equipInfo = computed(() => store.state.equips[props.equip] || {});
 
 const equipName = computed(() => {
     if (!equipInfo.value.name) {
-        return '未选择';
+        return '－';
     }
     let name = equipInfo.value.name + ' T' + equipInfo.value.tech;
     if (props.cnt) {
