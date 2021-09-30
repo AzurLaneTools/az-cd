@@ -33,7 +33,7 @@
             <n-form-item label="等级" path="lvl" :show-feedback="false" label-placement="left">
                 <n-input-number
                     :min="100"
-                    :max="120"
+                    :max="125"
                     v-model:value="shipRef.lvl"
                     :disabled="shipRef.mode != 'auto'"
                     class="short-num-input"
@@ -42,7 +42,7 @@
                 <n-slider
                     v-model:value="shipRef.lvl"
                     :min="100"
-                    :max="120"
+                    :max="125"
                     :disabled="shipRef.mode != 'auto'"
                     style="width: 200px;"
                     :tooltip="false"
