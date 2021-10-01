@@ -39,7 +39,7 @@ function checkRemoveTrigger(status: EmulatorShipStatus, trigger?: TriggerDef) {
         return status.ts > ((trigger.args && trigger.args[0]) || 0);
     }
     if (trigger.type === TriggerType.UseWeapon) {
-        let cnt = trigger.args ? trigger.args[0] : 1;
+        let cnt = (trigger.args && trigger.args[0]) || 1;
         return status.useAt.length >= cnt;
     }
     if (trigger.type === TriggerType.WeaponReady) {
@@ -81,7 +81,49 @@ function checkTrigger(status: EmulatorShipStatus, buff: BuffTemplate) {
         }
         return !checkRemoveTrigger(status, buff.removeTrigger);
     }
-
+    if (buff.trigger.type === TriggerType.UseWeapon) {
+        let useCnt = status.useAt.length;
+        if (useCnt === 0) {
+            return false;
+        }
+        // 默认第一次使用后, 每次使用均触发
+        let args = buff.trigger.args || [1, 1];
+        if (useCnt < args[1]) {
+            return false;
+        }
+        // 需要是第 a1 + C * a0 次使用后
+        if ((useCnt - args[1]) % args[0] !== 0) {
+            return false;
+        }
+        if (buff.duration) {
+            let tsSinceTrigger = status.ts - status.useAt.slice(-1)[0];
+            if (tsSinceTrigger >= buff.duration * FPS) {
+                return false;
+            }
+        }
+        return !checkRemoveTrigger(status, buff.removeTrigger);
+    }
+    if (buff.trigger.type === TriggerType.WeaponReady) {
+        let useCnt = status.readyAt.length;
+        if (useCnt === 0) {
+            return false;
+        }
+        let args = buff.trigger.args || [1, 1];
+        if (useCnt < args[1]) {
+            return false;
+        }
+        if ((useCnt - args[1]) % args[0] !== 0) {
+            return false;
+        }
+        if (buff.duration) {
+            let tsSinceTrigger = status.ts - status.readyAt.slice(-1)[0];
+            if (tsSinceTrigger >= buff.duration * FPS) {
+                return false;
+            }
+        }
+        return !checkRemoveTrigger(status, buff.removeTrigger);
+    }
+    console.log('未知触发类型:', buff.trigger);
     return 0;
 }
 
@@ -187,7 +229,7 @@ function setChartOption() {
         for (let ship of shipProps) {
             // 计算Buff
             let buffStat = mergeBuffs(ship.buffs, { ts: ts, readyAt: ship.readyAt, useAt: ship.useAt });
-            // if ((ts % 10) === 0) {
+            // if (ship.refShip.name === '腓特烈大帝' && (ts % 10) === 0) {
             //     console.log(`buffStat@${ts} ${ts / FPS} for ${ship.refShip.name}:`, ship.buffs, buffStat);
             // }
             let realReload = ship.reload * (1 + (buffStat.ReloadAddRatio || 0) / 100);

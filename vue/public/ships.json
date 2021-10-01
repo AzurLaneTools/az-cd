@@ -2514,10 +2514,14 @@
     "buffs": [
       {
         "id": 13440,
+        "name": "射击Synchronize",
         "type": "ReloadAddRatio",
         "target": {
           "type": "Type",
-          "args": [4, 5]
+          "args": [
+            4,
+            5
+          ]
         },
         "value": 20,
         "trigger": {
@@ -6024,6 +6028,31 @@
         "name": "塞壬之敌III",
         "type": 1,
         "desc": "对塞壬阵营敌人的伤害提高15%"
+      }
+    ],
+    "buffs": [
+      {
+        "id": 19230,
+        "name": "混沌的奏鸣曲",
+        "type": "ReloadAddRatio",
+        "trigger": {
+          "type": "UseWeapon",
+          "args": [
+            2,
+            1
+          ]
+        },
+        "removeTrigger": {
+          "type": "UseWeapon",
+          "args": [
+            2,
+            2
+          ]
+        },
+        "target": {
+          "type": "Self"
+        },
+        "value": 50
       }
     ],
     "img": "/img/squareicon/feiteliedadi.png"
