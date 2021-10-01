@@ -1,280 +1,342 @@
 <template>
-    <div>
-        事件列表:
-        <br />
-        <p v-for="t in logEvents">{{ t }}</p>
+    <div class="footer">
+        <div id="align-chart" ref="chartRef" class="chart-box"></div>
     </div>
-    <div id="align-chart" ref="chartRef" class="chart-box" style="width: 100%; height: 200px;"></div>
 </template>
-
+<style scoped>
+.footer {
+    width: 100%;
+    height: 400px;
+    position: fixed !important;
+    bottom: 0;
+}
+#align-chart {
+    width: 100%;
+    height: 400px;
+}
+</style>
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
-import { getEquipReload, getRealCD, getTechReload, matchBuffTarget } from '../utils/formulas';
-import store from '../utils/store';
-import { BuffTemplate, BuffType, Fleet, ShipType, TargetSelector, TriggerDef, TriggerType } from '../utils/types';
+import { loadShipEvents } from '../utils/formulas';
+import { AlignConfig, Fleet } from '../utils/types';
 
 const props = defineProps<{
     fleet: Fleet
 }>();
 const chartRef = ref(null);
 
-const FPS = 30;
 
-enum CDType {
-    BB = 'BB',
-    CV = 'CV'
+import * as echarts from 'echarts/core';
+import {
+    TitleComponent,
+    TooltipComponent,
+    GridComponent,
+    DataZoomComponent,
+    GraphicComponent
+} from 'echarts/components';
+import { CustomChart } from 'echarts/charts';
+import { CanvasRenderer } from 'echarts/renderers';
+
+echarts.use([
+    TitleComponent,
+    TooltipComponent,
+    GridComponent,
+    DataZoomComponent,
+    CustomChart,
+    GraphicComponent,
+    CanvasRenderer
+]);
+
+
+let myChart: any;
+
+var config = {
+    showTimeAsLeft: false,
+    maxDuration: 180,
+    selected: [0, 0]
+};
+
+
+function renderItem(params: any, api: any) {
+    var categoryIndex = api.value(0);
+    var start = api.coord([api.value(1), categoryIndex]);
+    var end = api.coord([api.value(2), categoryIndex]);
+    var height = api.size([0, 1])[1] * 0.8;
+
+    var rectShape = echarts.graphic.clipRectByRect({
+        x: start[0],
+        y: start[1] - height / 2,
+        width: end[0] - start[0],
+        height: height
+    }, {
+        x: params.coordSys.x,
+        y: params.coordSys.y,
+        width: params.coordSys.width,
+        height: params.coordSys.height
+    });
+
+    return rectShape && {
+        type: 'rect',
+        transition: ['shape'],
+        shape: rectShape,
+        style: {
+            fill: '#368c6c'
+        }
+    };
 }
 
-interface EmulatorShipStatus {
-    ts: number,
-    readyAt: number[],
-    useAt: number[],
+
+function trimmedNum(num: string, maxDigits = 3) {
+    var text = parseFloat(num).toFixed(maxDigits);
+    return text.replace(/0+$/, '').replace(/\.$/, '');
+}
+function timeFormat(num: number) {
+    var minute = '00' + Math.floor(num / 60);
+    minute = minute.substr(minute.length - 2);
+    var second = '00' + Math.floor(num % 60);
+    second = second.substr(second.length - 2);
+    var mseconds = num % 1;
+    if (mseconds) {
+        second += mseconds.toFixed(2).substr(1);
+    }
+    return minute + ':' + second;
 }
 
-function checkRemoveTrigger(status: EmulatorShipStatus, trigger?: TriggerDef) {
-    if (!trigger) {
-        return false;
-    }
-    if (trigger.type === TriggerType.Scheduled) {
-        return status.ts > ((trigger.args && trigger.args[0]) || 0);
-    }
-    if (trigger.type === TriggerType.UseWeapon) {
-        let cnt = (trigger.args && trigger.args[0]) || 1;
-        return status.useAt.length >= cnt;
-    }
-    if (trigger.type === TriggerType.WeaponReady) {
-        let cnt = (trigger.args && trigger.args[0]) || 1;
-        return status.readyAt.length >= cnt;
-    }
-    return false;
-}
-
-function checkTrigger(status: EmulatorShipStatus, buff: BuffTemplate) {
-    if (!buff.trigger) {
-        return false;
-    }
-    if (buff.trigger.type === TriggerType.BattleStart) {
-        if (buff.duration && status.ts > buff.duration * FPS) {
-            return false;
-        }
-        return !checkRemoveTrigger(status, buff.removeTrigger);
-    }
-    if (buff.trigger.type === TriggerType.Scheduled) {
-        let args = buff.trigger.args;
-        if (!args) {
-            if (buff.duration && status.ts > buff.duration * FPS) {
-                return false;
+const baseOption = {
+    tooltip: {
+        formatter: function (params: any) {
+            var range;
+            if (config.showTimeAsLeft) {
+                range = `: ${timeFormat(config.maxDuration - params.value[1])} ~ ${timeFormat(config.maxDuration - params.value[2])}`;
+            } else {
+                range = `: ${trimmedNum(params.value[1])}s~${trimmedNum(params.value[2])}s`
             }
-            return true;
+            return params.marker + params.name + range;
         }
-        // 从第args[1] s开始, 每args[0] s触发一次.
-        if (buff.duration) {
-            let duration = buff.duration * FPS, interval = args[0] * FPS, start = args[1] * FPS;
-            if (status.ts < start) {
-                return false;
-            }
-            let tsSinceTrigger = (status.ts - start) % interval;
-            // console.log('CheckBuff:', status.ts, tsSinceTrigger, duration)
-            if (tsSinceTrigger >= duration) {
-                return false;
-            }
-        }
-        return !checkRemoveTrigger(status, buff.removeTrigger);
-    }
-    if (buff.trigger.type === TriggerType.UseWeapon) {
-        let useCnt = status.useAt.length;
-        if (useCnt === 0) {
-            return false;
-        }
-        // 默认第一次使用后, 每次使用均触发
-        let args = buff.trigger.args || [1, 1];
-        if (useCnt < args[1]) {
-            return false;
-        }
-        // 需要是第 a1 + C * a0 次使用后
-        if ((useCnt - args[1]) % args[0] !== 0) {
-            return false;
-        }
-        if (buff.duration) {
-            let tsSinceTrigger = status.ts - status.useAt.slice(-1)[0];
-            if (tsSinceTrigger >= buff.duration * FPS) {
-                return false;
-            }
-        }
-        return !checkRemoveTrigger(status, buff.removeTrigger);
-    }
-    if (buff.trigger.type === TriggerType.WeaponReady) {
-        let useCnt = status.readyAt.length;
-        if (useCnt === 0) {
-            return false;
-        }
-        let args = buff.trigger.args || [1, 1];
-        if (useCnt < args[1]) {
-            return false;
-        }
-        if ((useCnt - args[1]) % args[0] !== 0) {
-            return false;
-        }
-        if (buff.duration) {
-            let tsSinceTrigger = status.ts - status.readyAt.slice(-1)[0];
-            if (tsSinceTrigger >= buff.duration * FPS) {
-                return false;
-            }
-        }
-        return !checkRemoveTrigger(status, buff.removeTrigger);
-    }
-    console.log('未知触发类型:', buff.trigger);
-    return 0;
-}
-
-function mergeBuffs(buffs: BuffTemplate[], status: EmulatorShipStatus) {
-    let stats = {
-        ReloadAdd: 0,
-        ReloadAddRatio: 0,
-        CDAddRatio: 0,
-    }
-    for (let buff of buffs) {
-        if (
-            checkTrigger(status, buff)
-        ) {
-            stats[buff.type] += buff.value;
-        }
-    }
-    return stats;
-}
-const logEvents = ref<string[]>([]);
-
-function setChartOption() {
-    console.log('setChartOption');
-    let events = [];
-    let shipProps = [];
-    for (let ship of props.fleet.ships) {
-        if (!ship.id) {
-            continue
-        }
-        let refShip = store.state.ships[ship.id];
-        let shipTempl = store.state.shipTemplates[refShip.templateId];
-        let cdType = CDType.BB;
-        if (shipTempl.type === ShipType.CV || shipTempl.type === ShipType.CVL) {
-            cdType = CDType.CV;
-        }
-        let p: {
-            readyAt: number[],
-            useAt: number[],
-            cdType: CDType,
-            [k: string]: any
-        } = {
-            ship: ship,
-            refShip: refShip,
-            templ: shipTempl,
-            cdType: cdType,
-            // 白值+设备+科技
-            reload: refShip.reload + getEquipReload(ship.equips) + getTechReload(props.fleet.tech, shipTempl.type),
-            buffs: [],
-            progress: 0,
-            readyAt: [],
-            useAt: [],
-            rawCD: 0,
-        };
-        if (p.cdType === CDType.BB) {
-            p.rawCD = (store.state.equips[ship.equips[0]] || {}).cd || NaN;
-        } else {
-            let cnt = 0;
-            let sumCd = 0;
-            for (let i = 0; i < 3; ++i) {
-                let eid = ship.equips[i];
-                if (eid === 0) {
-                    continue;
+    },
+    dataZoom: [{
+        type: 'slider',
+        filterMode: 'weakFilter',
+        showDataShadow: false,
+        labelFormatter: ''
+    }, {
+        type: 'inside',
+        filterMode: 'weakFilter'
+    }],
+    xAxis: {
+        type: 'value',
+        min: 0,
+        scale: true,
+        axisPointer: {
+            show: true,
+            snap: false,
+            triggerTooltip: false,
+        },
+        axisLabel: {
+            formatter: function (val: any) {
+                if (config.showTimeAsLeft) {
+                    val = config.maxDuration - val;
                 }
-                cnt += shipTempl.equipCnt[i];
-                sumCd += shipTempl.equipCnt[i] * (store.state.equips[eid].cd || NaN);
-            }
-            p.rawCD = 2.2 * sumCd / cnt;
-        }
-        if (isNaN(p.rawCD)) {
-            continue;
-        }
-        // 添加所有舰娘Buff
-        for (let s of props.fleet.ships) {
-            for (let b of s.buffs || []) {
-                if (matchBuffTarget(b.target, shipTempl)) {
-                    p.buffs.push(b);
-                }
+                return timeFormat(val);
             }
         }
-
-        if (ship.extraBuff.ReloadAddRatio) {
-            p.buffs.push({ id: '手动设置的装填Buff', type: BuffType.ReloadAddRatio, value: ship.extraBuff.ReloadAddRatio, trigger: { type: TriggerType.BattleStart }, target: { type: TargetSelector.Self, args: ship.id } })
+    },
+    yAxis: {
+        data: []
+    },
+};
+function buildTargetData(target: AlignConfig, shipEvents?: any) {
+    let res: object[] = [];
+    if (target.type === 'schedule') {
+        let [interval, duration, start] = target.schedule;
+        for (let ts = start; ts < config.maxDuration; ts += interval) {
+            res.push({
+                name: target.name,
+                value: [
+                    target.name,
+                    ts,
+                    ts + duration,
+                    duration,
+                ],
+            })
         }
-        if (ship.extraBuff.CDAddRatio) {
-            p.buffs.push({ id: '手动设置的CD Buff', type: BuffType.CDAddRatio, value: -ship.extraBuff.CDAddRatio, trigger: { type: TriggerType.BattleStart }, target: { type: TargetSelector.Self, args: ship.id } })
+        return res;
+    }
+    if (target.type === 'custom') {
+        let matches = target.custom.match(/(\d+(\.\d+)?)/g);
+        if (!matches) {
+            return res;
         }
-
-        shipProps.push(p);
-        for (let eid of ship.equips) {
-            let equip = store.state.equips[eid];
-            if (!equip) {
+        for (let i = 0; i < matches.length; i += 2) {
+            let start = parseFloat(matches[i]), end = parseFloat(matches[i + 1]);
+            if (isNaN(end)) {
                 continue;
             }
-            for (let buff of (equip.buffs || [])) {
-                p.buffs.push(buff);
+            res.push({
+                name: target.name,
+                value: [
+                    target.name,
+                    start,
+                    end,
+                    end - start,
+                ],
+            })
+        }
+        return res;
+    }
+    if (target.type === 'weapon') {
+        if (!shipEvents) {
+            shipEvents = loadShipEvents(props.fleet);
+        }
+        for (let evt of shipEvents) {
+            if (evt.shipId === target.weapon.bindId) {
+                let start = evt.useTs + target.weapon.delay;
+                res.push({
+                    name: target.name,
+                    value: [
+                        target.name,
+                        start,
+                        start + target.weapon.duration,
+                        target.weapon.duration,
+                    ],
+                })
             }
         }
-        console.log('所有Buff', p.refShip.name, p.buffs);
+        return res;
     }
-    console.log('舰娘状态', shipProps);
-    const frameCount = 90 * FPS;
-    let allowWeapon = { CV: -1, BB: -1 }
-    for (let ts = 1.5 * FPS; ts < frameCount; ++ts) {
-        for (let ship of shipProps) {
-            // 计算Buff
-            let buffStat = mergeBuffs(ship.buffs, { ts: ts, readyAt: ship.readyAt, useAt: ship.useAt });
-            // if (ship.refShip.name === '腓特烈大帝' && (ts % 10) === 0) {
-            //     console.log(`buffStat@${ts} ${ts / FPS} for ${ship.refShip.name}:`, ship.buffs, buffStat);
-            // }
-            let realReload = ship.reload * (1 + (buffStat.ReloadAddRatio || 0) / 100);
-            let realCD = getRealCD(ship.rawCD, realReload) * (1 + (buffStat.CDAddRatio || 0) / 100);
-            let progressPerFrame = 1 / realCD / FPS;
-            ship.progress += progressPerFrame;
+    return [];
+}
+let categories: string[];
 
-            // 如果当前舰娘已经装填完毕
-            if (ship.progress >= 1) {
-                ship.progress = 0;
-                ship.readyAt.push(ts);
-                let desc = (ts / FPS).toFixed(4) + ' ' + ship.refShip.name + ' 装填完毕'
-                if (ts < allowWeapon[ship.cdType]) {
-                    desc += '(将等待公共CD)'
-                }
-                events.push(desc);
-            }
-            // 如果当前舰娘在等待使用武器
-            if (ship.readyAt.length > ship.useAt.length) {
-                // console.log('检查公共CD', allowWeapon[ship.cdType], ts)
-                if (ts >= allowWeapon[ship.cdType]) {
-                    ship.useAt.push(ts);
-                    events.push((ts / FPS).toFixed(4) + ' ' + ship.refShip.name + ' 使用武器');
-                    // 战列需要在使用武器后开始下一轮装填
-                    if (ship.cdType === CDType.BB) {
-                        ship.progress = 0;
-                        allowWeapon[ship.cdType] = ts + 1.2 * FPS;
-                    } else {
-                        allowWeapon[ship.cdType] = ts + 0.5 * FPS;
-                    }
-                }
-            }
-        }
+function setChartOption() {
+    if (!myChart) {
+        return
     }
-    console.log(events);
-    logEvents.value = events;
+    // 更新设置
+    config.maxDuration = props.fleet.config.time;
+    config.showTimeAsLeft = props.fleet.config.showTimeAsLeft;
+
+    let axisY: { [key: string]: number } = {};
+    let chartData = [];
+    categories = [];
+    let shipEvents = loadShipEvents(props.fleet);
+    for (let evt of shipEvents) {
+        if (!axisY[evt.name]) {
+            axisY[evt.name] = 1;
+            categories.push(evt.name);
+        }
+        let data = {
+            name: evt.name,
+            id: evt.shipId,
+            value: [
+                evt.name,
+                evt.useTs,
+                evt.useTs + evt.duration,
+                evt.duration,
+            ],
+        }
+        chartData.push(data);
+    };
+    for (let t of props.fleet.targets) {
+        if (axisY[t.name]) {
+            axisY[t.name] += 1;
+            t = { ...t, name: t.name + ' ' + axisY[t.name] }
+        } else {
+            axisY[t.name] = 1;
+        }
+        categories.push(t.name);
+        chartData.push(...buildTargetData(t, shipEvents));
+    }
+    console.log('更新数据', categories)
+    let series = {
+        type: 'custom',
+        renderItem: renderItem,
+        itemStyle: { opacity: 0.8 },
+        encode: { x: [1, 2], y: 0 },
+        data: chartData
+    }
+    myChart.setOption({
+        series: [series, {
+            type: 'scatter',
+            markLine: {
+                data: [
+                    {
+                        symbol: ['none', 'none'],
+                        silent: true,
+                        xAxis: 20,
+
+                    },
+                ]
+            },
+        }],
+        xAxis: {
+            max: config.maxDuration,
+        },
+        yAxis: {
+            data: categories,
+            inverse: true,
+        },
+    });
 }
 
+function updateSelected() {
+    let p0 = myChart.convertToPixel({ xAxisIndex: 0, yAxisIndex: 0 }, [config.selected[0], categories.length]),
+        p1 = myChart.convertToPixel({ xAxisIndex: 0, yAxisIndex: 0 }, [config.selected[1], -1]);
+    let sHeight = (p1[1] - p0[1]) / categories.length;
+    console.log('Set Bg')
+    myChart.setOption({
+        graphic: {
+            id: 'bg',
+            type: 'rect',
+            shape: {
+                x: p0[0],
+                y: p0[1] + sHeight * 0.4,
+                width: p1[0] - p0[0],
+                height: sHeight * (categories.length - 0.8)
+            },
+            style: {
+                fill: 'rgba(0,0,0,0.3)'
+            }
+        }
+    });
+}
+function clearSelected() {
+    myChart.setOption({
+        graphic: {
+            id: 'bg',
+            type: 'rect',
+            shape: {
+                x: 0, y: 0, width: 0, height: 0
+            }
+        }
+    });
+    config.selected = [0, 0];
+}
 
 onMounted(() => {
     let dom = document.getElementById('align-chart');
     if (!dom) {
         return;
     }
+    myChart = echarts.init(dom);
+    myChart.setOption(baseOption);
+    dom.addEventListener('resize', myChart.resize);
+    window.addEventListener('resize', myChart.resize);
     setChartOption();
+
+    myChart.on('click', function (params: { value: number[] }) {
+        console.log(params.value);
+        if (!params.value) {
+            return;
+        }
+        if (config.selected[0] === params.value[1] && config.selected[1] === params.value[2]) {
+            clearSelected();
+            return;
+        }
+        config.selected = [params.value[1], params.value[2]];
+        updateSelected()
+    });
+    myChart.on('datazoom', clearSelected);
 });
 
 watch(props, setChartOption)

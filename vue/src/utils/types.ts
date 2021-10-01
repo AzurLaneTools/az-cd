@@ -141,20 +141,25 @@ interface Tech {
     CVL: number,
 }
 
-interface AlignConfig {
+interface TargetConfig {
     name: string,
-    type: 'schedule' | 'custom',
+    type: 'schedule' | 'custom' | 'weapon',
     schedule: number[],
-    custom: string
+    weapon: { bindId: string, delay: number, duration: number },
+    custom: string,
 }
-
+interface FightConfig {
+    time: number,
+    showTimeAsLeft: boolean,
+}
 interface Fleet {
     id: string,
     name: string,
     buffs: BuffTemplate[],
     tech: Tech,
     ships: FleetShip[],
-    alignTargets: AlignConfig[],
+    config: FightConfig,
+    targets: TargetConfig[],
 }
 
 export {
@@ -163,7 +168,7 @@ export {
     EquipTemplate,
     ShipTemplate,
     Ship,
-    AlignConfig,
+    TargetConfig as AlignConfig,
     FleetShip,
     Fleet,
     Tech,
