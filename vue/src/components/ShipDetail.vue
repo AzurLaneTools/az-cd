@@ -92,6 +92,7 @@ const showModal = ref(false);
 const selectorKey = computed(() => {
     return 'ES-' + props.ship.id;
 })
+
 </script>
 
 <template>

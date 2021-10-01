@@ -92,8 +92,12 @@ const store: {
             name: '舰队配置-' + fid.substr(0, 4),
             ships: [],
             buffs: [],
+            config: {
+                time: 120,
+                showTimeAsLeft: false,
+            },
             tech: { BB: 0, CV: 0, CVL: 0 },
-            alignTargets: [],
+            targets: [],
         }
         for (let i = 0; i < 3; ++i) {
             fleet.ships.push(newShip());
@@ -140,8 +144,8 @@ const store: {
             }
 
             for (let fleet of this.state.fleets) {
-                if (!fleet.alignTargets) {
-                    fleet.alignTargets = [];
+                if (!fleet.targets) {
+                    fleet.targets = [];
                 }
             }
         });

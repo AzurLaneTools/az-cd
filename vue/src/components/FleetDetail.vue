@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, computed, watchEffect } from 'vue'
-import { NButton, NModal, NCard, NInputNumber, NPopselect, NInput, NGrid, NGridItem, NRow, NCol, NFormItem, NSpace, useMessage, useDialog } from 'naive-ui'
+import { NLayout, NLayoutFooter, NButton, NModal, NCard, NInputNumber, NPopselect, NInput, NText, NGrid, NGridItem, NSwitch, NRow, NCol, NFormItem, NSpace, NTag, useMessage, useDialog } from 'naive-ui'
 
 import { Fleet, Ship, TargetSelector } from '../utils/types'
 import store from '../utils/store'
@@ -107,18 +107,36 @@ function updateEquips(idx: number, equips: number[]) {
 }
 
 function addAlignTarget() {
-    fleet.value.alignTargets.push({
+    fleet.value.targets.push({
         name: '20s轴',
         type: 'schedule',
         schedule: [20, 10, 20],
         custom: '',
+        weapon: { bindId: '', delay: 0, duration: 8 }
     });
 }
 
+const knownSkills = computed(() => {
+    let skills = [];
+    for (let ship of fleet.value.ships) {
+        if (!ship.id) {
+            continue;
+        }
+        let refShip = store.state.ships[ship.id];
+        for (let b of ship.buffs || []) {
+            console.log('add buff', b)
+            skills.push({
+                'from': refShip.name,
+                'name': b.name,
+            });
+        }
+    }
+    return skills
+})
 </script>
 
 <template>
-    <div>
+    <div style="padding-bottom: 400px;">
         <n-form-item label-placement="left" path="fleet.name">
             <n-popselect
                 v-model:value="store.state.fleetIdx"
@@ -157,10 +175,23 @@ function addAlignTarget() {
             <n-form-item label="战列装填" label-placement="left" :show-feedback="false">
                 <n-input-number v-model:value="fleet.tech.BB"></n-input-number>
             </n-form-item>
-        </n-space>对轴目标列表:
-        <n-button @click="addAlignTarget()">添加</n-button>
-        <n-space v-for="value, idx in fleet.alignTargets">
-            <align-target :value="value" @delete="fleet.alignTargets.splice(idx, 1)" />
+        </n-space>
+        <n-space v-if="knownSkills.length > 0" style="background-color: antiquewhite;">
+            <n-text>将自动计算舰娘技能:</n-text>
+            <n-tag v-for="skill of knownSkills">{{ skill.name }}</n-tag>
+        </n-space>
+        <n-space>
+            对轴目标列表:
+            <n-form-item label="时间" label-placement="left" :show-feedback="false">
+                <n-input-number v-model:value="fleet.config.time"></n-input-number>
+            </n-form-item>
+            <n-form-item label="按剩余时间展示" label-placement="left" :show-feedback="false">
+                <n-switch v-model:value="fleet.config.showTimeAsLeft"></n-switch>
+            </n-form-item>
+            <n-button @click="addAlignTarget()">添加</n-button>
+        </n-space>
+        <n-space v-for="value, idx in fleet.targets">
+            <align-target :ships="fleet.ships" :value="value" @delete="fleet.targets.splice(idx, 1)" />
         </n-space>
         <AlignChart :fleet="fleet"></AlignChart>
     </div>
