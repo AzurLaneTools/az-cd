@@ -92,7 +92,8 @@ const store: {
             name: '舰队配置-' + fid.substr(0, 4),
             ships: [],
             buffs: [],
-            tech: { BB: 0, CV: 0, CVL: 0 }
+            tech: { BB: 0, CV: 0, CVL: 0 },
+            alignTargets: [],
         }
         for (let i = 0; i < 3; ++i) {
             fleet.ships.push(newShip());
@@ -136,6 +137,12 @@ const store: {
             if (!storedJson) {
                 console.log('shipTemplates updated', this.state.shipTemplates);
                 this.addShip(30708);
+            }
+
+            for (let fleet of this.state.fleets) {
+                if (!fleet.alignTargets) {
+                    fleet.alignTargets = [];
+                }
             }
         });
         loadEquips().then((data) => {

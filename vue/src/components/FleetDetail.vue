@@ -2,10 +2,12 @@
 import { ref, computed, watchEffect } from 'vue'
 import { NButton, NModal, NCard, NInputNumber, NPopselect, NInput, NGrid, NGridItem, NRow, NCol, NFormItem, NSpace, useMessage, useDialog } from 'naive-ui'
 
-import { Fleet, Ship } from '../utils/types'
+import { Fleet, Ship, TargetSelector } from '../utils/types'
 import store from '../utils/store'
 import ShipDetail from './ShipDetail.vue';
 import ShipCard from './ShipCard.vue';
+import AlignTarget from './AlignTarget.vue';
+import AlignChart from './AlignChart.vue';
 
 const message = useMessage();
 const dialog = useDialog()
@@ -69,14 +71,23 @@ function fleetShipFilter(ship: Ship) {
     }
     return true;
 }
-
+function deepCopy<T>(obj: T): T {
+    return JSON.parse(JSON.stringify(obj));
+}
 function setShip(ship: Ship | null) {
+    let target = fleet.value.ships[targetShipIdx.value];
     if (ship) {
-        fleet.value.ships[targetShipIdx.value].id = ship.id;
+        target.id = ship.id;
+        target.buffs = deepCopy(store.state.shipTemplates[ship.templateId].buffs || []);
+        for (let buff of target.buffs) {
+            if (buff.target.type === TargetSelector.Self) {
+                buff.target.args = ship.templateId;
+            }
+        }
     } else {
-        fleet.value.ships[targetShipIdx.value].id = null;
+        target.id = null;
     }
-    fleet.value.ships[targetShipIdx.value].equips = [0, 0, 0, 0, 0]
+    target.equips = [0, 0, 0, 0, 0];
     showShipSelector.value = false;
 }
 function chooseShipStart(idx: number) {
@@ -93,6 +104,15 @@ function moveUp(idx: number) {
 function updateEquips(idx: number, equips: number[]) {
     console.log('设置装备', idx, equips)
     fleet.value.ships[idx].equips = equips;
+}
+
+function addAlignTarget() {
+    fleet.value.alignTargets.push({
+        name: '20s轴',
+        type: 'schedule',
+        schedule: [20, 10, 20],
+        custom: '',
+    });
 }
 
 </script>
@@ -137,7 +157,12 @@ function updateEquips(idx: number, equips: number[]) {
             <n-form-item label="战列装填" label-placement="left" :show-feedback="false">
                 <n-input-number v-model:value="fleet.tech.BB"></n-input-number>
             </n-form-item>
+        </n-space>对轴目标列表:
+        <n-button @click="addAlignTarget()">添加</n-button>
+        <n-space v-for="value, idx in fleet.alignTargets">
+            <align-target :value="value" @delete="fleet.alignTargets.splice(idx, 1)" />
         </n-space>
+        <AlignChart :fleet="fleet"></AlignChart>
     </div>
     <!-- 切换舰娘界面 -->
     <n-modal v-model:show="showShipSelector" display-directive="show">

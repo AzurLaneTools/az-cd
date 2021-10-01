@@ -2511,6 +2511,25 @@
         "desc": "进入战斗时，自身炮击、装填提升4.5%(12.0%)；与英王乔治五世、威尔士亲王、约克公爵、君主一同出击、或队伍中存在3个以上皇家阵营角色时，自身炮击、防空额外提升4.5%(12.0%)"
       }
     ],
+    "buffs": [
+      {
+        "id": 13440,
+        "type": "ReloadAddRatio",
+        "target": {
+          "type": "Type",
+          "args": [4, 5]
+        },
+        "value": 20,
+        "trigger": {
+          "type": "Scheduled",
+          "args": [
+            15,
+            15
+          ]
+        },
+        "duration": 8
+      }
+    ],
     "img": "/img/squareicon/hao.png"
   },
   "20510": {
