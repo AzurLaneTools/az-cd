@@ -40,7 +40,7 @@ function getRawReload(ship: Ship) {
     return Math.floor(real_reload);
 }
 
-function match(cond: TargetDef, ship: ShipTemplate) {
+function matchBuffTarget(cond: TargetDef, ship: ShipTemplate) {
     if (cond.type === TargetSelector.Self) {
         return ship.id === cond.args
     }
@@ -52,7 +52,7 @@ function match(cond: TargetDef, ship: ShipTemplate) {
     }
     if (cond.type === TargetSelector.And) {
         for (let sub of cond.args) {
-            if (!match(sub, ship)) {
+            if (!matchBuffTarget(sub, ship)) {
                 return false;
             }
         }
@@ -60,7 +60,7 @@ function match(cond: TargetDef, ship: ShipTemplate) {
     }
     if (cond.type === TargetSelector.Or) {
         for (let sub of cond.args) {
-            if (match(sub, ship)) {
+            if (matchBuffTarget(sub, ship)) {
                 return true;
             }
         }
@@ -73,13 +73,13 @@ function getBuffStatus(buff: BuffTemplate, ship: ShipTemplate) {
         console.log('buff not on');
         return 'off';
     }
-    if (buff.target && !match(buff.target, ship)) {
+    if (buff.target && !matchBuffTarget(buff.target, ship)) {
         return 'off';
     }
     if (buff.removeTrigger) {
         return 'condition';
     }
-    if (buff.trigger.type === TriggerType.BattleStart && !buff.trigger.args) {
+    if (buff.trigger.type === TriggerType.BattleStart && !buff.duration) {
         return 'on'
     }
     return 'condition'
@@ -216,4 +216,4 @@ function getTechReload(tech: { BB: number, CV: number, CVL: number }, shipType?:
     return 0;
 }
 
-export { getRawReload, contains, getEquipReload, getRealCD, getTechReload, getFixedBuffs, getShipCdStats }
+export { getRawReload, contains, getEquipReload, getRealCD, getTechReload, getFixedBuffs, getShipCdStats, matchBuffTarget }

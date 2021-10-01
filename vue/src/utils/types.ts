@@ -19,7 +19,7 @@ enum TriggerType {
     // 使用武器(舰炮/舰载机)
     UseWeapon = 'UseWeapon',
     // 固定间隔
-    Scheduled = 'UseWeapon',
+    Scheduled = 'Scheduled',
 }
 
 enum ShipType {
@@ -58,7 +58,7 @@ type TriggerDef = {
 
 type TargetDef = {
     type: TargetSelector.Self,
-    args: string | number,
+    args?: string | number,
 } | {
     type: TargetSelector.And | TargetSelector.Or,
     args: TargetDef[],
@@ -80,9 +80,10 @@ interface BuffTemplate {
     type: BuffType,
     value: number,
     off?: boolean,
+    duration?: number,
     trigger: TriggerDef,
     removeTrigger?: TriggerDef,
-    target?: TargetDef,
+    target: TargetDef,
 }
 
 interface Buff {
@@ -100,6 +101,7 @@ interface ShipTemplate {
     equipCnt: number[],
     img: string,
     match: string,
+    buffs: BuffTemplate[],
     [key: string]: any
 }
 
@@ -139,12 +141,20 @@ interface Tech {
     CVL: number,
 }
 
+interface AlignConfig {
+    name: string,
+    type: 'schedule' | 'custom',
+    schedule: number[],
+    custom: string
+}
+
 interface Fleet {
     id: string,
     name: string,
     buffs: BuffTemplate[],
     tech: Tech,
     ships: FleetShip[],
+    alignTargets: AlignConfig[],
 }
 
 export {
@@ -153,11 +163,13 @@ export {
     EquipTemplate,
     ShipTemplate,
     Ship,
+    AlignConfig,
     FleetShip,
     Fleet,
     Tech,
     BuffType,
     TargetDef,
+    TriggerDef,
     TriggerType,
     Buff,
     BuffTemplate,
