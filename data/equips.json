@@ -1,0 +1,1350 @@
+{
+  "680": {
+    "buffs": [
+      {
+        "desc": "空中支援加载时间缩短4%",
+        "trigger": {
+          "type": "BattleStart"
+        },
+        "type": "CDAddRatio",
+        "value": -4
+      }
+    ],
+    "id": 680,
+    "img": "/img/equips/680.png",
+    "max": "691",
+    "name": "归航信标",
+    "rarity": 4,
+    "tech": 0,
+    "type": 101
+  },
+  "1260": {
+    "buffs": [
+      {
+        "desc": "第一轮主炮准备时间缩短15%",
+        "removeTrigger": {
+          "type": "WeaponReady"
+        },
+        "trigger": {
+          "type": "BattleStart"
+        },
+        "type": "CDAddRatio",
+        "value": -15
+      }
+    ],
+    "id": 1260,
+    "img": "/img/equips/1260.png",
+    "max": "1273",
+    "name": "高性能火控雷达",
+    "rarity": 5,
+    "tech": 0,
+    "type": 102
+  },
+  "2240": {
+    "buffs": [
+      {
+        "trigger": {
+          "type": "Equip"
+        },
+        "type": "ReloadAdd",
+        "value": 14
+      }
+    ],
+    "id": 2240,
+    "img": "/img/equips/2200.png",
+    "max": "35023",
+    "name": "链式装弹机+0",
+    "rarity": 4,
+    "tech": 3,
+    "type": 102
+  },
+  "2241": {
+    "buffs": [
+      {
+        "trigger": {
+          "type": "Equip"
+        },
+        "type": "ReloadAdd",
+        "value": 16
+      }
+    ],
+    "id": 2241,
+    "img": "/img/equips/2200.png",
+    "max": "35023",
+    "name": "链式装弹机+1",
+    "rarity": 4,
+    "tech": 3,
+    "type": 102
+  },
+  "2242": {
+    "buffs": [
+      {
+        "trigger": {
+          "type": "Equip"
+        },
+        "type": "ReloadAdd",
+        "value": 18
+      }
+    ],
+    "id": 2242,
+    "img": "/img/equips/2200.png",
+    "max": "35023",
+    "name": "链式装弹机+2",
+    "rarity": 4,
+    "tech": 3,
+    "type": 102
+  },
+  "2243": {
+    "buffs": [
+      {
+        "trigger": {
+          "type": "Equip"
+        },
+        "type": "ReloadAdd",
+        "value": 20
+      }
+    ],
+    "id": 2243,
+    "img": "/img/equips/2200.png",
+    "max": "35023",
+    "name": "链式装弹机+3",
+    "rarity": 4,
+    "tech": 3,
+    "type": 102
+  },
+  "2244": {
+    "buffs": [
+      {
+        "trigger": {
+          "type": "Equip"
+        },
+        "type": "ReloadAdd",
+        "value": 22
+      }
+    ],
+    "id": 2244,
+    "img": "/img/equips/2200.png",
+    "max": "35023",
+    "name": "链式装弹机+4",
+    "rarity": 4,
+    "tech": 3,
+    "type": 102
+  },
+  "2245": {
+    "buffs": [
+      {
+        "trigger": {
+          "type": "Equip"
+        },
+        "type": "ReloadAdd",
+        "value": 24
+      }
+    ],
+    "id": 2245,
+    "img": "/img/equips/2200.png",
+    "max": "35023",
+    "name": "链式装弹机+5",
+    "rarity": 4,
+    "tech": 3,
+    "type": 102
+  },
+  "2246": {
+    "buffs": [
+      {
+        "trigger": {
+          "type": "Equip"
+        },
+        "type": "ReloadAdd",
+        "value": 26
+      }
+    ],
+    "id": 2246,
+    "img": "/img/equips/2200.png",
+    "max": "35023",
+    "name": "链式装弹机+6",
+    "rarity": 4,
+    "tech": 3,
+    "type": 102
+  },
+  "2247": {
+    "buffs": [
+      {
+        "trigger": {
+          "type": "Equip"
+        },
+        "type": "ReloadAdd",
+        "value": 28
+      }
+    ],
+    "id": 2247,
+    "img": "/img/equips/2200.png",
+    "max": "35023",
+    "name": "链式装弹机+7",
+    "rarity": 4,
+    "tech": 3,
+    "type": 102
+  },
+  "2248": {
+    "buffs": [
+      {
+        "trigger": {
+          "type": "Equip"
+        },
+        "type": "ReloadAdd",
+        "value": 30
+      }
+    ],
+    "id": 2248,
+    "img": "/img/equips/2200.png",
+    "max": "35023",
+    "name": "链式装弹机+8",
+    "rarity": 4,
+    "tech": 3,
+    "type": 102
+  },
+  "2249": {
+    "buffs": [
+      {
+        "trigger": {
+          "type": "Equip"
+        },
+        "type": "ReloadAdd",
+        "value": 32
+      }
+    ],
+    "id": 2249,
+    "img": "/img/equips/2200.png",
+    "max": "35023",
+    "name": "链式装弹机+9",
+    "rarity": 4,
+    "tech": 3,
+    "type": 102
+  },
+  "2250": {
+    "buffs": [
+      {
+        "trigger": {
+          "type": "Equip"
+        },
+        "type": "ReloadAdd",
+        "value": 35
+      }
+    ],
+    "id": 2250,
+    "img": "/img/equips/2200.png",
+    "max": "35023",
+    "name": "链式装弹机+10",
+    "rarity": 4,
+    "tech": 3,
+    "type": 102
+  },
+  "2251": {
+    "buffs": [
+      {
+        "trigger": {
+          "type": "Equip"
+        },
+        "type": "ReloadAdd",
+        "value": 38
+      }
+    ],
+    "id": 2251,
+    "img": "/img/equips/2200.png",
+    "max": "35023",
+    "name": "链式装弹机+11",
+    "rarity": 4,
+    "tech": 3,
+    "type": 102
+  },
+  "14053": {
+    "cd": 2438,
+    "id": 14053,
+    "img": "/img/equips/14000.png",
+    "max": "14053",
+    "name": "三联装305mm主炮Mk8",
+    "rarity": 5,
+    "tech": 3,
+    "type": 4
+  },
+  "14147": {
+    "cd": 4076,
+    "id": 14147,
+    "img": "/img/equips/14100.png",
+    "max": "14147",
+    "name": "三联装356mm主炮",
+    "rarity": 3,
+    "tech": 3,
+    "type": 4
+  },
+  "14171": {
+    "cd": 4610,
+    "id": 14171,
+    "img": "/img/equips/14160.png",
+    "max": "14171",
+    "name": "试作型四联装356mm主炮MkB",
+    "rarity": 4,
+    "tech": 0,
+    "type": 4
+  },
+  "14187": {
+    "cd": 3440,
+    "id": 14187,
+    "img": "/img/equips/14180.png",
+    "max": "14187",
+    "name": "双联装406mm主炮Mk1",
+    "rarity": 3,
+    "tech": 0,
+    "type": 4
+  },
+  "14251": {
+    "cd": 3180,
+    "id": 14251,
+    "img": "/img/equips/14200.png",
+    "max": "14251",
+    "name": "双联装406mm主炮Mk5",
+    "rarity": 4,
+    "tech": 3,
+    "type": 4
+  },
+  "14271": {
+    "cd": 2997,
+    "id": 14271,
+    "img": "/img/equips/14260.png",
+    "max": "14271",
+    "name": "双联装406mm主炮Mk8",
+    "rarity": 4,
+    "tech": 0,
+    "type": 4
+  },
+  "14351": {
+    "cd": 3611,
+    "id": 14351,
+    "img": "/img/equips/14300.png",
+    "max": "14351",
+    "name": "三联装406mm主炮Mk6",
+    "rarity": 4,
+    "tech": 3,
+    "type": 4
+  },
+  "14373": {
+    "cd": 3640,
+    "id": 14373,
+    "img": "/img/equips/14360.png",
+    "max": "14373",
+    "name": "试作型三联装406mm主炮MkD",
+    "rarity": 5,
+    "tech": 0,
+    "type": 4
+  },
+  "14391": {
+    "cd": 4320,
+    "id": 14391,
+    "img": "/img/equips/14380.png",
+    "max": "14391",
+    "name": "三联装406mm主炮Mk2",
+    "rarity": 4,
+    "tech": 0,
+    "type": 4
+  },
+  "14473": {
+    "cd": 3641,
+    "id": 14473,
+    "img": "/img/equips/14400.png",
+    "max": "14473",
+    "name": "三联装406mm主炮Mk7",
+    "rarity": 6,
+    "tech": 0,
+    "type": 4
+  },
+  "14513": {
+    "cd": 3105,
+    "id": 14513,
+    "img": "/img/equips/14500.png",
+    "max": "14513",
+    "name": "试作型双联装457mm主炮Mk A",
+    "rarity": 6,
+    "tech": 0,
+    "type": 4
+  },
+  "17047": {
+    "cd": 1758,
+    "id": 17047,
+    "img": "/img/equips/17000.png",
+    "max": "17047",
+    "name": "F2A水牛",
+    "rarity": 3,
+    "tech": 3,
+    "type": 7
+  },
+  "17073": {
+    "cd": 1420,
+    "id": 17073,
+    "img": "/img/equips/17060.png",
+    "max": "17073",
+    "name": "F2A水牛(萨奇队)",
+    "rarity": 5,
+    "tech": 0,
+    "type": 7
+  },
+  "17091": {
+    "cd": 1768,
+    "id": 17091,
+    "img": "/img/equips/17080.png",
+    "max": "17091",
+    "name": "试作型XF2A-4水牛",
+    "rarity": 4,
+    "tech": 0,
+    "type": 7
+  },
+  "17151": {
+    "cd": 1587,
+    "id": 17151,
+    "img": "/img/equips/17100.png",
+    "max": "17151",
+    "name": "F4F野猫",
+    "rarity": 4,
+    "tech": 3,
+    "type": 7
+  },
+  "17251": {
+    "cd": 1658,
+    "id": 17251,
+    "img": "/img/equips/17200.png",
+    "max": "17251",
+    "name": "F4U海盗",
+    "rarity": 4,
+    "tech": 3,
+    "type": 7
+  },
+  "17273": {
+    "cd": 1534,
+    "id": 17273,
+    "img": "/img/equips/17260.png",
+    "max": "17273",
+    "name": "F4U（VF-17“海盗”中队）",
+    "rarity": 5,
+    "tech": 0,
+    "type": 7
+  },
+  "17353": {
+    "cd": 1639,
+    "id": 17353,
+    "img": "/img/equips/17300.png",
+    "max": "17353",
+    "name": "F6F地狱猫",
+    "rarity": 5,
+    "tech": 3,
+    "type": 7
+  },
+  "17373": {
+    "cd": 1626,
+    "id": 17373,
+    "img": "/img/equips/17360.png",
+    "max": "17373",
+    "name": "F7F虎猫",
+    "rarity": 5,
+    "tech": 0,
+    "type": 7
+  },
+  "17393": {
+    "cd": 1450,
+    "id": 17393,
+    "img": "/img/equips/17380.png",
+    "max": "17393",
+    "name": "F8F熊猫",
+    "rarity": 5,
+    "tech": 0,
+    "type": 7
+  },
+  "17411": {
+    "cd": 1350,
+    "id": 17411,
+    "img": "/img/equips/17400.png",
+    "max": "17411",
+    "name": "XF5F天箭",
+    "rarity": 4,
+    "tech": 0,
+    "type": 7
+  },
+  "18047": {
+    "cd": 2120,
+    "id": 18047,
+    "img": "/img/equips/18000.png",
+    "max": "18047",
+    "name": "TBD蹂躏者",
+    "rarity": 3,
+    "tech": 3,
+    "type": 8
+  },
+  "18073": {
+    "cd": 1810,
+    "id": 18073,
+    "img": "/img/equips/18060.png",
+    "max": "18073",
+    "name": "TBD蹂躏者(VT-8中队)",
+    "rarity": 5,
+    "tech": 0,
+    "type": 8
+  },
+  "18151": {
+    "cd": 2190,
+    "id": 18151,
+    "img": "/img/equips/18100.png",
+    "max": "18151",
+    "name": "TBF复仇者",
+    "rarity": 4,
+    "tech": 3,
+    "type": 8
+  },
+  "18193": {
+    "cd": 1810,
+    "id": 18193,
+    "img": "/img/equips/18180.png",
+    "max": "18193",
+    "name": "TBM复仇者(VT-18中队)",
+    "rarity": 5,
+    "tech": 0,
+    "type": 8
+  },
+  "18233": {
+    "cd": 1830,
+    "id": 18233,
+    "img": "/img/equips/18220.png",
+    "max": "18233",
+    "name": "XTB2D-1天空海盗",
+    "rarity": 5,
+    "tech": 0,
+    "type": 8
+  },
+  "19047": {
+    "cd": 1900,
+    "id": 19047,
+    "img": "/img/equips/19000.png",
+    "max": "19047",
+    "name": "SBD无畏",
+    "rarity": 3,
+    "tech": 3,
+    "type": 9
+  },
+  "19073": {
+    "cd": 1760,
+    "id": 19073,
+    "img": "/img/equips/19060.png",
+    "max": "19073",
+    "name": "SBD无畏(麦克拉斯基队)",
+    "rarity": 5,
+    "tech": 0,
+    "type": 9
+  },
+  "19151": {
+    "cd": 1786,
+    "id": 19151,
+    "img": "/img/equips/19100.png",
+    "max": "19151",
+    "name": "SB2C地狱俯冲者",
+    "rarity": 4,
+    "tech": 3,
+    "type": 9
+  },
+  "19173": {
+    "cd": 1790,
+    "id": 19173,
+    "img": "/img/equips/19160.png",
+    "max": "19173",
+    "name": "实验型XSB3C-1",
+    "rarity": 5,
+    "tech": 0,
+    "type": 9
+  },
+  "19253": {
+    "cd": 1760,
+    "id": 19253,
+    "img": "/img/equips/19200.png",
+    "max": "19253",
+    "name": "BTD-1毁灭者",
+    "rarity": 5,
+    "tech": 3,
+    "type": 9
+  },
+  "24053": {
+    "cd": 4389,
+    "id": 24053,
+    "img": "/img/equips/24000.png",
+    "max": "24053",
+    "name": "四联装356mm主炮",
+    "rarity": 5,
+    "tech": 3,
+    "type": 4
+  },
+  "24071": {
+    "cd": 2640,
+    "id": 24071,
+    "img": "/img/equips/24060.png",
+    "max": "24071",
+    "name": "双联装356mm主炮",
+    "rarity": 4,
+    "tech": 0,
+    "type": 4
+  },
+  "24151": {
+    "cd": 2814,
+    "id": 24151,
+    "img": "/img/equips/24100.png",
+    "max": "24151",
+    "name": "双联装381mm主炮",
+    "rarity": 4,
+    "tech": 3,
+    "type": 4
+  },
+  "24173": {
+    "cd": 3480,
+    "id": 24173,
+    "img": "/img/equips/24160.png",
+    "max": "24173",
+    "name": "试作型三联装381mm主炮",
+    "rarity": 5,
+    "tech": 0,
+    "type": 4
+  },
+  "24253": {
+    "cd": 3611,
+    "id": 24253,
+    "img": "/img/equips/24200.png",
+    "max": "24253",
+    "name": "三联装406mm主炮",
+    "rarity": 5,
+    "tech": 3,
+    "type": 4
+  },
+  "24353": {
+    "cd": 2700,
+    "id": 24353,
+    "img": "/img/equips/24300.png",
+    "max": "24353",
+    "name": "双联装381mm主炮改",
+    "rarity": 5,
+    "tech": 0,
+    "type": 4
+  },
+  "27051": {
+    "cd": 1650,
+    "id": 27051,
+    "img": "/img/equips/27000.png",
+    "max": "27051",
+    "name": "海喷火",
+    "rarity": 4,
+    "tech": 3,
+    "type": 7
+  },
+  "27073": {
+    "cd": 1596,
+    "id": 27073,
+    "img": "/img/equips/27060.png",
+    "max": "27073",
+    "name": "海喷火FR.47",
+    "rarity": 5,
+    "tech": 0,
+    "type": 7
+  },
+  "27153": {
+    "cd": 1594,
+    "id": 27153,
+    "img": "/img/equips/27100.png",
+    "max": "27153",
+    "name": "海毒牙",
+    "rarity": 5,
+    "tech": 3,
+    "type": 7
+  },
+  "27247": {
+    "cd": 1600,
+    "id": 27247,
+    "img": "/img/equips/27200.png",
+    "max": "27247",
+    "name": "海斗士",
+    "rarity": 3,
+    "tech": 3,
+    "type": 7
+  },
+  "27267": {
+    "cd": 1580,
+    "id": 27267,
+    "img": "/img/equips/27260.png",
+    "max": "27267",
+    "name": "海飓风",
+    "rarity": 3,
+    "tech": 3,
+    "type": 7
+  },
+  "27313": {
+    "cd": 1596,
+    "id": 27313,
+    "img": "/img/equips/27300.png",
+    "max": "27313",
+    "name": "海怒",
+    "rarity": 5,
+    "tech": 0,
+    "type": 7
+  },
+  "27333": {
+    "cd": 1596,
+    "id": 27333,
+    "img": "/img/equips/27320.png",
+    "max": "27333",
+    "name": "海大黄蜂",
+    "rarity": 5,
+    "tech": 0,
+    "type": 7
+  },
+  "28051": {
+    "cd": 1800,
+    "id": 28051,
+    "img": "/img/equips/28000.png",
+    "max": "28051",
+    "name": "剑鱼",
+    "rarity": 4,
+    "tech": 3,
+    "type": 8
+  },
+  "28073": {
+    "cd": 1650,
+    "id": 28073,
+    "img": "/img/equips/28060.png",
+    "max": "28073",
+    "name": "剑鱼(818中队)",
+    "rarity": 5,
+    "tech": 0,
+    "type": 8
+  },
+  "28153": {
+    "cd": 1550,
+    "id": 28153,
+    "img": "/img/equips/28100.png",
+    "max": "28153",
+    "name": "梭鱼",
+    "rarity": 5,
+    "tech": 3,
+    "type": 8
+  },
+  "28213": {
+    "cd": 1750,
+    "id": 28213,
+    "img": "/img/equips/28200.png",
+    "max": "28213",
+    "name": "火把",
+    "rarity": 5,
+    "tech": 0,
+    "type": 8
+  },
+  "28233": {
+    "cd": 1580,
+    "id": 28233,
+    "img": "/img/equips/28220.png",
+    "max": "28233",
+    "name": "火冠",
+    "rarity": 5,
+    "tech": 0,
+    "type": 8
+  },
+  "28351": {
+    "cd": 1500,
+    "id": 28351,
+    "img": "/img/equips/28300.png",
+    "max": "28351",
+    "name": "青花鱼",
+    "rarity": 4,
+    "tech": 3,
+    "type": 8
+  },
+  "28413": {
+    "cd": 1750,
+    "id": 28413,
+    "img": "/img/equips/28400.png",
+    "max": "28413",
+    "name": "飞龙",
+    "rarity": 6,
+    "tech": 0,
+    "type": 8
+  },
+  "29047": {
+    "cd": 1770,
+    "id": 29047,
+    "img": "/img/equips/29000.png",
+    "max": "29047",
+    "name": "贼鸥",
+    "rarity": 3,
+    "tech": 3,
+    "type": 9
+  },
+  "29151": {
+    "cd": 1380,
+    "id": 29151,
+    "img": "/img/equips/29100.png",
+    "max": "29151",
+    "name": "海燕",
+    "rarity": 4,
+    "tech": 3,
+    "type": 9
+  },
+  "29213": {
+    "cd": 1670,
+    "id": 29213,
+    "img": "/img/equips/29200.png",
+    "max": "29213",
+    "name": "萤火虫",
+    "rarity": 5,
+    "tech": 0,
+    "type": 9
+  },
+  "29313": {
+    "cd": 1560,
+    "id": 29313,
+    "img": "/img/equips/29300.png",
+    "max": "29313",
+    "name": "梭鱼(831中队)",
+    "rarity": 5,
+    "tech": 0,
+    "type": 9
+  },
+  "30007": {
+    "cd": 2620,
+    "id": 30007,
+    "img": "/img/equips/30000.png",
+    "max": "30007",
+    "name": "305mm连装炮",
+    "rarity": 3,
+    "tech": 0,
+    "type": 4
+  },
+  "34047": {
+    "cd": 2897,
+    "id": 34047,
+    "img": "/img/equips/34000.png",
+    "max": "34047",
+    "name": "356mm连装炮",
+    "rarity": 3,
+    "tech": 3,
+    "type": 4
+  },
+  "34067": {
+    "cd": 2721,
+    "id": 34067,
+    "img": "/img/equips/34060.png",
+    "max": "34067",
+    "name": "356mm毘式连装炮",
+    "rarity": 3,
+    "tech": 0,
+    "type": 4
+  },
+  "34151": {
+    "cd": 3010,
+    "id": 34151,
+    "img": "/img/equips/34100.png",
+    "max": "34151",
+    "name": "410mm连装炮",
+    "rarity": 4,
+    "tech": 3,
+    "type": 4
+  },
+  "34173": {
+    "cd": 2900,
+    "id": 34173,
+    "img": "/img/equips/34100.png",
+    "max": "34173",
+    "name": "410mm连装炮(三式弹)",
+    "rarity": 5,
+    "tech": 0,
+    "type": 4
+  },
+  "34193": {
+    "cd": 3630,
+    "id": 34193,
+    "img": "/img/equips/34180.png",
+    "max": "34193",
+    "name": "试作型410mm三连装炮",
+    "rarity": 5,
+    "tech": 0,
+    "type": 4
+  },
+  "34253": {
+    "cd": 4661,
+    "id": 34253,
+    "img": "/img/equips/34200.png",
+    "max": "34253",
+    "name": "460mm三连装炮",
+    "rarity": 6,
+    "tech": 3,
+    "type": 4
+  },
+  "34311": {
+    "cd": 3002,
+    "id": 34311,
+    "img": "/img/equips/34300.png",
+    "max": "34311",
+    "name": "410mm连装炮改",
+    "rarity": 4,
+    "tech": 0,
+    "type": 4
+  },
+  "37047": {
+    "cd": 1618,
+    "id": 37047,
+    "img": "/img/equips/37000.png",
+    "max": "37047",
+    "name": "九六式舰战",
+    "rarity": 3,
+    "tech": 3,
+    "type": 7
+  },
+  "37151": {
+    "cd": 1540,
+    "id": 37151,
+    "img": "/img/equips/37100.png",
+    "max": "37151",
+    "name": "零战二一型",
+    "rarity": 4,
+    "tech": 3,
+    "type": 7
+  },
+  "37171": {
+    "cd": 1504,
+    "id": 37171,
+    "img": "/img/equips/37160.png",
+    "max": "37171",
+    "name": "零战三二型",
+    "rarity": 4,
+    "tech": 0,
+    "type": 7
+  },
+  "37253": {
+    "cd": 1432,
+    "id": 37253,
+    "img": "/img/equips/37200.png",
+    "max": "37253",
+    "name": "零战五二型",
+    "rarity": 5,
+    "tech": 3,
+    "type": 7
+  },
+  "37353": {
+    "cd": 1570,
+    "id": 37353,
+    "img": "/img/equips/37300.png",
+    "max": "37353",
+    "name": "烈风",
+    "rarity": 5,
+    "tech": 3,
+    "type": 7
+  },
+  "37413": {
+    "cd": 1610,
+    "id": 37413,
+    "img": "/img/equips/37400.png",
+    "max": "37413",
+    "name": "紫电改二",
+    "rarity": 5,
+    "tech": 0,
+    "type": 7
+  },
+  "38047": {
+    "cd": 2005,
+    "id": 38047,
+    "img": "/img/equips/38000.png",
+    "max": "38047",
+    "name": "九七式舰攻",
+    "rarity": 3,
+    "tech": 3,
+    "type": 8
+  },
+  "38067": {
+    "cd": 1862,
+    "id": 38067,
+    "img": "/img/equips/38060.png",
+    "max": "38067",
+    "name": "九七式舰攻改",
+    "rarity": 3,
+    "tech": 0,
+    "type": 8
+  },
+  "38151": {
+    "cd": 1748,
+    "id": 38151,
+    "img": "/img/equips/38100.png",
+    "max": "38151",
+    "name": "天山",
+    "rarity": 4,
+    "tech": 3,
+    "type": 8
+  },
+  "38171": {
+    "cd": 1714,
+    "id": 38171,
+    "img": "/img/equips/38160.png",
+    "max": "38171",
+    "name": "天山改",
+    "rarity": 4,
+    "tech": 0,
+    "type": 8
+  },
+  "38253": {
+    "cd": 1710,
+    "id": 38253,
+    "img": "/img/equips/38200.png",
+    "max": "38253",
+    "name": "流星",
+    "rarity": 5,
+    "tech": 3,
+    "type": 8
+  },
+  "38313": {
+    "cd": 1594,
+    "id": 38313,
+    "img": "/img/equips/38300.png",
+    "max": "38313",
+    "name": "试作型彩云（舰攻型）",
+    "rarity": 5,
+    "tech": 0,
+    "type": 8
+  },
+  "39051": {
+    "cd": 1640,
+    "id": 39051,
+    "img": "/img/equips/39000.png",
+    "max": "39051",
+    "name": "九九式舰爆",
+    "rarity": 4,
+    "tech": 3,
+    "type": 9
+  },
+  "39071": {
+    "cd": 1580,
+    "id": 39071,
+    "img": "/img/equips/39060.png",
+    "max": "39071",
+    "name": "九九式舰爆改",
+    "rarity": 4,
+    "tech": 0,
+    "type": 9
+  },
+  "39153": {
+    "cd": 1570,
+    "id": 39153,
+    "img": "/img/equips/39100.png",
+    "max": "39153",
+    "name": "彗星",
+    "rarity": 5,
+    "tech": 3,
+    "type": 9
+  },
+  "39173": {
+    "cd": 1500,
+    "id": 39173,
+    "img": "/img/equips/39160.png",
+    "max": "39173",
+    "name": "彗星一二型甲",
+    "rarity": 5,
+    "tech": 0,
+    "type": 9
+  },
+  "39333": {
+    "cd": 1950,
+    "id": 39333,
+    "img": "/img/equips/39320.png",
+    "max": "39333",
+    "name": "彗星二一型",
+    "rarity": 5,
+    "tech": 0,
+    "type": 9
+  },
+  "39353": {
+    "cd": 1804,
+    "id": 39353,
+    "img": "/img/equips/39340.png",
+    "max": "39353",
+    "name": "试作舰载型天雷",
+    "rarity": 6,
+    "tech": 0,
+    "type": 9
+  },
+  "44051": {
+    "cd": 2500,
+    "id": 44051,
+    "img": "/img/equips/44000.png",
+    "max": "44051",
+    "name": "三联283mmSKC34主炮",
+    "rarity": 4,
+    "tech": 3,
+    "type": 4
+  },
+  "44153": {
+    "cd": 2764,
+    "id": 44153,
+    "img": "/img/equips/44100.png",
+    "max": "44153",
+    "name": "双联380mmSKC主炮",
+    "rarity": 5,
+    "tech": 3,
+    "type": 4
+  },
+  "44213": {
+    "cd": 2920,
+    "id": 44213,
+    "img": "/img/equips/44200.png",
+    "max": "44213",
+    "name": "试作型双联装406mmSKC主炮",
+    "rarity": 5,
+    "tech": 0,
+    "type": 4
+  },
+  "44313": {
+    "cd": 2736,
+    "id": 44313,
+    "img": "/img/equips/44300.png",
+    "max": "44313",
+    "name": "试作型三联装305mmSKC39主炮",
+    "rarity": 5,
+    "tech": 0,
+    "type": 4
+  },
+  "47051": {
+    "cd": 1470,
+    "id": 47051,
+    "img": "/img/equips/47000.png",
+    "max": "47051",
+    "name": "BF-109T舰载战斗机",
+    "rarity": 4,
+    "tech": 3,
+    "type": 7
+  },
+  "47067": {
+    "cd": 1812,
+    "id": 47067,
+    "img": "/img/equips/47060.png",
+    "max": "47067",
+    "name": "Ar-197舰载战斗机",
+    "rarity": 3,
+    "tech": 0,
+    "type": 7
+  },
+  "47091": {
+    "cd": 1710,
+    "id": 47091,
+    "img": "/img/equips/47080.png",
+    "max": "47091",
+    "name": "试作型舰载FW-190 A-5",
+    "rarity": 4,
+    "tech": 0,
+    "type": 7
+  },
+  "47153": {
+    "cd": 1390,
+    "id": 47153,
+    "img": "/img/equips/47100.png",
+    "max": "47153",
+    "name": "Me-155A舰载战斗机",
+    "rarity": 5,
+    "tech": 3,
+    "type": 7
+  },
+  "47173": {
+    "cd": 1591,
+    "id": 47173,
+    "img": "/img/equips/47160.png",
+    "max": "47173",
+    "name": "试作舰载型BF-109G",
+    "rarity": 5,
+    "tech": 0,
+    "type": 7
+  },
+  "48007": {
+    "cd": 2140,
+    "id": 48007,
+    "img": "/img/equips/48000.png",
+    "max": "48007",
+    "name": "Ar-195舰载鱼雷机",
+    "rarity": 3,
+    "tech": 0,
+    "type": 8
+  },
+  "48031": {
+    "cd": 1720,
+    "id": 48031,
+    "img": "/img/equips/48020.png",
+    "max": "48031",
+    "name": "Fi-167舰载鱼雷机",
+    "rarity": 4,
+    "tech": 0,
+    "type": 8
+  },
+  "48053": {
+    "cd": 1680,
+    "id": 48053,
+    "img": "/img/equips/48040.png",
+    "max": "48053",
+    "name": "Ju-87 D-4",
+    "rarity": 5,
+    "tech": 0,
+    "type": 8
+  },
+  "49051": {
+    "cd": 1740,
+    "id": 49051,
+    "img": "/img/equips/49000.png",
+    "max": "49051",
+    "name": "Ju-87C俯冲轰炸机",
+    "rarity": 4,
+    "tech": 3,
+    "type": 9
+  },
+  "49067": {
+    "cd": 1790,
+    "id": 49067,
+    "img": "/img/equips/49060.png",
+    "max": "49067",
+    "name": "He-50b舰载轰炸机",
+    "rarity": 3,
+    "tech": 0,
+    "type": 9
+  },
+  "85330": {
+    "cd": 3812,
+    "id": 85330,
+    "img": "/img/equips/85300.png",
+    "max": "85330",
+    "name": "B-37 三联装406mm主炮Mk-1",
+    "rarity": 4,
+    "tech": 2,
+    "type": 4
+  },
+  "85427": {
+    "cd": 4120,
+    "id": 85427,
+    "img": "/img/equips/85420.png",
+    "max": "85427",
+    "name": "三联装305mm主炮Model1907",
+    "rarity": 3,
+    "tech": 3,
+    "type": 4
+  },
+  "90351": {
+    "cd": 3960,
+    "id": 90351,
+    "img": "/img/equips/50300.png",
+    "max": "90351",
+    "name": "四联装330mm主炮Mle1931",
+    "rarity": 4,
+    "tech": 3,
+    "type": 4
+  },
+  "90453": {
+    "cd": 3880,
+    "id": 90453,
+    "img": "/img/equips/50400.png",
+    "max": "90453",
+    "name": "四联装380mm主炮Mle1935",
+    "rarity": 5,
+    "tech": 3,
+    "type": 4
+  },
+  "90827": {
+    "cd": 1720,
+    "id": 90827,
+    "img": "/img/equips/50820.png",
+    "max": "90827",
+    "name": "GL.2舰载战斗机",
+    "rarity": 3,
+    "tech": 0,
+    "type": 7
+  },
+  "90847": {
+    "cd": 2210,
+    "id": 90847,
+    "img": "/img/equips/50840.png",
+    "max": "90847",
+    "name": "PL.7舰载鱼雷机",
+    "rarity": 3,
+    "tech": 0,
+    "type": 8
+  },
+  "91013": {
+    "cd": 3611,
+    "id": 91013,
+    "img": "/img/equips/51000.png",
+    "max": "91013",
+    "name": "试作型三联装406mm/50主炮",
+    "rarity": 5,
+    "tech": 0,
+    "type": 4
+  },
+  "95053": {
+    "buffs": [
+      {
+        "desc": "每两次主炮射击后，主炮的装填时间增加30%，下一次主炮射击后装填时间恢复原状，主炮射击计数重置",
+        "removeTrigger": {
+          "args": [
+            3,
+            3
+          ],
+          "type": "UseWeapon"
+        },
+        "trigger": {
+          "args": [
+            2,
+            3
+          ],
+          "type": "UseWeapon"
+        },
+        "type": "CDAddRatio",
+        "value": 30
+      }
+    ],
+    "cd": 3611,
+    "id": 95053,
+    "img": "/img/equips/55000.png",
+    "max": "95053",
+    "name": "三联装381mm主炮Model1934",
+    "rarity": 5,
+    "tech": 3,
+    "type": 4
+  },
+  "95487": {
+    "cd": 3620,
+    "id": 95487,
+    "img": "/img/equips/55480.png",
+    "max": "95487",
+    "name": "三联装320mm主炮Model1934",
+    "rarity": 3,
+    "tech": 0,
+    "type": 4
+  },
+  "95771": {
+    "cd": 1540,
+    "id": 95771,
+    "img": "/img/equips/55720.png",
+    "max": "95771",
+    "name": "G.50箭式战斗机",
+    "rarity": 4,
+    "tech": 3,
+    "type": 7
+  },
+  "95851": {
+    "cd": 1650,
+    "id": 95851,
+    "img": "/img/equips/55800.png",
+    "max": "95851",
+    "name": "Re.2001公羊",
+    "rarity": 4,
+    "tech": 3,
+    "type": 7
+  },
+  "95913": {
+    "cd": 3600,
+    "id": 95913,
+    "img": "/img/equips/55900.png",
+    "max": "95913",
+    "name": "试作型三联装406mm主炮Model1940",
+    "rarity": 5,
+    "tech": 0,
+    "type": 4
+  }
+}
