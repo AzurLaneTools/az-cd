@@ -5972,13 +5972,6 @@
       {
         "id": 19230,
         "name": "混沌的奏鸣曲",
-        "removeTrigger": {
-          "args": [
-            2,
-            2
-          ],
-          "type": "UseWeapon"
-        },
         "target": {
           "type": "Self"
         },
