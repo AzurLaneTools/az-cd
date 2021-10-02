@@ -248,26 +248,14 @@ function setChartOption() {
         chartData.push(...buildTargetData(t, shipEvents));
     }
     console.log('更新数据', categories)
-    let series = {
-        type: 'custom',
-        renderItem: renderItem,
-        itemStyle: { opacity: 0.8 },
-        encode: { x: [1, 2], y: 0 },
-        data: chartData
-    }
-    myChart.setOption({
-        series: [series, {
-            type: 'scatter',
-            markLine: {
-                data: [
-                    {
-                        symbol: ['none', 'none'],
-                        silent: true,
-                        xAxis: 20,
 
-                    },
-                ]
-            },
+    myChart.setOption({
+        series: [{
+            type: 'custom',
+            renderItem: renderItem,
+            itemStyle: { opacity: 0.8 },
+            encode: { x: [1, 2], y: 0 },
+            data: chartData
         }],
         xAxis: {
             max: config.maxDuration,
