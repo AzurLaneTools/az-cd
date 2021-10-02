@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { ref, computed, watchEffect } from 'vue'
-import { NLayout, NLayoutFooter, NButton, NModal, NCard, NInputNumber, NPopselect, NInput, NText, NGrid, NGridItem, NSwitch, NRow, NCol, NFormItem, NSpace, NTag, useMessage, useDialog } from 'naive-ui'
+import { ref, computed, onMounted } from 'vue'
+import { NButton, NModal, NCard, NInputNumber, NPopselect, NInput, NText, NGrid, NGridItem, NSwitch, NRow, NCol, NFormItem, NSpace, NTag, useMessage, useDialog } from 'naive-ui'
 
 import { Fleet, Ship, TargetSelector } from '../utils/types'
 import store from '../utils/store'
@@ -20,16 +20,27 @@ const fleetOptions = computed(() => {
         return { value: idx, label: f.name }
     });
 })
-
-
+const chartHeight = ref(400);
+function updateChartHeight() {
+    let h = Math.round(Math.min(document.body.clientHeight * 0.4, 400));
+    let dom1 = document.getElementById('fleet-container');
+    if (dom1) { dom1.style.paddingBottom = h + 'px' }
+    let dom = document.getElementById('chart-footer');
+    if (dom) {
+        dom.style.height = h + 'px';
+    }
+    console.log('更新高度', h, dom);
+    chartHeight.value = h;
+}
+window.addEventListener('resize', updateChartHeight);
+onMounted(() => {
+    updateChartHeight();
+    setTimeout(updateChartHeight, 500);
+});
 
 const showShipSelector = ref(false);
 let targetShipIdx = ref(0);
 
-const showBuffAdder = ref(false);
-watchEffect(() => {
-    console.log('fleetOptions', fleetOptions.value)
-})
 function addFleet() {
     store.addFleet();
     console.log('addFleet', store.state.fleetIdx);
@@ -136,7 +147,7 @@ const knownSkills = computed(() => {
 </script>
 
 <template>
-    <div style="padding: 20px 20px 400px 20px;">
+    <div id="fleet-container" style="padding: 20px 20px 400px 20px">
         <n-form-item label-placement="left" path="fleet.name">
             <n-popselect
                 v-model:value="store.state.fleetIdx"
@@ -198,7 +209,7 @@ const knownSkills = computed(() => {
             />
         </n-space>
     </div>
-    <AlignChart :fleet="fleet"></AlignChart>
+    <AlignChart :height="chartHeight" :fleet="fleet"></AlignChart>
     <!-- 切换舰娘界面 -->
     <n-modal v-model:show="showShipSelector" display-directive="show">
         <n-card style="width: 90%;" title="选择舰娘">

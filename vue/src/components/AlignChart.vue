@@ -1,10 +1,10 @@
 <template>
-    <div class="footer">
+    <div id="chart-footer">
         <div id="align-chart" ref="chartRef" class="chart-box"></div>
     </div>
 </template>
 <style scoped>
-.footer {
+#chart-footer {
     width: 100%;
     height: 400px;
     position: fixed !important;
@@ -12,7 +12,7 @@
 }
 #align-chart {
     width: 100%;
-    height: 400px;
+    height: 100%;
     background-color: #fff9dc;
 }
 </style>
@@ -22,10 +22,10 @@ import { loadShipEvents } from '../utils/formulas';
 import { TargetConfig, Fleet } from '../utils/types';
 
 const props = defineProps<{
-    fleet: Fleet
+    fleet: Fleet,
+    height: number
 }>();
 const chartRef = ref(null);
-
 
 import * as echarts from 'echarts/core';
 import {
@@ -306,6 +306,16 @@ function clearSelected() {
     config.selected = [0, 0];
 }
 
+function onResize() {
+    if (!myChart) {
+        return;
+    }
+    clearSelected()
+    myChart.resize()
+}
+watch(() => props.height, onResize)
+window.addEventListener('resize', onResize);
+
 onMounted(() => {
     let dom = document.getElementById('align-chart');
     if (!dom) {
@@ -313,8 +323,7 @@ onMounted(() => {
     }
     myChart = echarts.init(dom);
     myChart.setOption(baseOption);
-    dom.addEventListener('resize', myChart.resize);
-    window.addEventListener('resize', myChart.resize);
+    onResize();
     setChartOption();
 
     myChart.on('click', function (params: { value: number[] }) {
