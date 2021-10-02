@@ -1,19 +1,18 @@
 import { reactive } from "vue"
 import { v4 as uuid } from 'uuid';
-import { TreeOption } from 'naive-ui'
-import { EquipTemplate, EquipType, Fleet, FleetShip, Ship, ShipTemplate, ShipType } from "./types";
+import { EquipTemplate, Fleet, Ship, ShipTemplate } from "./types";
 import axios from "axios";
 import { getRawReload } from "./formulas";
 
 
 async function loadShipTemplates() {
-    let resp = await axios.get('/ships.json')
+    let resp = await axios.get('/data/ships.json')
     console.log('axios', resp);
     return resp.data;
 }
 
 async function loadEquips() {
-    let resp = await axios.get('/equips.json');
+    let resp = await axios.get('/data/equips.json');
     return resp.data;
 }
 
@@ -95,7 +94,6 @@ const store: {
         }
     },
     addFleet() {
-        let fid = uuid();
         let newShip = () => { return { id: null, equips: [], extraBuff: { ReloadAddRatio: 0, CDAddRatio: 0 } } };
         let fleet: Fleet = {
             id: uuid(),
