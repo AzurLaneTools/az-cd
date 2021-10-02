@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, h } from 'vue'
-import { NMessageProvider, NDialogProvider, NMenu, MenuOption, NLayout, NLayoutHeader } from 'naive-ui'
+import { NText, NMessageProvider, NDialogProvider, NMenu, MenuOption, NLayout, NLayoutHeader } from 'naive-ui'
 import { RouterLink } from 'vue-router'
 function renderMenuLabel(option: MenuOption) {
   // @ts-ignore
@@ -9,7 +9,7 @@ function renderMenuLabel(option: MenuOption) {
 
 const menuOptions = [
   {
-    label: '舰队管理',
+    label: 'CD模拟',
     key: '/'
   },
   {
@@ -17,7 +17,7 @@ const menuOptions = [
     key: '/ships'
   },
   {
-    label: '全局设置',
+    label: '设置',
     key: '/config'
   },
 ];
@@ -28,7 +28,14 @@ const collapsed = ref(false);
   <n-dialog-provider>
     <n-message-provider>
       <n-layout style="height: 100%;">
-        <n-layout-header bordered>
+        <n-layout-header class="header-menu" bordered>
+          <div class="ui-logo">
+            <img
+              src="/favicon.ico"
+              alt="碧蓝航线CD计算工具"
+            />
+            <n-text>碧蓝航线CD计算工具·Beta</n-text>
+          </div>
           <n-menu
             v-model:value="activeKey"
             mode="horizontal"
@@ -52,5 +59,18 @@ body,
   margin: 0px;
   height: 100%;
   width: 100%;
+}
+.header-menu,
+.ui-logo {
+  display: flex;
+  align-items: center;
+  font-size: large;
+  margin-right: 20px;
+}
+.ui-logo img {
+  margin: 4px 20px 4px 10px;
+  width: 64px;
+  height: 64px;
+  border-radius: 5px;
 }
 </style>
