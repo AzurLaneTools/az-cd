@@ -136,7 +136,7 @@ const knownSkills = computed(() => {
 </script>
 
 <template>
-    <div style="padding-bottom: 400px;">
+    <div style="padding: 20px 20px 400px 20px;">
         <n-form-item label-placement="left" path="fleet.name">
             <n-popselect
                 v-model:value="store.state.fleetIdx"
@@ -164,7 +164,7 @@ const knownSkills = computed(() => {
                     <n-button v-if="idx > 0" @click="moveUp(idx)">上移</n-button>
                 </ship-detail>
             </n-col>
-        </n-row>舰队Buff列表：
+        </n-row>舰队科技加成:
         <n-space>
             <n-form-item label="轻航装填" label-placement="left" :show-feedback="false">
                 <n-input-number v-model:value="fleet.tech.CVL"></n-input-number>
@@ -191,10 +191,14 @@ const knownSkills = computed(() => {
             <n-button @click="addAlignTarget()">添加</n-button>
         </n-space>
         <n-space v-for="value, idx in fleet.targets">
-            <align-target :ships="fleet.ships" :value="value" @delete="fleet.targets.splice(idx, 1)" />
+            <align-target
+                :ships="fleet.ships"
+                :value="value"
+                @delete="fleet.targets.splice(idx, 1)"
+            />
         </n-space>
-        <AlignChart :fleet="fleet"></AlignChart>
     </div>
+    <AlignChart :fleet="fleet"></AlignChart>
     <!-- 切换舰娘界面 -->
     <n-modal v-model:show="showShipSelector" display-directive="show">
         <n-card style="width: 90%;" title="选择舰娘">
@@ -215,14 +219,6 @@ const knownSkills = computed(() => {
                     <ship-card :template="ship.templateId" :name="ship.name"></ship-card>
                 </n-grid-item>
             </n-grid>
-        </n-card>
-    </n-modal>
-    <!-- 添加Buff界面 -->
-    <n-modal v-model:show="showBuffAdder">
-        <n-card style="width: 90%;" title="添加Buff">
-            <template #header-extra>
-                <n-button @click="showBuffAdder = false">取消</n-button>
-            </template>
         </n-card>
     </n-modal>
 </template>

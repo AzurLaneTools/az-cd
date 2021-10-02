@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, h } from 'vue'
-import { NText, NMessageProvider, NDialogProvider, NMenu, MenuOption, NLayout, NLayoutHeader } from 'naive-ui'
+import { NSpace, NText, NMessageProvider, NDialogProvider, NMenu, MenuOption, NLayout, NLayoutHeader } from 'naive-ui'
 import { RouterLink } from 'vue-router'
 function renderMenuLabel(option: MenuOption) {
   // @ts-ignore
@@ -29,22 +29,21 @@ const collapsed = ref(false);
     <n-message-provider>
       <n-layout style="height: 100%;">
         <n-layout-header class="header-menu" bordered>
-          <div class="ui-logo">
-            <img
-              src="/img/logo.png"
-              alt="碧蓝航线CD计算工具"
+          <n-space align="center">
+            <div class="ui-logo">
+              <img src="/img/logo.png" alt="碧蓝航线CD计算工具" />
+              <n-text>碧蓝航线CD计算工具·Beta</n-text>
+            </div>
+            <n-menu
+              v-model:value="activeKey"
+              mode="horizontal"
+              :collapsed="collapsed"
+              :options="menuOptions"
+              :render-label="renderMenuLabel"
             />
-            <n-text>碧蓝航线CD计算工具·Beta</n-text>
-          </div>
-          <n-menu
-            v-model:value="activeKey"
-            mode="horizontal"
-            :collapsed="collapsed"
-            :options="menuOptions"
-            :render-label="renderMenuLabel"
-          />
+          </n-space>
         </n-layout-header>
-        <n-layout content-style="padding: 20px 20px 20px 20px">
+        <n-layout>
           <router-view></router-view>
         </n-layout>
       </n-layout>
@@ -64,7 +63,7 @@ body,
 .ui-logo {
   display: flex;
   align-items: center;
-  font-size: large;
+  font-size: 1.1em;
   margin-right: 20px;
 }
 .ui-logo img {

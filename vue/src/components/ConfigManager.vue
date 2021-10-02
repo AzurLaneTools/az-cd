@@ -1,43 +1,45 @@
 <template>
-    <n-form-item label="忽略低星装备" label-placement="left" :show-feedback="false">
-        <n-switch v-model:value="config.ignoreCommonEquips"></n-switch>
-    </n-form-item>
+    <div style="padding: 20px;">
+        <n-form-item label="忽略低星装备" label-placement="left" :show-feedback="false">
+            <n-switch v-model:value="config.ignoreCommonEquips"></n-switch>
+        </n-form-item>
         <n-form-item label="公共进图延迟" label-placement="left" :show-feedback="false">
             <n-input-number v-model:value="config.delay.enter"></n-input-number>
         </n-form-item>
-    <n-space>
-        <span>命中延迟时间</span>
-        <n-form-item label="航母" label-placement="left" :show-feedback="false">
-            <n-input-number v-model:value="config.delay.CV"></n-input-number>
+        <n-space>
+            <span>命中延迟时间</span>
+            <n-form-item label="航母" label-placement="left" :show-feedback="false">
+                <n-input-number v-model:value="config.delay.CV"></n-input-number>
+            </n-form-item>
+            <n-form-item label="战列" label-placement="left" :show-feedback="false">
+                <n-input-number v-model:value="config.delay.BB"></n-input-number>
+            </n-form-item>
+        </n-space>
+        <n-space>
+            <span>攻击持续时间</span>
+            <n-form-item label="航母" label-placement="left" :show-feedback="false">
+                <n-input-number v-model:value="config.duration.CV"></n-input-number>
+            </n-form-item>
+            <n-form-item label="战列" label-placement="left" :show-feedback="false">
+                <n-input-number v-model:value="config.duration.BB"></n-input-number>
+            </n-form-item>
+        </n-space>
+        <n-space>
+            <span>公共CD</span>
+            <n-form-item label="航母" label-placement="left" :show-feedback="false">
+                <n-input-number v-model:value="config.commonCd.CV"></n-input-number>
+            </n-form-item>
+            <n-form-item label="战列" label-placement="left" :show-feedback="false">
+                <n-input-number v-model:value="config.commonCd.BB"></n-input-number>
+            </n-form-item>
+        </n-space>
+        <n-form-item label-placement="left" :show-feedback="false">
+            <n-button @click="resetFleetData()">重置舰队数据</n-button>
         </n-form-item>
-        <n-form-item label="战列" label-placement="left" :show-feedback="false">
-            <n-input-number v-model:value="config.delay.BB"></n-input-number>
+        <n-form-item label-placement="left" :show-feedback="false">
+            <n-button @click="resetAllData()">重置全部数据</n-button>
         </n-form-item>
-    </n-space>
-    <n-space>
-        <span>攻击持续时间</span>
-        <n-form-item label="航母" label-placement="left" :show-feedback="false">
-            <n-input-number v-model:value="config.duration.CV"></n-input-number>
-        </n-form-item>
-        <n-form-item label="战列" label-placement="left" :show-feedback="false">
-            <n-input-number v-model:value="config.duration.BB"></n-input-number>
-        </n-form-item>
-    </n-space>
-    <n-space>
-        <span>公共CD</span>
-        <n-form-item label="航母" label-placement="left" :show-feedback="false">
-            <n-input-number v-model:value="config.commonCd.CV"></n-input-number>
-        </n-form-item>
-        <n-form-item label="战列" label-placement="left" :show-feedback="false">
-            <n-input-number v-model:value="config.commonCd.BB"></n-input-number>
-        </n-form-item>
-    </n-space>
-    <n-form-item label-placement="left" :show-feedback="false">
-        <n-button @click="resetFleetData()">重置舰队数据</n-button>
-    </n-form-item>
-    <n-form-item label-placement="left" :show-feedback="false">
-        <n-button @click="resetAllData()">重置全部数据</n-button>
-    </n-form-item>
+    </div>
 </template>
 
 <script lang="ts" setup>
@@ -52,7 +54,7 @@ function resetFleetData() {
     store.addFleet();
     msg.success('已重置')
 }
-function resetAllData(){
+function resetAllData() {
     window.removeEventListener('beforeunload', store.persist);
     localStorage.removeItem('STORE');
     msg.success('已重置');

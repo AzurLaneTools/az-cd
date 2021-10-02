@@ -1,16 +1,18 @@
 <template>
-    <n-row v-for="ship, idx in ships">
-        <n-col :span="21">
-            <ship-basic-info :ship="ship" @update:model-value="ships[ship.id] = $event"></ship-basic-info>
-        </n-col>
-        <n-col :span="3">
-            <n-button @click="removeShip(ship.id)" type="error">删除</n-button>
-        </n-col>
-        <hr />
-    </n-row>
-    <n-space justify="center">
-        <n-button @click="startAddShip()">添加舰娘</n-button>
-    </n-space>
+    <div style="padding: 20px">
+        <n-row v-for="ship, idx in ships">
+            <n-col :span="21">
+                <ship-basic-info :ship="ship" @update:model-value="ships[ship.id] = $event"></ship-basic-info>
+            </n-col>
+            <n-col :span="3">
+                <n-button @click="removeShip(ship.id)" type="error">删除</n-button>
+            </n-col>
+            <hr />
+        </n-row>
+        <n-space justify="center">
+            <n-button @click="startAddShip()">添加舰娘</n-button>
+        </n-space>
+    </div>
 
     <n-modal v-model:show="showModal" display-directive="show">
         <n-card style="width: 90%;" title="添加舰娘">

@@ -13,6 +13,7 @@
 #align-chart {
     width: 100%;
     height: 400px;
+    background-color: #fff9dc;
 }
 </style>
 <script setup lang="ts">
