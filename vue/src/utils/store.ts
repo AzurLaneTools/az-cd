@@ -135,9 +135,8 @@ const store: {
             this.addFleet();
         }
         loadShipTemplates().then((data) => {
-            let storedJson: string | null;
             try {
-                storedJson = localStorage.getItem('STORE');
+                let storedJson = localStorage.getItem('STORE');
                 let storedData = JSON.parse(storedJson || '');
                 storedData.shipTemplates = data;
                 for (let key in storedData) {
@@ -146,15 +145,9 @@ const store: {
                 }
             } catch (e) {
                 console.log('Load failed', e);
-                storedJson = null;
                 this.addFleet();
             }
             store.state.shipTemplates = data;
-            if (!storedJson) {
-                console.log('shipTemplates updated', store.state.shipTemplates);
-                this.addShip(30708);
-            }
-
             for (let fleet of store.state.fleets) {
                 if (!fleet.targets) {
                     fleet.targets = [];
