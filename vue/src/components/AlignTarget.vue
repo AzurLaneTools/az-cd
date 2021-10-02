@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { AlignConfig, BuffType, CdBuffData, EquipTemplate, EquipType, Fleet, FleetShip, ShipType, TriggerType } from '../utils/types'
+import { TargetConfig, BuffType, CdBuffData, EquipTemplate, EquipType, Fleet, FleetShip, ShipType, TriggerType } from '../utils/types'
 import { NForm, NFormItem, NInput, NInputNumber, NSelect, NButton, NSpace, SelectOption } from 'naive-ui'
 import store from '../utils/store';
 import { contains, getEquipReload, getFixedBuffs, getRealCD, getShipCdStats } from '../utils/formulas';
@@ -11,7 +11,7 @@ const CALCU_LIMIT = 1000;
 const DISP_LIMIT = 100;
 
 const props = defineProps<{
-    value: AlignConfig,
+    value: TargetConfig,
     ships: FleetShip[],
 }>();
 

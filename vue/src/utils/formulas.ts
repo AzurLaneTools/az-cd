@@ -1,5 +1,5 @@
 import store from "./store";
-import { Buff, BuffTemplate, BuffType, CdBuffData, Fleet, FleetShip, Ship, ShipTemplate, ShipType, TargetDef, TargetSelector, TriggerDef, TriggerType } from "./types";
+import { CDType, ShipEvent, BuffTemplate, BuffType, CdBuffData, Fleet, FleetShip, Ship, ShipTemplate, ShipType, TargetDef, TargetSelector, TriggerDef, TriggerType } from "./types";
 
 function getRealCD(rawCd: number, reload: number) {
     // slot0 / uv0.K1 / math.sqrt((slot1 + uv0.K2) * uv0.K3)
@@ -218,11 +218,6 @@ function getTechReload(tech: { BB: number, CV: number, CVL: number }, shipType?:
 
 const FPS = 30;
 
-enum CDType {
-    BB = 'BB',
-    CV = 'CV'
-}
-
 interface EmulatorShipStatus {
     ts: number,
     readyAt: number[],
@@ -341,8 +336,8 @@ function mergeBuffs(buffs: BuffTemplate[], status: EmulatorShipStatus) {
     return stats;
 }
 
-function loadShipEvents(fleet: Fleet) {
-    let events = [];
+function loadShipEvents(fleet: Fleet): ShipEvent[] {
+    let events: ShipEvent[] = [];
     let shipProps = [];
     for (let ship of fleet.ships) {
         if (!ship.id) {
@@ -425,9 +420,12 @@ function loadShipEvents(fleet: Fleet) {
     }
     console.log('舰娘状态', shipProps);
     const frameCount = fleet.config.time * FPS;
-    let allowWeapon = { CV: -1, BB: -1 };
-    let curEvent: { [key: string]: any } = {};
-    for (let ts = 1.5 * FPS; ts < frameCount; ++ts) {
+    let allowWeapon: { [key: string]: number } = { CV: -1, BB: -1 };
+    let curEvent: { [key: string]: ShipEvent } = {};
+    // 公共进图延迟
+    let startTs = store.state.config.delay.enter * FPS;
+    console.log('startTs', startTs)
+    for (let ts = startTs; ts < frameCount; ++ts) {
         for (let ship of shipProps) {
             // 计算Buff
             let buffStat = mergeBuffs(ship.buffs, { ts: ts, readyAt: ship.readyAt, useAt: ship.useAt });
@@ -453,7 +451,6 @@ function loadShipEvents(fleet: Fleet) {
                     cdType: ship.cdType,
                     readyTs: ts / FPS,
                     useTs: 0,
-                    duration: 0,
                 }
             }
             // 如果当前舰娘在等待使用武器
@@ -463,15 +460,12 @@ function loadShipEvents(fleet: Fleet) {
                     ship.useAt.push(ts);
                     curEvent[ship.id].useTs = ts / FPS;
                     events.push(curEvent[ship.id]);
-                    // events.push((ts / FPS).toFixed(4) + ' ' + ship.refShip.name + ' 使用武器');
-                    // 战列需要在使用武器后开始下一轮装填
                     if (ship.cdType === CDType.BB) {
+                        // 战列将在使用武器后开始下一轮装填
                         ship.progress = 0;
-                        allowWeapon[ship.cdType] = ts + 1.2 * FPS;
-                        curEvent[ship.id].duration = 3;
+                        allowWeapon[ship.cdType] = ts + store.state.config.commonCd.BB * FPS;
                     } else {
-                        allowWeapon[ship.cdType] = ts + 0.5 * FPS;
-                        curEvent[ship.id].duration = 3;
+                        allowWeapon[ship.cdType] = ts + store.state.config.commonCd.CV * FPS;
                     }
                 }
             }
