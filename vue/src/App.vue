@@ -31,7 +31,7 @@ const collapsed = ref(false);
         <n-layout-header class="header-menu" bordered>
           <div class="ui-logo">
             <img
-              src="/favicon.ico"
+              src="/img/logo.png"
               alt="碧蓝航线CD计算工具"
             />
             <n-text>碧蓝航线CD计算工具·Beta</n-text>
