@@ -97,6 +97,7 @@ function setShip(ship: Ship | null) {
         }
     } else {
         target.id = null;
+        target.buffs = [];
     }
     target.equips = [0, 0, 0, 0, 0];
     showShipSelector.value = false;
