@@ -78,7 +78,12 @@ const bindOptions = computed(() => {
             <template v-else>
                 <!-- weapon -->
                 <n-form-item label="目标" label-placement="left" path="name">
-                    <n-select style="min-width: 100px;" :options="bindOptions" v-model:value="value.weapon.bindId"></n-select>
+                    <n-select
+                        :fallback-option="() => false"
+                        style="min-width: 100px;"
+                        :options="bindOptions"
+                        v-model:value="value.weapon.bindId"
+                    ></n-select>
                 </n-form-item>
                 <n-form-item label="延迟" label-placement="left" path="name">
                     <n-input-number v-model:value="value.weapon.delay"></n-input-number>
@@ -87,7 +92,6 @@ const bindOptions = computed(() => {
                     <n-input-number v-model:value="value.weapon.duration"></n-input-number>
                 </n-form-item>
             </template>
-
             <n-button type="error" @click="emit('delete')">删除</n-button>
         </n-space>
     </n-form>
