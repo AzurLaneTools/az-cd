@@ -16,9 +16,9 @@
 }
 </style>
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { loadShipEvents } from '../utils/formulas';
-import { AlignConfig, Fleet } from '../utils/types';
+import { TargetConfig, Fleet } from '../utils/types';
 
 const props = defineProps<{
     fleet: Fleet
@@ -36,6 +36,7 @@ import {
 } from 'echarts/components';
 import { CustomChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
+import store from '../utils/store';
 
 echarts.use([
     TitleComponent,
@@ -56,6 +57,7 @@ var config = {
     selected: [0, 0]
 };
 
+let glbConf = computed(() => store.state.config);
 
 function renderItem(params: any, api: any) {
     var categoryIndex = api.value(0);
@@ -145,7 +147,7 @@ const baseOption = {
         data: []
     },
 };
-function buildTargetData(target: AlignConfig, shipEvents?: any) {
+function buildTargetData(target: TargetConfig, shipEvents?: any) {
     let res: object[] = [];
     if (target.type === 'schedule') {
         let [interval, duration, start] = target.schedule;
@@ -225,14 +227,16 @@ function setChartOption() {
             axisY[evt.name] = 1;
             categories.push(evt.name);
         }
+        let start = evt.useTs + glbConf.value.delay[evt.cdType];
+        let duration = glbConf.value.duration[evt.cdType];
         let data = {
             name: evt.name,
             id: evt.shipId,
             value: [
                 evt.name,
-                evt.useTs,
-                evt.useTs + evt.duration,
-                evt.duration,
+                start,
+                start + duration,
+                duration,
             ],
         }
         chartData.push(data);

@@ -1,3 +1,8 @@
+enum CDType {
+    BB = 'BB',
+    CV = 'CV',
+}
+
 enum BuffType {
     // 添加装填值
     ReloadAdd = 'ReloadAdd',
@@ -162,13 +167,21 @@ interface Fleet {
     targets: TargetConfig[],
 }
 
+interface ShipEvent {
+    shipId: number | string,
+    name: string,
+    cdType: CDType,
+    readyTs: number,
+    useTs: number,
+}
+
 export {
     ShipType,
     EquipType,
     EquipTemplate,
     ShipTemplate,
     Ship,
-    TargetConfig as AlignConfig,
+    TargetConfig,
     FleetShip,
     Fleet,
     Tech,
@@ -180,4 +193,6 @@ export {
     BuffTemplate,
     TargetSelector,
     CdBuffData,
+    ShipEvent,
+    CDType,
 }

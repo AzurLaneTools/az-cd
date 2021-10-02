@@ -24,7 +24,12 @@ const store: {
         ships: { [key: string]: Ship },
         fleets: Fleet[],
         fleetIdx: number,
-        ignoreCommonEquips: boolean,
+        config: {
+            ignoreCommonEquips: boolean,
+            delay: { enter: number, CV: number, BB: number },
+            duration: { CV: number, BB: number },
+            commonCd: { CV: number, BB: number },
+        }
     },
     chooseFleet: (id: number) => void,
     addShip: (templateId: number) => Ship,
@@ -43,13 +48,18 @@ const store: {
         shipId: '',
         fleets: [],
         fleetIdx: 0,
-        ignoreCommonEquips: true,
+        config: {
+            ignoreCommonEquips: true,
+            delay: { enter: 1.5, CV: 3.4, BB: 1.2 },
+            duration: { CV: 1, BB: 3.2 },
+            commonCd: { CV: 0.6, BB: 1.2 },
+        }
     }),
     chooseFleet(id: number) {
-        this.state.fleetIdx = id;
+        store.state.fleetIdx = id;
     },
     addShip(templateId: number) {
-        const template = this.state.shipTemplates[templateId];
+        const template = store.state.shipTemplates[templateId];
         console.log('addShip', templateId, template);
         let newShip: Ship = {
             id: uuid(),
@@ -61,12 +71,12 @@ const store: {
             reload: 0,
         }
         newShip.reload = getRawReload(newShip)
-        this.state.ships[newShip.id] = newShip;
+        store.state.ships[newShip.id] = newShip;
         return newShip;
     },
     removeShip(shipId: string) {
-        delete this.state.ships[shipId];
-        for (let fleet of this.state.fleets) {
+        delete store.state.ships[shipId];
+        for (let fleet of store.state.fleets) {
             for (let ship of fleet.ships) {
                 if (ship.id === shipId) {
                     ship.id = null;
@@ -76,11 +86,11 @@ const store: {
         }
     },
     removeFleet(idx: number) {
-        this.state.fleets.splice(idx, 1);
-        if (this.state.fleetIdx === idx && idx > 0) {
-            --this.state.fleetIdx
+        store.state.fleets.splice(idx, 1);
+        if (store.state.fleetIdx === idx && idx > 0) {
+            --store.state.fleetIdx
         }
-        if (this.state.fleets.length === 0) {
+        if (store.state.fleets.length === 0) {
             this.addFleet()
         }
     },
@@ -89,7 +99,7 @@ const store: {
         let newShip = () => { return { id: null, equips: [], extraBuff: { ReloadAddRatio: 0, CDAddRatio: 0 } } };
         let fleet: Fleet = {
             id: uuid(),
-            name: '舰队配置-' + fid.substr(0, 4),
+            name: '新舰队配置-' + (new Date()).toLocaleString(),
             ships: [],
             buffs: [],
             config: {
@@ -102,24 +112,26 @@ const store: {
         for (let i = 0; i < 3; ++i) {
             fleet.ships.push(newShip());
         }
-        this.state.fleets.push(fleet);
-        this.state.fleetIdx = this.state.fleets.length - 1;
-        console.log('add Fleet', this.state.fleetIdx);
-        return this.state.fleets[this.state.fleetIdx];
+        store.state.fleets.push(fleet);
+        store.state.fleetIdx = store.state.fleets.length - 1;
+        console.log('add Fleet', store.state.fleetIdx);
+        return store.state.fleets[store.state.fleetIdx];
     },
     copyFleet() {
-        let newFleet = JSON.parse(JSON.stringify(this.state.fleets[this.state.fleetIdx]));
+        let newFleet = JSON.parse(JSON.stringify(store.state.fleets[store.state.fleetIdx]));
         newFleet.id = uuid();
         newFleet.name = newFleet.name + ' 复制'
-        this.state.fleets.push(newFleet);
-        this.state.fleetIdx = this.state.fleets.length - 1;
-        return this.state.fleets[this.state.fleetIdx];
+        store.state.fleets.push(newFleet);
+        store.state.fleetIdx = store.state.fleets.length - 1;
+        return store.state.fleets[store.state.fleetIdx];
     },
     persist() {
-        localStorage.setItem('STORE', JSON.stringify(this.state));
+        let json = JSON.stringify(store.state);
+        console.log('保存数据', store.state, json)
+        localStorage.setItem('STORE', json);
     },
     setup() {
-        if (this.state.fleets.length === 0) {
+        if (store.state.fleets.length === 0) {
             this.addFleet();
         }
         loadShipTemplates().then((data) => {
@@ -130,31 +142,31 @@ const store: {
                 storedData.shipTemplates = data;
                 for (let key in storedData) {
                     // @ts-ignore
-                    this.state[key] = storedData[key];
+                    store.state[key] = storedData[key];
                 }
             } catch (e) {
                 console.log('Load failed', e);
                 storedJson = null;
                 this.addFleet();
             }
-            this.state.shipTemplates = data;
+            store.state.shipTemplates = data;
             if (!storedJson) {
-                console.log('shipTemplates updated', this.state.shipTemplates);
+                console.log('shipTemplates updated', store.state.shipTemplates);
                 this.addShip(30708);
             }
 
-            for (let fleet of this.state.fleets) {
+            for (let fleet of store.state.fleets) {
                 if (!fleet.targets) {
                     fleet.targets = [];
                 }
             }
         });
         loadEquips().then((data) => {
-            this.state.equips = data;
+            store.state.equips = data;
         })
     }
 }
 
-store.setup()
-window.addEventListener('beforeunload', () => { store.persist() })
+store.setup();
+window.addEventListener('beforeunload', store.persist);
 export default store;

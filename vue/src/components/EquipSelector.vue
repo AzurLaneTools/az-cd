@@ -34,7 +34,7 @@ function getOptions(idx: number) {
     let allow = shipTemplate.equipSlots[idx];
     for (let equipId in store.state.equips) {
         let equip = store.state.equips[equipId];
-        if (store.state.ignoreCommonEquips && equip.rarity <= 3) {
+        if (store.state.config.ignoreCommonEquips && equip.rarity <= 3) {
             continue
         }
         if (
