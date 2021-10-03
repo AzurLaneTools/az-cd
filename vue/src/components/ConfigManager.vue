@@ -48,6 +48,12 @@
         <n-form-item label-placement="left" :show-feedback="false">
             <n-button @click="resetAllData()">重置全部数据</n-button>
         </n-form-item>
+        <div>
+            项目代码已发布在Github:
+            <a href="https://github.com/AzurLaneTools/AzurLaneCDTool" target="_blank">AzurLaneTools/AzurLaneCDTool</a>.
+            <br />
+            使用中有相关问题, 可以<a href="https://github.com/AzurLaneTools/AzurLaneCDTool/issues/new" target="_blank">通过Issue反馈</a>.
+        </div>
     </div>
 </template>
 

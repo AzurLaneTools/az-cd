@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, computed, onMounted } from 'vue'
-import { NButton, NModal, NCard, NInputNumber, NPopselect, NInput, NText, NGrid, NGridItem, NSwitch, NRow, NCol, NFormItem, NSpace, NTag, useMessage, useDialog } from 'naive-ui'
+import { NIcon, NButton, NModal, NCard, NInputNumber, NPopselect, NInput, NText, NGrid, NGridItem, NSwitch, NRow, NCol, NFormItem, NSpace, NTag, useMessage, useDialog } from 'naive-ui'
 
 import { Fleet, Ship, TargetSelector } from '../utils/types'
 import store from '../utils/store'
@@ -71,8 +71,6 @@ const allBuffs = computed(() => {
 })
 
 const ships = computed(() => store.state.ships);
-
-const targetShip = computed(() => fleet.value.ships[targetShipIdx.value]);
 
 function fleetShipFilter(ship: Ship) {
     for (let curShip of fleet.value.ships) {
@@ -145,6 +143,8 @@ const knownSkills = computed(() => {
     }
     return skills
 })
+
+const showTargetHelp = ref(false);
 </script>
 
 <template>
@@ -193,7 +193,26 @@ const knownSkills = computed(() => {
             <n-tag v-for="skill of knownSkills">{{ skill.name }}</n-tag>
         </n-space>
         <n-space>
-            对轴目标列表:
+            对轴目标列表
+            <n-icon :size="20" style="cursor: pointer;" @click="showTargetHelp = true">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 0 24 24"
+                >
+                    <g
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M12 17v.01" />
+                        <path d="M12 13.5a1.5 1.5 0 0 1 1-1.5a2.6 2.6 0 1 0-3-4" />
+                    </g>
+                </svg>
+            </n-icon>:
             <n-form-item label="时间" label-placement="left" :show-feedback="false">
                 <n-input-number v-model:value="fleet.config.time"></n-input-number>
             </n-form-item>
@@ -231,6 +250,22 @@ const knownSkills = computed(() => {
                     <ship-card :template="ship.templateId" :name="ship.name"></ship-card>
                 </n-grid-item>
             </n-grid>
+        </n-card>
+    </n-modal>
+    <!-- 帮助界面 -->
+    <n-modal v-model:show="showTargetHelp" display-directive="show">
+        <n-card style="width: 90%;" title="对轴目标说明">
+            固定间隔设置较为直观, 例如海妈旧轴为 20,10,20; 海妈新轴为 20,10,16.
+            <br /><br />
+            绑定武器设置中, 延迟是从使用武器的时间开始计算的, 如果是命中后生效的技能(例如公爵的易伤Buff)需要自行填写命中的延迟时间.
+            <br /><br />
+            自定义设置的格式为任意符号分隔的数字列表, 每两个数字表示一组起止时间.
+            <br />
+            个人简单测试的苍龙Meta轴为(不保证准确性): 0,4;14,16;25,28;37,39;43,50;60,62;69,76
+            <br />
+            如果需要更多数据, 建议参考碧蓝航线Wiki
+            (<a target="_blank" href="https://wiki.biligame.com/blhx/%E4%BD%99%E7%83%ACboss%E6%94%BB%E7%95%A5%E8%A6%81%E7%82%B9">Meta</a> /
+            <a target="_blank" href="https://wiki.biligame.com/blhx/%E5%A4%A7%E8%88%B0%E9%98%9F#.E4.BD.9C.E6.88.98" >大舰队Boss</a>) 或自行录屏分析.
         </n-card>
     </n-modal>
 </template>
