@@ -93,7 +93,10 @@ function trimmedNum(num: string, maxDigits = 3) {
     var text = parseFloat(num).toFixed(maxDigits);
     return text.replace(/0+$/, '').replace(/\.$/, '');
 }
-function timeFormat(num: number) {
+function timeFormat(num: number): string {
+    if (num < 0) {
+        return '-' + timeFormat(-num);
+    }
     var minute = '00' + Math.floor(num / 60);
     minute = minute.substr(minute.length - 2);
     var second = '00' + Math.floor(num % 60);
