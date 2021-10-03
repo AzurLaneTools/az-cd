@@ -1,15 +1,12 @@
 <script lang="ts" setup>
-import { computed, h, ref, watch, watchEffect } from 'vue'
-import { NSelect, NTreeSelect, TreeOption, NRow, NCol, NButton, useMessage, SelectOption } from 'naive-ui'
+import { computed, h, ref, watch } from 'vue'
+import { NSelect, NButton, useMessage, SelectOption } from 'naive-ui'
 
-import { BuffType, CdBuffData, EquipTemplate, EquipType, FleetShip, ShipType, TriggerType } from '../utils/types'
+import { CdBuffData, EquipTemplate, EquipType, FleetShip, ShipType } from '../utils/types'
 import store from '../utils/store';
-import { contains, getEquipReload, getFixedBuffs, getRealCD, getShipCdStats } from '../utils/formulas';
+import { contains, getShipCdStats } from '../utils/formulas';
 import EquipInfo from './EquipInfo.vue'
 import { RequipTypeName } from '../utils/namemap';
-
-const CALCU_LIMIT = 1000;
-const DISP_LIMIT = 100;
 
 const props = defineProps<{
     ship: FleetShip,
@@ -88,6 +85,7 @@ const equipChoices: number[][] = [];
 
 const resultInfo = ref<{ total?: number, desc?: string, updated?: boolean }>({});
 const results = ref<{ [key: string]: any }[]>([]);
+const dispResults = computed(() => results.value.slice(0, store.state.config.limit.display));
 
 function getStatsForChoice(equipIds: number[]) {
     return getShipCdStats({ id: props.ship.id, equips: equipIds, extraBuff: {} }, props.extraBuffStats);
@@ -145,9 +143,9 @@ function updateChoices(idx: number, data: number[]) {
 }
 
 function calculateChoices() {
-    console.log('计算CD', resultInfo.value.total, CALCU_LIMIT)
-    if (resultInfo.value.total && resultInfo.value.total > CALCU_LIMIT) {
-        message.warning('选项数量过多!')
+    console.log('计算CD', resultInfo.value.total, store.state.config.limit.calculate)
+    if (resultInfo.value.total && resultInfo.value.total > store.state.config.limit.calculate) {
+        message.warning('选项数量过多!(当前限制为' + store.state.config.limit.calculate + ')')
         return;
     }
     results.value = loadAllResults();
@@ -200,7 +198,7 @@ function renderLabel(option: SelectOption & { data: EquipTemplate }, selected: b
         <n-button type="primary" @click="calculateChoices()">计算CD</n-button>
         <table>
             <tbody>
-                <tr v-for="c in results?.slice(0, DISP_LIMIT)" @click="emit('select', c.ids)">
+                <tr v-for="c in dispResults" @click="emit('select', c.ids)">
                     <td v-for="equip in c.ids">
                         <equip-info :equip="equip"></equip-info>
                     </td>

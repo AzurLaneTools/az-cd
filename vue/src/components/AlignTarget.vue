@@ -1,14 +1,8 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { TargetConfig, BuffType, CdBuffData, EquipTemplate, EquipType, Fleet, FleetShip, ShipType, TriggerType } from '../utils/types'
+import { TargetConfig, FleetShip } from '../utils/types'
 import { NForm, NFormItem, NInput, NInputNumber, NSelect, NButton, NSpace, SelectOption } from 'naive-ui'
 import store from '../utils/store';
-import { contains, getEquipReload, getFixedBuffs, getRealCD, getShipCdStats } from '../utils/formulas';
-import EquipInfo from './EquipInfo.vue'
-import { RequipTypeName } from '../utils/namemap';
-
-const CALCU_LIMIT = 1000;
-const DISP_LIMIT = 100;
 
 const props = defineProps<{
     value: TargetConfig,
@@ -47,7 +41,7 @@ const bindOptions = computed(() => {
             <n-form-item label="名称" label-placement="left" path="name">
                 <n-input v-model:value="value.name"></n-input>
             </n-form-item>
-            <n-form-item label label-placement="left" path="name">
+            <n-form-item label-placement="left" path="name">
                 <n-select :options="options" v-model:value="value.type"></n-select>
             </n-form-item>
             <template v-if="value.type === 'schedule'">

@@ -33,6 +33,15 @@
                 <n-input-number v-model:value="config.commonCd.BB"></n-input-number>
             </n-form-item>
         </n-space>
+        <n-space>
+            <span>选项数量限制</span>
+            <n-form-item label="最大计算数量" label-placement="left" :show-feedback="false">
+                <n-input-number :min="100" v-model:value="config.limit.calculate"></n-input-number>
+            </n-form-item>
+            <n-form-item label="最大展示数量" label-placement="left" :show-feedback="false">
+                <n-input-number :min="50" v-model:value="config.limit.display"></n-input-number>
+            </n-form-item>
+        </n-space>
         <n-form-item label-placement="left" :show-feedback="false">
             <n-button @click="resetFleetData()">重置舰队数据</n-button>
         </n-form-item>

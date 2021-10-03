@@ -16,6 +16,22 @@ async function loadEquips() {
     return resp.data;
 }
 
+function mergeOption(target: { [key: string]: any }, update: { [key: string]: any }) {
+    for (let key in update) {
+        switch (typeof update[key]) {
+            case 'object':
+                if (typeof target[key] === 'object') {
+                    mergeOption(target[key], update[key]);
+                } else {
+                    target[key] = update[key];
+                }
+                break;
+            default:
+                target[key] = update[key];
+        }
+    }
+}
+
 const store: {
     state: {
         shipTemplates: { [key: number]: ShipTemplate },
@@ -28,6 +44,7 @@ const store: {
             delay: { enter: number, CV: number, BB: number },
             duration: { CV: number, BB: number },
             commonCd: { CV: number, BB: number },
+            limit: { calculate: number, display: number },
         }
     },
     chooseFleet: (id: number) => void,
@@ -52,6 +69,7 @@ const store: {
             delay: { enter: 1.5, CV: 3.4, BB: 1.2 },
             duration: { CV: 1, BB: 3.2 },
             commonCd: { CV: 0.6, BB: 1.2 },
+            limit: { calculate: 1000, display: 100 },
         }
     }),
     chooseFleet(id: number) {
@@ -132,19 +150,15 @@ const store: {
         if (store.state.fleets.length === 0) {
             this.addFleet();
         }
+        try {
+            let storedJson = localStorage.getItem('STORE');
+            let storedData = JSON.parse(storedJson || '');
+            mergeOption(store.state, storedData);
+        } catch (e) {
+            console.log('Load failed', e);
+            this.addFleet();
+        }
         loadShipTemplates().then((data) => {
-            try {
-                let storedJson = localStorage.getItem('STORE');
-                let storedData = JSON.parse(storedJson || '');
-                storedData.shipTemplates = data;
-                for (let key in storedData) {
-                    // @ts-ignore
-                    store.state[key] = storedData[key];
-                }
-            } catch (e) {
-                console.log('Load failed', e);
-                this.addFleet();
-            }
             store.state.shipTemplates = data;
             for (let fleet of store.state.fleets) {
                 if (!fleet.targets) {
