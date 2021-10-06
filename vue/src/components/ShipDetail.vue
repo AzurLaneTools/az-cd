@@ -68,7 +68,7 @@ const reloadHint = computed(() => {
         return '';
     }
     if (refShip.value.mode !== 'auto') {
-        return '手动输入'
+        return '(手动输入)';
     }
     return 'Lv' + refShip.value.lvl + ' ' + refShip.value.intimacy;
 })
@@ -107,14 +107,16 @@ const selectorKey = computed(() => {
                 @click="emit('ship-click')"
             ></ship-card>
             <div style="text-align: center;">
-                面板CD {{ cdStats.dispCD }}
+                {{ reloadHint }}
                 <br />
-                <span :title="reloadHint">
+                <span>
                     装填
                     <span class="white">{{ refShip.reload }}</span>
                     <span class="green" v-if="equipReload > 0">+{{ equipReload }}</span>
                     <span class="blue" v-if="techReload > 0">+{{ techReload }}</span>
                 </span>
+                <br />
+                面板CD {{ cdStats.dispCD }}
                 <br />
             </div>
             <div title="技能Buff(将自动计算装备Buff, 无需手动添加)">
