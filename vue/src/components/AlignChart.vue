@@ -225,6 +225,13 @@ function setChartOption() {
     let axisY: { [key: string]: number } = {};
     let chartData = [];
     categories = [];
+    for (let ship of props.fleet.ships) {
+        if (ship.id) {
+            let name = store.state.ships[ship.id].name;
+            axisY[name] = 1;
+            categories.push(name);
+        }
+    }
     let shipEvents = loadShipEvents(props.fleet);
     for (let evt of shipEvents) {
         if (!axisY[evt.name]) {
