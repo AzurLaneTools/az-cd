@@ -35,6 +35,7 @@ jobs:
         run: |
           cd vue
           yarn build
+          cp ../README.md dist/
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.2.2
