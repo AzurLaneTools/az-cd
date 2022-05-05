@@ -76,6 +76,7 @@ type CdBuffData = {
     ReloadAdd?: number,
     ReloadAddRatio?: number,
     CDAddRatio?: number,
+    FirstCDAddRatio?: number,
 }
 
 interface BuffTemplate {
