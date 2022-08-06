@@ -1585,8 +1585,8 @@
     "ammo": 0,
     "camp": 1,
     "equipCnt": [
-      3,
-      3,
+      4,
+      4,
       1
     ],
     "equipSlots": [
@@ -2763,7 +2763,7 @@
     "ammo": 0,
     "camp": 2,
     "equipCnt": [
-      3,
+      4,
       3,
       1
     ],
@@ -3928,8 +3928,8 @@
     "name": "扶桑(魟).改",
     "rarity": 3,
     "reload": [
-      51,
-      353,
+      46,
+      322,
       0,
       38,
       5
@@ -3976,8 +3976,8 @@
     "name": "山城(鲼).改",
     "rarity": 3,
     "reload": [
-      51,
-      353,
+      46,
+      322,
       0,
       38,
       5
@@ -4020,12 +4020,12 @@
     ],
     "id": 30503,
     "img": "/img/squareicon/yishi.png",
-    "match": "伊势|鳌|yishi|ao",
-    "name": "伊势(鳌)",
+    "match": "伊势 改|鳌 改|yishi gai|ao gai",
+    "name": "伊势(鳌).改",
     "rarity": 3,
     "reload": [
-      52,
-      361,
+      47,
+      329,
       0,
       39,
       0
@@ -4074,12 +4074,12 @@
     ],
     "id": 30504,
     "img": "/img/squareicon/rixiang.png",
-    "match": "日向|螯|rixiang|ao",
-    "name": "日向(螯)",
+    "match": "日向 改|螯 改|rixiang gai|ao gai",
+    "name": "日向(螯).改",
     "rarity": 3,
     "reload": [
-      52,
-      361,
+      47,
+      329,
       0,
       39,
       0
