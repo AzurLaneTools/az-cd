@@ -149,6 +149,11 @@ function getAllStatsData(equipIds: number[], buffStats: CdBuffData, ship: ShipTe
     return res;
 }
 
+// 是否为战列类型(包括战列、战巡、航战)
+function isBB(typ: ShipType) {
+    return typ === ShipType.BB || typ === ShipType.BC || typ == ShipType.BBCV
+}
+
 function getShipCdStats(fShip: FleetShip, extraBuffStats: CdBuffData) {
     if (!fShip.id) {
         return {};
@@ -167,7 +172,7 @@ function getShipCdStats(fShip: FleetShip, extraBuffStats: CdBuffData) {
     let realReload = dispReload * (1 + ((addReload.ReloadAddRatio || 0) / 100));
     stats.reload = { base: shipInfo.reload, equip: equipReload, extra: addReload, real: realReload };
     let equipCd = 0;
-    if (shipTempl.type === ShipType.BB || shipTempl.type === ShipType.BC) {
+    if (isBB(shipTempl.type)) {
         if (fShip.equips[0] === 0) {
             return stats;
         }
@@ -205,7 +210,10 @@ function contains(arr: any[], target: any) {
 
 
 function getTechReload(tech: { BB: number, CV: number, CVL: number }, shipType?: ShipType) {
-    if (shipType === ShipType.BB || shipType === ShipType.BC) {
+    if (!shipType) {
+        return 0;
+    }
+    if (isBB(shipType)) {
         return tech.BB
     }
     if (shipType === ShipType.CV) {
@@ -350,10 +358,7 @@ function loadShipEvents(fleet: Fleet): ShipEvent[] {
         }
         let refShip = store.state.ships[ship.id];
         let shipTempl = store.state.shipTemplates[refShip.templateId];
-        let cdType = CDType.BB;
-        if (shipTempl.type === ShipType.CV || shipTempl.type === ShipType.CVL) {
-            cdType = CDType.CV;
-        }
+        let cdType = isBB(shipTempl.type) ? CDType.BB : CDType.CV;
         let p: {
             id: string,
             ship: FleetShip,
@@ -488,4 +493,4 @@ function loadShipEvents(fleet: Fleet): ShipEvent[] {
     return events;
 }
 
-export { getRawReload, contains, getEquipReload, getRealCD, getTechReload, getFixedBuffs, getShipCdStats, matchBuffTarget, loadShipEvents, CDType }
+export { getRawReload, contains, getEquipReload, getRealCD, getTechReload, getFixedBuffs, getShipCdStats, matchBuffTarget, loadShipEvents, CDType, isBB }

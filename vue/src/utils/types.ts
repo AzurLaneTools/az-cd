@@ -32,6 +32,7 @@ enum ShipType {
     BB = 5,
     CVL = 6,
     CV = 7,
+    BBCV = 10,
 }
 
 enum TargetSelector {
