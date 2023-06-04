@@ -17,3 +17,5 @@ node_modules
 # build
 /build
 /resources/cache/
+/http_cache
+/archive
