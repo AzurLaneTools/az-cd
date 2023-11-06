@@ -4,7 +4,7 @@ import { NSelect, NButton, useMessage, SelectOption } from 'naive-ui'
 
 import { CdBuffData, EquipTemplate, EquipType, FleetShip, ShipType } from '../utils/types'
 import store from '../utils/store';
-import { contains, getShipCdStats, isBB } from '../utils/formulas';
+import { contains, getShipCdStats } from '../utils/formulas';
 import EquipInfo from './EquipInfo.vue'
 import { RequipTypeName } from '../utils/namemap';
 
@@ -26,14 +26,9 @@ console.log('shipInfo', shipInfo);
 const shipTemplate = store.state.shipTemplates[shipInfo.templateId];
 console.log('shipTemplate', shipTemplate);
 
-
-function getOptions(idx: number): SelectOption[] {
-    let allow = shipTemplate.equipSlots[idx];
-    // 禁用航战的1号装备栏
-    if (shipTemplate.type === ShipType.BBCV && idx == 1) {
-        return [];
-    }
+function getOptions(idx: number) {
     let result = [];
+    let allow = shipTemplate.equipSlots[idx];
     for (let equipId in store.state.equips) {
         let equip = store.state.equips[equipId];
         if (store.state.config.ignoreCommonEquips && equip.rarity <= 3) {
@@ -44,12 +39,12 @@ function getOptions(idx: number): SelectOption[] {
             (
                 idx === 3 &&
                 equip.type === EquipType.auxiliaryCV &&
-                !isBB(shipTemplate.type)
+                (shipTemplate.type === ShipType.CV || shipTemplate.type === ShipType.CVL)
             ) ||
             (
                 idx >= 3 &&
                 equip.type === EquipType.auxiliaryBB &&
-                isBB(shipTemplate.type)
+                (shipTemplate.type === ShipType.BB || shipTemplate.type === ShipType.BC)
             )
         ) {
             let name = equip.name + ' T' + equip.tech;
@@ -184,10 +179,21 @@ function renderLabel(option: SelectOption & { data: EquipTemplate }, selected: b
 
 <template>
     <div>
-        <n-select v-for="idx in [0, 1, 2, 3, 4]" multiple cascade checkable filterable default-expand-all
-            check-strategy="child" :default-value="equipChoices[idx]" @update:value="updateChoices(idx, $event)"
-            :options="filteredOptions[idx]" max-tag-count="responsive" :disabled="filteredOptions[idx].length === 0"
-            :render-label="renderLabel" />
+        <n-select
+            v-for="idx in [0, 1, 2, 3, 4]"
+            multiple
+            cascade
+            checkable
+            filterable
+            default-expand-all
+            check-strategy="child"
+            :default-value="equipChoices[idx]"
+            @update:value="updateChoices(idx, $event)"
+            :options="filteredOptions[idx]"
+            max-tag-count="responsive"
+            :disabled="filteredOptions[idx].length === 0"
+            :render-label="renderLabel"
+        />
         总选项数量: {{ resultInfo.desc }}={{ resultInfo.total }}
         <n-button type="primary" @click="calculateChoices()">计算CD</n-button>
         <table>

@@ -90,7 +90,6 @@ function getFixedBuffs(buffs: BuffTemplate[], ship: ShipTemplate) {
         ReloadAdd: 0,
         ReloadAddRatio: 0,
         CDAddRatio: 0,
-        FirstCDAddRatio: 0
     }
     for (let buff of buffs) {
         if (getBuffStatus(buff, ship) === 'on') {
@@ -149,11 +148,6 @@ function getAllStatsData(equipIds: number[], buffStats: CdBuffData, ship: ShipTe
     return res;
 }
 
-// 是否为战列类型(包括战列、战巡、航战)
-function isBB(typ: ShipType) {
-    return typ === ShipType.BB || typ === ShipType.BC || typ == ShipType.BBCV
-}
-
 function getShipCdStats(fShip: FleetShip, extraBuffStats: CdBuffData) {
     if (!fShip.id) {
         return {};
@@ -172,7 +166,7 @@ function getShipCdStats(fShip: FleetShip, extraBuffStats: CdBuffData) {
     let realReload = dispReload * (1 + ((addReload.ReloadAddRatio || 0) / 100));
     stats.reload = { base: shipInfo.reload, equip: equipReload, extra: addReload, real: realReload };
     let equipCd = 0;
-    if (isBB(shipTempl.type)) {
+    if (shipTempl.type === ShipType.BB || shipTempl.type === ShipType.BC) {
         if (fShip.equips[0] === 0) {
             return stats;
         }
@@ -210,10 +204,7 @@ function contains(arr: any[], target: any) {
 
 
 function getTechReload(tech: { BB: number, CV: number, CVL: number }, shipType?: ShipType) {
-    if (!shipType) {
-        return 0;
-    }
-    if (isBB(shipType)) {
+    if (shipType === ShipType.BB || shipType === ShipType.BC) {
         return tech.BB
     }
     if (shipType === ShipType.CV) {
@@ -253,10 +244,6 @@ function checkRemoveTrigger(status: EmulatorShipStatus, trigger?: TriggerDef) {
 
 function checkTrigger(status: EmulatorShipStatus, buff: BuffTemplate) {
     if (!buff.trigger) {
-        return false;
-    }
-    if (buff.trigger.type === TriggerType.Equip) {
-        // 装备效果已经在基础属性中计算, 避免重复计算
         return false;
     }
     if (buff.trigger.type === TriggerType.BattleStart) {
@@ -358,7 +345,10 @@ function loadShipEvents(fleet: Fleet): ShipEvent[] {
         }
         let refShip = store.state.ships[ship.id];
         let shipTempl = store.state.shipTemplates[refShip.templateId];
-        let cdType = isBB(shipTempl.type) ? CDType.BB : CDType.CV;
+        let cdType = CDType.BB;
+        if (shipTempl.type === ShipType.CV || shipTempl.type === ShipType.CVL) {
+            cdType = CDType.CV;
+        }
         let p: {
             id: string,
             ship: FleetShip,
@@ -414,14 +404,6 @@ function loadShipEvents(fleet: Fleet): ShipEvent[] {
         }
         if (ship.extraBuff.CDAddRatio) {
             p.buffs.push({ id: '手动设置的CD Buff', type: BuffType.CDAddRatio, value: -ship.extraBuff.CDAddRatio, trigger: { type: TriggerType.BattleStart }, target: { type: TargetSelector.Self, args: ship.id } })
-        }
-        if (ship.extraBuff.FirstCDAddRatio) {
-            p.buffs.push({
-                id: '手动设置的首轮CD Buff', type: BuffType.CDAddRatio, value: -ship.extraBuff.FirstCDAddRatio,
-                trigger: { type: TriggerType.BattleStart },
-                removeTrigger: { type: TriggerType.WeaponReady },
-                target: { type: TargetSelector.Self, args: ship.id }
-            })
         }
 
         shipProps.push(p);
@@ -493,4 +475,4 @@ function loadShipEvents(fleet: Fleet): ShipEvent[] {
     return events;
 }
 
-export { getRawReload, contains, getEquipReload, getRealCD, getTechReload, getFixedBuffs, getShipCdStats, matchBuffTarget, loadShipEvents, CDType, isBB }
+export { getRawReload, contains, getEquipReload, getRealCD, getTechReload, getFixedBuffs, getShipCdStats, matchBuffTarget, loadShipEvents, CDType }

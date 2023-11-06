@@ -32,7 +32,6 @@ enum ShipType {
     BB = 5,
     CVL = 6,
     CV = 7,
-    BBCV = 10,
 }
 
 enum TargetSelector {
@@ -77,7 +76,6 @@ type CdBuffData = {
     ReloadAdd?: number,
     ReloadAddRatio?: number,
     CDAddRatio?: number,
-    FirstCDAddRatio?: number,
 }
 
 interface BuffTemplate {
