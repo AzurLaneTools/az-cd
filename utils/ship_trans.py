@@ -136,7 +136,20 @@ def get_attr(raw, key):
     code = raw['编号']
     if code.isnumeric():
         code = "N" + code
-    if key in ('耐久', '装填', '炮击', '雷击', '机动', '防空', '航空', '反潜',) and code in attrs:
+    if (
+        key
+        in (
+            '耐久',
+            '装填',
+            '炮击',
+            '雷击',
+            '机动',
+            '防空',
+            '航空',
+            '反潜',
+        )
+        and code in attrs
+    ):
         data = attrs[code]
         lvl = 120
         val = (

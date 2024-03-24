@@ -9,13 +9,11 @@ class EnumMap(object):
         self.inv_data = inv_data
 
     def __getitem__(self, key):
-        """从名称获取编号
-        """
+        """从名称获取编号"""
         return self.data[key]
 
     def get(self, key):
-        """从编号获取名称, 或者从名称获取编号
-        """
+        """从编号获取名称, 或者从名称获取编号"""
         if key in self.data:
             return self.data[key]
         if key in self.inv_data:
@@ -23,8 +21,7 @@ class EnumMap(object):
         raise KeyError(key)
 
     def inv(self, key):
-        """从编号获取名称
-        """
+        """从编号获取名称"""
         return self.inv_data[key]
 
     def __repr__(self) -> str:
@@ -33,20 +30,17 @@ class EnumMap(object):
     __str__ = __repr__
 
     def __contains__(self, other):
-        """检查指定值是否是已知的编号或名称
-        """
+        """检查指定值是否是已知的编号或名称"""
         return other in self.data or other in self.inv_data
 
     def force_repr(self, key):
-        """将非标准的名称或者编号转化为统一的名称
-        """
+        """将非标准的名称或者编号转化为统一的名称"""
         if key in self.data:
             key = self.data[key]
         return self.inv_data[key]
 
     def force_data(self, key):
-        """将非标准的名称或者编号转化为编号
-        """
+        """将非标准的名称或者编号转化为编号"""
         if key in self.inv_data:
             return key
         return self.data[key]

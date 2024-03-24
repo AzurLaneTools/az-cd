@@ -137,4 +137,3 @@ def get_categorymember_details(category):
     for f in as_completed(fs):
         resp = f.result()
         yield json.loads(resp)
-

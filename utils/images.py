@@ -59,7 +59,9 @@ def crawl_cat_icon():
     for item in items:
         name = item['name'] + '头像.png'
         f = crawl_image(
-            executor, name, 'resources/cache/images/指挥喵头像/%s' % sanitize_filename(name),
+            executor,
+            name,
+            'resources/cache/images/指挥喵头像/%s' % sanitize_filename(name),
         )
         fs.append(f)
     for f in fs:

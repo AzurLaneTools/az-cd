@@ -20,7 +20,10 @@ def get_cat_talents():
                         m = re.search(r'^\[\[File:(.+?)\|.+\]\]\s*(.+)$', cell)
                         src, name = m.groups()
                         talents.append(
-                            {'name': name, 'img': src,}
+                            {
+                                'name': name,
+                                'img': src,
+                            }
                         )
     return talents
 
