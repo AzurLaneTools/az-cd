@@ -20,3 +20,4 @@ node_modules
 /resources/cache/
 /cache
 /vue/public/img/equips
+http_cache/
