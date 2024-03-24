@@ -42,9 +42,11 @@ def load_json(path: str):
     assert len(data) > 1
     return data
 
+
 def load_image(name):
     """TODO: 实现图片获取功能"""
     return None
+
 
 new_version = load_data('version.txt').decode()
 # 舰娘数据
@@ -487,6 +489,7 @@ def load_equip_template():
             print('缺少装备图片', src_path, equip['name'])
     return result
 
+
 def main():
     try:
         info = Path('vue/public/data/version.txt').read_text()
@@ -508,6 +511,7 @@ def main():
         json.dumps(equip_result, ensure_ascii=False, indent=2, sort_keys=True)
     )
     Path('vue/public/data/version.txt').write_text(new_version)
+
 
 if __name__ == '__main__':
     main()
