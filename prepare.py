@@ -441,8 +441,8 @@ def load_equip_template():
             ],
         }
 
-    # 归航信标; 高性能火控雷达
-    for key in (680, 1260):
+    # 归航信标; 高性能火控雷达; 航空整备小组
+    for key in (680, 1260, 3940):
         edata = equip_data[str(key)]
         result[edata['name']] = {
             'id': key,
@@ -474,6 +474,17 @@ def load_equip_template():
             "removeTrigger": {"type": "WeaponReady"},
         }
     ]
+
+    result['航空整备小组']['type'] = 101
+    result['航空整备小组']['buffs'] = [
+        {
+            "type": "CDAddRatio",
+            'desc': '空中支援加载时间增加4%',
+            "value": 4,
+            "trigger": {"type": "BattleStart"},
+        }
+    ]
+
     result = {r['id']: r for r in result.values()}
     for equip in result.values():
         equip: dict
