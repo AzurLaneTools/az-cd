@@ -124,13 +124,11 @@ def get_trans_info(grp):
 
 
 def get_strength_reload(strength_id: str):
-    # 共用的基础增幅
-    try:
-        delta = ship_strengthen[strength_id]['durability'][4]
-    except:
-        delta = 0
+    # 强化增加的装填值
+
     # 蓝图舰娘
     if strength_id in ship_data_blueprint:
+        delta = 0
         extra_delta = 0
         bpdata = ship_data_blueprint[strength_id]
         effects = bpdata['strengthen_effect'] + bpdata['fate_strengthen']
@@ -150,11 +148,10 @@ def get_strength_reload(strength_id: str):
             )
         )
         return delta
-    # 强化增加的装填值
-    # 有ship_strengthen定义的舰娘
 
+    # META舰娘
     if strength_id in ship_strengthen_meta:
-        # META舰娘
+        delta = 0
         st = ship_strengthen_meta[strength_id]
         for rid in st['repair_reload']:
             effect = meta_repair[str(rid)]['effect_attr']
@@ -166,6 +163,13 @@ def get_strength_reload(strength_id: str):
                 if effect[0] == 'reload':
                     delta += effect[1]
         return delta
+
+    # 其他舰娘（有ship_strengthen定义）
+    try:
+        delta = ship_strengthen[strength_id]['durability'][4]
+    except:
+        delta = 0
+
     return delta
 
 
