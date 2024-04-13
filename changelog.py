@@ -47,7 +47,7 @@ def show_changelog():
     try:
         prev_version = sp.check_output(
             ['git', 'show', 'HEAD:vue/public/data/version.txt']
-        )
+        ).decode()
     except Exception:
         prev_version = 'unknown'
     version = Path('vue/public/data/version.txt').read_text()
