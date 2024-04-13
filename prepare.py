@@ -43,7 +43,7 @@ def load_json(path: str):
     return data
 
 
-def load_image(name):
+def load_image(typ, name):
     """TODO: 实现图片获取功能"""
     return None
 
@@ -307,7 +307,7 @@ def load_ship_template():
         img_path = Path("vue/public" + result[grp]['img'])
         if img_path.exists():
             continue
-        img_data = load_image(img_name)
+        img_data = load_image('suareicons', img_name)
         if img_data is None:
             print(f'缺少舰娘图片{dst_img_name}({img_name})')
             continue
@@ -490,18 +490,16 @@ def load_equip_template():
         equip: dict
         # 保存图片
         icon = equip.pop('icon')
-        src_path = f'equips/{icon}.webp'
-
-        equip['img'] = '/img/equips/' + icon + '.png'
-        img_path = Path("vue/public" + equip['img'])
+        equip['img'] = dst_image_name = f'/img/equips/{icon}.png'
+        img_path = Path("vue/public" + dst_image_name)
         if img_path.exists():
             continue
-        src_data = get_png_image(src_path)
+        src_data = load_image('equips', icon)
         if src_data is not None:
             img_path.parent.mkdir(parents=True, exist_ok=True)
             img_path.write_bytes(src_data)
         else:
-            print('缺少装备图片', src_path, equip['name'])
+            print('缺少装备图片', icon, equip['name'])
     return result
 
 
