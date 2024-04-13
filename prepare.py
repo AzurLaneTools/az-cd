@@ -419,17 +419,17 @@ def load_equip_template():
     ]
 
     ebase = equip_data['2240']
+    assert base_map[2240][-1] == '2251', base_map[2240]
     for plus in range(12):
         # 链式装弹机 +0~11
         eid = 2240 + plus
-
         edata = equip_data[str(eid)]
         result[eid] = {
             'id': eid,
             'icon': ebase['icon'],
             'name': '链式装弹机+%d' % plus,
             'type': 102,
-            'max': base_map[key][-1],
+            'max': '2251',
             'rarity': ebase['rarity'],
             'tech': ebase['tech'],
             "buffs": [
