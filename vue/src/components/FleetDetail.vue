@@ -187,6 +187,12 @@ const showTargetHelp = ref(false);
             <n-form-item label="战列装填" label-placement="left" :show-feedback="false">
                 <n-input-number v-model:value="fleet.tech.BB"></n-input-number>
             </n-form-item>
+            <n-form-item label="战巡装填" label-placement="left" :show-feedback="false">
+                <n-input-number v-model:value="fleet.tech.BC"></n-input-number>
+            </n-form-item>
+            <n-form-item label="航战装填" label-placement="left" :show-feedback="false">
+                <n-input-number v-model:value="fleet.tech.BV"></n-input-number>
+            </n-form-item>
         </n-space>
         <n-space v-if="knownSkills.length > 0" style="background-color: antiquewhite;">
             <n-text>将自动计算舰娘技能:</n-text>
@@ -269,3 +275,9 @@ const showTargetHelp = ref(false);
         </n-card>
     </n-modal>
 </template>
+
+<style scoped>
+.n-input-number {
+    width: 90px;
+}
+</style>
