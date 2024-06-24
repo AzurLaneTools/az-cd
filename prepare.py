@@ -376,6 +376,8 @@ def load_equip_template():
         7,
         8,
         9,
+        # 水上机12
+        12,
     )
     name_rarity_map = {}
     result = {}
