@@ -516,14 +516,16 @@ def main():
     ship_result = load_ship_template()
     print(len(ship_result))
     Path('vue/public/data/ships.json').write_text(
-        json.dumps(ship_result, ensure_ascii=False, indent=2, sort_keys=True)
+        json.dumps(ship_result, ensure_ascii=False, indent=2, sort_keys=True),
+        newline='\n',
     )
     equip_result = load_equip_template()
     print(len(equip_result))
     Path('vue/public/data/equips.json').write_text(
-        json.dumps(equip_result, ensure_ascii=False, indent=2, sort_keys=True)
+        json.dumps(equip_result, ensure_ascii=False, indent=2, sort_keys=True),
+        newline='\n',
     )
-    Path('vue/public/data/version.txt').write_text(new_version)
+    Path('vue/public/data/version.txt').write_text(new_version, newline='\n')
 
 
 if __name__ == '__main__':
