@@ -47,18 +47,21 @@ const bindOptions = computed(() => {
             <template v-if="value.type === 'schedule'">
                 <n-form-item label="间隔" label-placement="left" path="name">
                     <n-input-number
+                        key="schedule[0]"
                         :default-value="value.schedule[0]"
                         @update-value="value.schedule[0] = $event || 0"
                     ></n-input-number>
                 </n-form-item>
                 <n-form-item label="持续" label-placement="left" path="name">
                     <n-input-number
+                        key="schedule[1]"
                         :default-value="value.schedule[1]"
                         @update-value="value.schedule[1] = $event || 0"
                     ></n-input-number>
                 </n-form-item>
                 <n-form-item label="首轮CD" label-placement="left" path="name">
                     <n-input-number
+                        key="schedule[2]"
                         :default-value="value.schedule[2]"
                         @update-value="value.schedule[2] = $event || 0"
                     ></n-input-number>
