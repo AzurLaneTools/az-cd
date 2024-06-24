@@ -52,6 +52,8 @@ enum EquipType {
     torpedo_bomber = 8,
     // Dive Bomber 轰炸机
     dive_bomber = 9,
+    // Reconnaissance 水上机
+    reconnaissance = 12,
     // Auxiliary 设备
     auxiliaryCV = 101,
     auxiliaryBB = 102,
