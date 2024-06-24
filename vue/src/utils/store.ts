@@ -6,13 +6,13 @@ import { getRawReload } from "./formulas";
 
 
 async function loadShipTemplates() {
-    let resp = await axios.get('/data/ships.json')
+    let resp = await axios.get('./data/ships.json')
     console.log('axios', resp);
     return resp.data;
 }
 
 async function loadEquips() {
-    let resp = await axios.get('/data/equips.json');
+    let resp = await axios.get('./data/equips.json');
     return resp.data;
 }
 
@@ -174,6 +174,9 @@ const store: {
         }
         loadShipTemplates().then((data) => {
             store.state.shipTemplates = data;
+            Object.values(store.state.shipTemplates).forEach(tmpl => {
+                tmpl.img = tmpl.img.replace(/^(\/+)/, './')
+            })
             for (let fleet of store.state.fleets) {
                 if (!fleet.targets) {
                     fleet.targets = [];
@@ -182,6 +185,9 @@ const store: {
         });
         loadEquips().then((data) => {
             store.state.equips = data;
+            Object.values(store.state.equips).forEach(tmpl => {
+                tmpl.img = tmpl.img.replace(/^(\/+)/, './')
+            })
         })
     }
 }
