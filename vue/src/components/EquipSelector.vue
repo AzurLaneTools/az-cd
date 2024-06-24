@@ -34,6 +34,9 @@ function getOptions(idx: number) {
         if (store.state.config.ignoreCommonEquips && equip.rarity <= 3) {
             continue
         }
+        if (equip.ship_type_forbidden?.includes(shipTemplate.type)) {
+            continue
+        }
         if (
             contains(allow, equip.type) ||
             (

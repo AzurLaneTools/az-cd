@@ -120,6 +120,7 @@ interface EquipTemplate {
     tech: number,
     img: string,
     cd?: number,
+    ship_type_forbidden?: ShipType[],
     allowShipTypes?: ShipType[],
     lvl?: number,
     buffs?: BuffTemplate[],
