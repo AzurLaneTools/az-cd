@@ -1,5 +1,5 @@
 import store from "./store";
-import { CDType, ShipEvent, BuffTemplate, BuffType, CdBuffData, Fleet, FleetShip, Ship, ShipTemplate, ShipType, TargetDef, TargetSelector, TriggerDef, TriggerType } from "./types";
+import { CDType, ShipEvent, BuffTemplate, BuffType, CdBuffData, Fleet, FleetShip, Ship, ShipTemplate, ShipType, TargetDef, TargetSelector, TriggerDef, TriggerType, Tech } from "./types";
 
 function getRealCD(rawCd: number, reload: number) {
     // slot0 / uv0.K1 / math.sqrt((slot1 + uv0.K2) * uv0.K3)
@@ -166,7 +166,7 @@ function getShipCdStats(fShip: FleetShip, extraBuffStats: CdBuffData) {
     let realReload = dispReload * (1 + ((addReload.ReloadAddRatio || 0) / 100));
     stats.reload = { base: shipInfo.reload, equip: equipReload, extra: addReload, real: realReload };
     let equipCd = 0;
-    if (shipTempl.type === ShipType.BB || shipTempl.type === ShipType.BC) {
+    if (shipTempl.type === ShipType.BB || shipTempl.type === ShipType.BC || shipTempl.type === ShipType.BV) {
         if (fShip.equips[0] === 0) {
             return stats;
         }
@@ -203,9 +203,15 @@ function contains(arr: any[], target: any) {
 }
 
 
-function getTechReload(tech: { BB: number, CV: number, CVL: number }, shipType?: ShipType) {
-    if (shipType === ShipType.BB || shipType === ShipType.BC) {
+function getTechReload(tech: Tech, shipType?: ShipType) {
+    if (shipType === ShipType.BB) {
         return tech.BB
+    }
+    if (shipType === ShipType.BC) {
+        return tech.BC
+    }
+    if (shipType === ShipType.BV) {
+        return tech.BV
     }
     if (shipType === ShipType.CV) {
         return tech.CV
