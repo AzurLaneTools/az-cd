@@ -129,6 +129,9 @@ const selectorKey = computed(() => {
                 <n-form-item label="射速+" label-placement="left" :show-feedback="false">
                     <n-input-number v-model:value="ship.extraBuff.CDAddRatio" style="width: 100px;"></n-input-number>%
                 </n-form-item>
+                <n-form-item label="首轮+" label-placement="left" :show-feedback="false">
+                    <n-input-number v-model:value="ship.extraBuff.FirstCDAddRatio" style="width: 100px;"></n-input-number>%
+                </n-form-item>
             </div>
             <div>实际CD: {{ cdStats.realCD && cdStats.realCD.toFixed(4) }}</div>
             <div @click="showModal = true" style="cursor: pointer;">
