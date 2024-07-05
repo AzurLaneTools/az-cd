@@ -1,0 +1,15 @@
+# `text=auto` 将令 git 自行判断文件是否为文本文件，并对文本文件在 checkin 时执行 newline normalization 操作
+# 参见：https://git-scm.com/docs/gitattributes#Documentation/gitattributes.txt-Settostringvalueauto
+* text=auto
+
+# 以下几句规则并不是很必要，git 通常来说不会将它们误判为文本文件；但也可以为了以防万一而明确列出
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+
+# 更多参考：
+# https://git-scm.com/docs/gitattributes
+# https://docs.github.com/en/get-started/getting-started-with-git/configuring-git-to-handle-line-endings
+# https://rehansaeed.com/gitattributes-best-practices/
+# https://www.aleksandrhovhannisyan.com/blog/crlf-vs-lf-normalizing-line-endings-in-git/
