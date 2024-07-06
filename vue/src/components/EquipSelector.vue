@@ -199,7 +199,7 @@ function renderLabel(option: SelectOption & { data: EquipTemplate }, selected: b
         <table>
             <tbody>
                 <tr v-for="c in dispResults" @click="emit('select', c.ids)">
-                    <td v-for="equip in c.ids">
+                    <td v-for="equip in c.ids" :key="equip">
                         <equip-info :equip="equip"></equip-info>
                     </td>
                     <td>面板CD {{ c.dispCD }}</td>
