@@ -164,7 +164,7 @@ const showTargetHelp = ref(false);
             <n-button type="error" @click="removeFleet()">删除</n-button>
         </n-form-item>
         <!-- 舰娘列表 -->
-        <n-row v-for="ship, idx in fleet.ships" :key="ship.id">
+        <n-row v-for="ship, idx in fleet.ships" :key="ship.id ?? undefined">
             <n-col :span="24">
                 <ship-detail
                     :ship="ship"
