@@ -164,7 +164,7 @@ const showTargetHelp = ref(false);
             <n-button type="error" @click="removeFleet()">删除</n-button>
         </n-form-item>
         <!-- 舰娘列表 -->
-        <n-row v-for="ship, idx in fleet.ships">
+        <n-row v-for="ship, idx in fleet.ships" :key="ship.id ?? undefined">
             <n-col :span="24">
                 <ship-detail
                     :ship="ship"
@@ -227,7 +227,7 @@ const showTargetHelp = ref(false);
             </n-form-item>
             <n-button @click="addAlignTarget()">添加</n-button>
         </n-space>
-        <n-space v-for="value, idx in fleet.targets">
+        <n-space v-for="value, idx in fleet.targets" :key="value.name">
             <align-target
                 :ships="fleet.ships"
                 :value="value"
@@ -248,6 +248,7 @@ const showTargetHelp = ref(false);
                 </n-grid-item>
                 <n-grid-item
                     v-for="ship in ships"
+                    :key="ship.id"
                     :bordered="false"
                     class="ship-card"
                     v-show="fleetShipFilter(ship)"

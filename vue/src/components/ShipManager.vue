@@ -1,8 +1,8 @@
 <template>
     <div style="padding: 20px">
-        <n-row v-for="ship, idx in ships">
+        <n-row v-for="ship, idx in ships" :key="ship.id">
             <n-col :span="21">
-                <ship-basic-info :ship="ship" @update:model-value="ships[ship.id] = $event"></ship-basic-info>
+                <ship-basic-info :key="ship.id" :ship="ship" @update:model-value="ships[ship.id] = $event"></ship-basic-info>
             </n-col>
             <n-col :span="3">
                 <n-button @click="removeShip(ship.id)" type="error">删除</n-button>
@@ -26,6 +26,7 @@
             <n-grid x-gap="2" cols="2 400:3 600:4 800:5 1000:6 1200:12">
                 <n-grid-item
                     v-for="option in options"
+                    :key="option.id"
                     :bordered="false"
                     class="ship-card"
                     v-show="customFilter(option)"

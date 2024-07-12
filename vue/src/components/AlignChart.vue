@@ -10,6 +10,7 @@
     position: fixed !important;
     bottom: 0;
 }
+
 #align-chart {
     width: 100%;
     height: 100%;
@@ -155,6 +156,10 @@ function buildTargetData(target: TargetConfig, shipEvents?: any) {
     let res: object[] = [];
     if (target.type === 'schedule') {
         let [interval, duration, start] = target.schedule;
+        // 避免无限循环. https://github.com/AzurLaneTools/az-cd/issues/9
+        if (!interval || interval <= 0) {
+            return res;
+        }
         for (let ts = start; ts < config.maxDuration; ts += interval) {
             res.push({
                 name: target.name,
