@@ -452,7 +452,7 @@ function loadShipEvents(fleet: Fleet): ShipEvent[] {
             //     console.log(`buffStat@${ts} ${ts / FPS} for ${ship.refShip.name}:`, ship.buffs, buffStat);
             // }
             let realReload = ship.reload * (1 + (buffStat.ReloadAddRatio || 0) / 100);
-            let realCD = getRealCD(ship.rawCD, realReload) * (1 + (buffStat.CDAddRatio || 0) / 100);
+            let realCD = getRealCD(ship.rawCD, realReload) * (1 + Math.max((buffStat.CDAddRatio || 0), -100) / 100);
             let progressPerFrame = 1 / realCD / FPS;
             ship.progress += progressPerFrame;
 
