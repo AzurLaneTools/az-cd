@@ -83,6 +83,22 @@ namecode = load_json("ShareCfg/name_code.json")
 load_phrases_dict({'武藏': [['wǔ'], ['zàng']]})
 
 
+def namecode_repl(m: re.Match):
+    s_id = m.group(1)
+    item = namecode.get(s_id)
+    if item is not None:
+        name = item['name']
+        return name
+    opt_text = m.group(2)
+    if opt_text is not None:
+        return opt_text
+    return m.group(0)
+
+def replace_namecode_template(input: str):
+    output = re.sub(r'\{namecode:(\d+)(?::([^}]*))?\}', namecode_repl, input)
+    return output
+
+
 def get_trans_info(grp):
     """获取改造信息
 
@@ -202,7 +218,7 @@ def get_match_name(name):
 def get_skills(skill_ids):
     results = []
     for skill_id in skill_ids:
-        buff = buffcfg['buff_%s' % skill_id]
+        # buff = buffcfg['buff_%s' % skill_id]
         # print(skill_id)
         skillt = skill_template[str(skill_id)]
         # print('skill_template', skillt)
@@ -215,9 +231,9 @@ def get_skills(skill_ids):
         results.append(
             {
                 'id': skill_id,
-                'name': skillt['name'],
+                'name': replace_namecode_template(skillt['name']),
                 'type': skillt['type'],
-                'desc': desc,
+                'desc': replace_namecode_template(desc),
             }
         )
     return results
