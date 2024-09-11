@@ -47,7 +47,7 @@ function getOptions(idx: number) {
             (
                 idx >= 3 &&
                 equip.type === EquipType.auxiliaryBB &&
-                (shipTemplate.type === ShipType.BB || shipTemplate.type === ShipType.BC || shipTemplate.type === ShipType.BV)
+                (shipTemplate.type === ShipType.BB || shipTemplate.type === ShipType.BC || shipTemplate.type === ShipType.BBV)
             )
         ) {
             let name = equip.name + ' T' + equip.tech;

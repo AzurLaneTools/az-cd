@@ -30,7 +30,7 @@ enum TriggerType {
 enum ShipType {
     BC = 4,
     BB = 5,
-    BV = 10,
+    BBV = 10,
     CVL = 6,
     CV = 7,
 }
@@ -148,7 +148,7 @@ interface FleetShip {
 interface Tech {
     BB: number,
     BC: number,
-    BV: number,
+    BBV: number,
     CV: number,
     CVL: number,
 }

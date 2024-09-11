@@ -125,7 +125,7 @@ const store: {
             tech: {
                 BB: 0,
                 BC: 0,
-                BV: 0,
+                BBV: 0,
                 CV: 0,
                 CVL: 0,
             },
@@ -162,7 +162,7 @@ const store: {
             mergeOption(store.state, storedData);
             // migration: 需要为已创建的舰队补全 BC/BV 的装填值
             store.state.fleets.forEach(fleet => {
-                ;(['BC', 'BV'] as const).forEach(type => {
+                ;(['BC', 'BBV'] as const).forEach(type => {
                     if (typeof fleet.tech[type] !== 'number') {
                         fleet.tech[type] = fleet.tech.BB
                     }
