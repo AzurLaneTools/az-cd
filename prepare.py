@@ -307,7 +307,7 @@ def load_ship_template():
         img_path = Path("vue/public" + result[grp]['img'])
         if img_path.exists():
             continue
-        img_data = load_image('suareicons', img_name)
+        img_data = load_image('squareicon', img_name)
         if img_data is None:
             print(f'缺少舰娘图片{dst_img_name}({img_name})')
             continue
@@ -503,6 +503,14 @@ def load_equip_template():
     return result
 
 
+def tojson(obj, compact=False):
+    if compact:
+        return json.dumps(
+            obj, ensure_ascii=False, sort_keys=True, separators=(',', ':')
+        )
+    return json.dumps(obj, ensure_ascii=False, indent=2, sort_keys=True) + '\n'
+
+
 def main():
     try:
         info = Path('vue/public/data/version.txt').read_text()
@@ -515,17 +523,11 @@ def main():
 
     ship_result = load_ship_template()
     print(len(ship_result))
-    Path('vue/public/data/ships.json').write_text(
-        json.dumps(ship_result, ensure_ascii=False, indent=2, sort_keys=True),
-        newline='\n',
-    )
+    Path('vue/public/data/ships.json').write_text(tojson(ship_result))
     equip_result = load_equip_template()
     print(len(equip_result))
-    Path('vue/public/data/equips.json').write_text(
-        json.dumps(equip_result, ensure_ascii=False, indent=2, sort_keys=True),
-        newline='\n',
-    )
-    Path('vue/public/data/version.txt').write_text(new_version, newline='\n')
+    Path('vue/public/data/equips.json').write_text(tojson(equip_result))
+    Path('vue/public/data/version.txt').write_text(new_version + '\n')
 
 
 if __name__ == '__main__':

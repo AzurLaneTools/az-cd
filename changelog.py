@@ -45,12 +45,14 @@ def get_changes(compare: str, info: str, name_key=None):
 
 def show_changelog():
     try:
-        prev_version = sp.check_output(
-            ['git', 'show', 'HEAD:vue/public/data/version.txt']
-        ).decode()
+        prev_version = (
+            sp.check_output(['git', 'show', 'HEAD:vue/public/data/version.txt'])
+            .decode()
+            .strip()
+        )
     except Exception:
         prev_version = 'unknown'
-    version = Path('vue/public/data/version.txt').read_text()
+    version = Path('vue/public/data/version.txt').read_text().strip()
     header = f'更新数据至{version}版本\n\n{prev_version} -> {version}\n'
     change_ships = get_changes('HEAD:vue/public/data/ships.json', '舰娘', 'name')
     change_equips = get_changes('HEAD:vue/public/data/equips.json', '装备', 'name')
