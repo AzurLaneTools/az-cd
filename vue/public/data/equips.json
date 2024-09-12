@@ -975,6 +975,16 @@
     "tech": 0,
     "type": 4
   },
+  "34333": {
+    "cd": 3398,
+    "id": 34333,
+    "img": "/img/equips/34320.png",
+    "max": "34333",
+    "name": "试作型双联装410mm主炮Mod.A",
+    "rarity": 5,
+    "tech": 0,
+    "type": 4
+  },
   "37047": {
     "cd": 1618,
     "id": 37047,
@@ -1361,6 +1371,26 @@
     "img": "/img/equips/85560.png",
     "max": "85573",
     "name": "试作型VIT-2 (VK-107)",
+    "rarity": 5,
+    "tech": 0,
+    "type": 8
+  },
+  "85613": {
+    "cd": 1759,
+    "id": 85613,
+    "img": "/img/equips/85600.png",
+    "max": "85613",
+    "name": "试作舰载型La-9",
+    "rarity": 6,
+    "tech": 0,
+    "type": 7
+  },
+  "85633": {
+    "cd": 1744,
+    "id": 85633,
+    "img": "/img/equips/85620.png",
+    "max": "85633",
+    "name": "试作型VIT-2（模式调整）",
     "rarity": 5,
     "tech": 0,
     "type": 8
