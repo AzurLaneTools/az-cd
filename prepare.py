@@ -383,6 +383,7 @@ def load_equip_template():
         assert len(base_map[key]) > 1
         base_map[key].sort()
         edata = equip_data[str(key)]
+        edata2 = equip_template[str(key)]
         name = edata['name']
         if edata['type'] not in TARGET_EQUIP_TYPES:
             continue
@@ -402,6 +403,7 @@ def load_equip_template():
             'rarity': edata['rarity'],
             'tech': edata['tech'],
             'cd': wp_prop['reload_max'],
+            'ship_type_forbidden': edata2['ship_type_forbidden'],
         }
 
     # 单独处理几个特殊装备
@@ -419,6 +421,7 @@ def load_equip_template():
     ]
 
     ebase = equip_data['2240']
+    ebase2 = equip_template['2240']
     assert base_map[2240][-1] == '2251', base_map[2240]
     for plus in range(12):
         # 链式装弹机 +0~11
@@ -432,6 +435,7 @@ def load_equip_template():
             'max': '2251',
             'rarity': ebase['rarity'],
             'tech': ebase['tech'],
+            'ship_type_forbidden': ebase2['ship_type_forbidden'],
             "buffs": [
                 {
                     "type": "ReloadAdd",
@@ -444,6 +448,7 @@ def load_equip_template():
     # 归航信标; 高性能火控雷达; 航空整备小组
     for key in (680, 1260, 3940):
         edata = equip_data[str(key)]
+        edata2 = equip_template[str(key)]
         result[edata['name']] = {
             'id': key,
             'icon': edata['icon'],
@@ -452,6 +457,7 @@ def load_equip_template():
             'max': base_map[key][-1],
             'rarity': edata['rarity'],
             'tech': edata['tech'],
+            'ship_type_forbidden': edata2['ship_type_forbidden'],
         }
 
     result['归航信标']['type'] = 101
@@ -523,11 +529,11 @@ def main():
 
     ship_result = load_ship_template()
     print(len(ship_result))
-    Path('vue/public/data/ships.json').write_text(tojson(ship_result))
+    Path('vue/public/data/ships.json').write_text(tojson(ship_result), newline='\n')
     equip_result = load_equip_template()
     print(len(equip_result))
-    Path('vue/public/data/equips.json').write_text(tojson(equip_result))
-    Path('vue/public/data/version.txt').write_text(new_version + '\n')
+    Path('vue/public/data/equips.json').write_text(tojson(equip_result), newline='\n')
+    Path('vue/public/data/version.txt').write_text(new_version)
 
 
 if __name__ == '__main__':
