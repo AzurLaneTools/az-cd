@@ -167,7 +167,7 @@ function getShipCdStats(fShip: FleetShip, extraBuffStats: CdBuffData) {
     let realReload = dispReload * (1 + ((addReload.ReloadAddRatio || 0) / 100));
     stats.reload = { base: shipInfo.reload, equip: equipReload, extra: addReload, real: realReload };
     let equipCd = 0;
-    if (shipTempl.type === ShipType.BB || shipTempl.type === ShipType.BC || shipTempl.type === ShipType.BV) {
+    if (shipTempl.type === ShipType.BB || shipTempl.type === ShipType.BC || shipTempl.type === ShipType.BBV) {
         if (fShip.equips[0] === 0) {
             return stats;
         }
@@ -211,8 +211,8 @@ function getTechReload(tech: Tech, shipType?: ShipType) {
     if (shipType === ShipType.BC) {
         return tech.BC
     }
-    if (shipType === ShipType.BV) {
-        return tech.BV
+    if (shipType === ShipType.BBV) {
+        return tech.BBV
     }
     if (shipType === ShipType.CV) {
         return tech.CV

@@ -34,6 +34,9 @@ function getOptions(idx: number) {
         if (store.state.config.ignoreCommonEquips && equip.rarity <= 3) {
             continue
         }
+        if (equip.ship_type_forbidden?.includes(shipTemplate.type)) {
+            continue
+        }
         if (
             contains(allow, equip.type) ||
             (
@@ -44,7 +47,7 @@ function getOptions(idx: number) {
             (
                 idx >= 3 &&
                 equip.type === EquipType.auxiliaryBB &&
-                (shipTemplate.type === ShipType.BB || shipTemplate.type === ShipType.BC || shipTemplate.type === ShipType.BV)
+                (shipTemplate.type === ShipType.BB || shipTemplate.type === ShipType.BC || shipTemplate.type === ShipType.BBV)
             )
         ) {
             let name = equip.name + ' T' + equip.tech;

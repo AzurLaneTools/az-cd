@@ -30,7 +30,7 @@ enum TriggerType {
 enum ShipType {
     BC = 4,
     BB = 5,
-    BV = 10,
+    BBV = 10,
     CVL = 6,
     CV = 7,
 }
@@ -52,6 +52,8 @@ enum EquipType {
     torpedo_bomber = 8,
     // Dive Bomber 轰炸机
     dive_bomber = 9,
+    // Reconnaissance 水上机
+    reconnaissance = 12,
     // Auxiliary 设备
     auxiliaryCV = 101,
     auxiliaryBB = 102,
@@ -120,6 +122,7 @@ interface EquipTemplate {
     tech: number,
     img: string,
     cd?: number,
+    ship_type_forbidden?: ShipType[],
     allowShipTypes?: ShipType[],
     lvl?: number,
     buffs?: BuffTemplate[],
@@ -145,7 +148,7 @@ interface FleetShip {
 interface Tech {
     BB: number,
     BC: number,
-    BV: number,
+    BBV: number,
     CV: number,
     CVL: number,
 }

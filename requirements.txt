@@ -1,4 +1,5 @@
-requests
-wikitextparser
+httpx
 pypinyin
 pyyaml
+requests
+wikitextparser

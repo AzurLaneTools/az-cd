@@ -43,6 +43,9 @@
             </n-form-item>
         </n-space>
         <n-form-item label-placement="left" :show-feedback="false">
+            <n-button @click="resetConfigData()">重置设置数据</n-button>
+        </n-form-item>
+        <n-form-item label-placement="left" :show-feedback="false">
             <n-button @click="resetFleetData()">重置舰队数据</n-button>
         </n-form-item>
         <n-form-item label-placement="left" :show-feedback="false">
@@ -62,8 +65,35 @@ import { ref } from 'vue'
 import store from '../utils/store';
 import { NSpace, NSwitch, NFormItem, NButton, NInputNumber, useMessage } from 'naive-ui'
 
+function getInitConfig() {
+    return {
+        ignoreCommonEquips: true,
+        delay: {
+            enter: 1.5,
+            CV: 3.4,
+            BB: 1.2,
+        },
+        duration: {
+            CV: 1,
+            BB: 3.2,
+        },
+        commonCd: {
+            CV: 0.6,
+            BB: 1.2,
+        },
+        limit: {
+            calculate: 1000,
+            display: 100,
+        },
+    }
+}
+
 const config = ref(store.state.config);
 const msg = useMessage();
+function resetConfigData() {
+    store.state.config = getInitConfig()
+    msg.success('已重置设置数据')
+}
 function resetFleetData() {
     store.state.fleets = []
     store.addFleet();

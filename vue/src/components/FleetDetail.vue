@@ -191,7 +191,7 @@ const showTargetHelp = ref(false);
                 <n-input-number v-model:value="fleet.tech.BC"></n-input-number>
             </n-form-item>
             <n-form-item label="航战装填" label-placement="left" :show-feedback="false">
-                <n-input-number v-model:value="fleet.tech.BV"></n-input-number>
+                <n-input-number v-model:value="fleet.tech.BBV"></n-input-number>
             </n-form-item>
         </n-space>
         <n-space v-if="knownSkills.length > 0" style="background-color: antiquewhite;">
