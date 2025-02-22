@@ -30,6 +30,8 @@
             border-radius: 4px;
             cursor: pointer;
             transition: opacity 0.3s;
+            background-color: #2196F3;
+            color: white;
         }
 
         button:hover {
@@ -38,17 +40,6 @@
 
         #exportBtn {
             background-color: #4CAF50;
-            color: white;
-        }
-
-        #importBtn {
-            background-color: #2196F3;
-            color: white;
-        }
-
-        #confirmBtn {
-            background-color: #2196F3;
-            color: white;
         }
 
         #fileInput {
@@ -94,6 +85,7 @@
             <button id="exportBtn" onclick="downloadLocalStorage()">导出数据</button>
             <button id="importBtn" onclick="document.getElementById('fileInput').click()">加载数据</button>
             <button id="confirmBtn" onclick="updateLocalStorage()">导入数据</button>
+            <button id="confirmBtn" onclick="location.href='/'">返回首页</button>
             <input type="file" id="fileInput" accept=".json">
         </div>
 
