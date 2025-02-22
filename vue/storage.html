@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>数据导入导出工具</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .container {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .button-group {
+            margin: 20px 0;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        #exportBtn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #importBtn {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        #confirmBtn {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+        }
+
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+            border: 1px solid #ebccd1;
+        }
+
+        #preview {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>数据导入导出工具</h2>
+
+        <div class="button-group">
+            <button id="exportBtn" onclick="downloadLocalStorage()">导出数据</button>
+            <button id="importBtn" onclick="document.getElementById('fileInput').click()">加载数据</button>
+            <button id="confirmBtn" onclick="updateLocalStorage()">导入数据</button>
+            <input type="file" id="fileInput" accept=".json">
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <div id="preview"></div>
+    </div>
+
+    <script>
+        // 导出函数
+        function downloadLocalStorage() {
+            const host = window.location.hostname || 'local';
+            const timestamp = new Date().valueOf();
+
+            const data = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                data[key] = localStorage.getItem(key);
+            }
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${host}_${timestamp}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showMessage('导出成功，下载即将开始', 'success');
+        }
+        var newData = null;
+        // 导入功能
+        document.getElementById('fileInput').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                try {
+                    newData = JSON.parse(event.target.result);
+                    // 显示预览
+                    showPreview(newData);
+                } catch (error) {
+                    showMessage('文件解析失败：' + error.message, 'error');
+                }
+            };
+            reader.readAsText(file);
+        });
+        function updateLocalStorage() {
+            if (!newData) {
+                showMessage('请先加载数据!', 'error');
+                return;
+            }
+            Object.keys(newData).forEach(key => {
+                localStorage.setItem(key, newData[key]);
+            });
+            showMessage('数据导入成功', 'success');
+        }
+
+        // 显示消息
+        function showMessage(text, type) {
+            const msgDiv = document.getElementById('message');
+            msgDiv.className = `message ${type}`;
+            msgDiv.textContent = text;
+            msgDiv.style.display = 'block';
+            setTimeout(() => msgDiv.style.display = 'none', 3000);
+        }
+
+        // 显示数据预览
+        function showPreview(data) {
+            const previewDiv = document.getElementById('preview');
+            var entries = Object.entries(data);
+            if (entries.length > 50) {
+                previewDiv.innerHTML = `<h4>数据预览（前50项, 共${entries.length}项）:</h4>`;
+                entries = entries.slice(0, 50);
+            } else {
+                previewDiv.innerHTML = `<h4>数据预览（共${entries.length}项）:</h4>`;
+            }
+            entries.forEach(([key, value]) => {
+                const item = document.createElement('div');
+                item.innerHTML = `<strong>${key}:</strong> ${value}`;
+                previewDiv.appendChild(item);
+            });
+        }
+    </script>
+</body>
+
+</html>
