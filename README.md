@@ -1,6 +1,6 @@
 # 碧蓝航线CD计算工具
 
-访问地址: [GithubPages](https://pages.autumn21.top/)
+访问地址: [GithubPages](https://azurlanetools.github.io/az-cd/)
 
 该工具的数据和计算公式主要来源于[碧蓝航线Wiki](https://wiki.biligame.com/blhx/%E9%A6%96%E9%A1%B5)和[碧蓝航线](https://game.bilibili.com/blhx/)的游戏内数据.
 
