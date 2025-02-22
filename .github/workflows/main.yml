@@ -5,13 +5,77 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
+  workflow_dispatch:
+  schedule:
+    # 每小时执行一次
+    - cron: '0 * * * *'
 
 jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: ghcr.io/azurlanetools/azex/azex-azcd
+    outputs:
+      changed: ${{ steps.save_changes.outputs.changed }}
+    steps:
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: "azexbot"
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Load cache
+        uses: actions/cache@v4
+        with:
+          key: azex-dbcache-${{ github.run_id }}
+          path: "cache"
+          restore-keys: |
+            azex-dbcache
+
+      - name: Checkout target repo
+        uses: actions/checkout@v4
+        with:
+          path: output/azcd
+
+      - name: Pull docker image
+        uses: gacts/run-and-post-run@v1.4
+        with:
+          run: docker pull $IMAGE_NAME
+          post: docker image rm -f $IMAGE_NAME
+
+      - name: Try update azcd data
+        run: >
+          mkdir data &&
+          docker run --rm --name azex-azcd
+          -e AZEX_USER=$(id -u):$(id -g)
+          -v $PWD:/azex
+          $IMAGE_NAME
+          python -m azex azcd
+        # docker run --rm --name azex-azcd ghcr.io/azurlanetools/azex/azex:20250220 bash
+      - name: Save changes
+        id: save_changes
+        run: |
+          # push
+          cd output/azcd
+          if [ -f .git/commit_msg ]; then
+            git add .
+            git pull
+            git commit -F .git/commit_msg
+            git push
+            echo changed=1 >> $GITHUB_OUTPUT
+          else
+            echo changed=0 >> $GITHUB_OUTPUT
+          fi
+
   build-and-deploy:
     runs-on: ubuntu-latest
+    needs: [update-data]
+    # 为定时触发并且数据无变化时, 不执行 build-and-deploy
+    if: (github.event_name != 'schedule') || (needs.update-data.outputs.changed == '1')
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2.3.1
+      - name: Checkout target repo
+        uses: actions/checkout@v4
 
       - name: Setup Node
         uses: actions/setup-node@v2
@@ -20,7 +84,7 @@ jobs:
 
       - name: Cache Node Modules
         id: node-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: vue/node_modules
           key: node-modules-${{ hashFiles('vue/yarn.lock') }}
@@ -38,8 +102,8 @@ jobs:
           cp ../README.md dist/
 
       - name: Deploy
-        if: ${{ github.event_name == 'push' && github.ref_name == 'master' }}
-        uses: JamesIves/github-pages-deploy-action@v4.2.2
+        # if: ${{ github.event_name == 'push' && github.ref_name == 'master' }}
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages # The branch the action should deploy to.
           folder: vue/dist # The folder the action should deploy.
