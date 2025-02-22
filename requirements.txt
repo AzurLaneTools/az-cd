@@ -1,5 +1,2 @@
 httpx
 pypinyin
-pyyaml
-requests
-wikitextparser
