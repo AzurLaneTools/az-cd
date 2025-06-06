@@ -2416,6 +2416,85 @@
     "tech": 0,
     "type": 8
   },
+  "91307": {
+    "cd": 2030,
+    "icon": "51300",
+    "id": 91307,
+    "max": "91307",
+    "name": "PL.10",
+    "rarity": 3,
+    "ship_type_forbidden": [
+      10,
+      22,
+      23,
+      24
+    ],
+    "tech": 0,
+    "type": 8
+  },
+  "91331": {
+    "cd": 1720,
+    "icon": "51320",
+    "id": 91331,
+    "max": "91331",
+    "name": "V-156-F",
+    "rarity": 4,
+    "ship_type_forbidden": [
+      10,
+      22,
+      23,
+      24
+    ],
+    "tech": 0,
+    "type": 9
+  },
+  "91353": {
+    "cd": 1624,
+    "icon": "51340",
+    "id": 91353,
+    "max": "91353",
+    "name": "LN.401",
+    "rarity": 5,
+    "ship_type_forbidden": [
+      10,
+      22,
+      23,
+      24
+    ],
+    "tech": 0,
+    "type": 9
+  },
+  "91371": {
+    "cd": 2075,
+    "icon": "51360",
+    "id": 91371,
+    "max": "91371",
+    "name": "Late.299",
+    "rarity": 4,
+    "ship_type_forbidden": [
+      10,
+      22,
+      23,
+      24
+    ],
+    "tech": 0,
+    "type": 8
+  },
+  "91387": {
+    "cd": 1654,
+    "icon": "51380",
+    "id": 91387,
+    "max": "91387",
+    "name": "LGL.32",
+    "rarity": 3,
+    "ship_type_forbidden": [
+      22,
+      23,
+      24
+    ],
+    "tech": 0,
+    "type": 7
+  },
   "95053": {
     "buffs": [
       {
